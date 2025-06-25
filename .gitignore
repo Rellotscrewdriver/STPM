@@ -1,0 +1,5 @@
+*.backup
+/.vscode
+/build
+/site
+/docs
