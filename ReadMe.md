@@ -1,19 +1,16 @@
-# Project Template
-this repo contains the boilerplate for my future projects so I don't have to create a project from scratch
+# Simple Terminal Password Manager
+STPM is a password manager that manages and generates your password 
 
-## Project Structure
-- `include` is for containing header files
-- `docs` contains generated documentation by doxide and mkdocs
-- `libs` is for containing external libraries' source code which builds with the main project
-- `src` is containing the main program's source code
-- `tests` is for containing unit tests to test various parts of the software
+# usage
+just type `./stpm` within the build folder to run
 
-## Toolset
-- CMake for build system generator
-- Doxide for generating documentation
-- Googletest for testing and mocking
-- Docker & github actions for CI/CD
-- AStyle to automatically format code
+`list` to list everything
+
+# Screenshots
+People usually like to see how it looks before downloading the product.
+<img src="">
+
+# Contribution guide
 
 ## Setting up the project
 
@@ -73,9 +70,6 @@ We explicitly welcome outside contributors.
 you can read our <a href="https://github.com/Rellotscrewdriver/my-project-template/blob/master/CODE_OF_CONDUCT.md">CODE_OF_CONDUCT</a> for rules</br>
 and <a href="https://github.com/Rellotscrewdriver/my-project-template/blob/master/CONTRIBUTING.md">CONTRIBUTING</a> for contribution guidelines and coding style
 
-## Screenshots
-People usually like to see how it looks before downloading the product.
-<img src="">
 
 ## COPYRIGHT
 

@@ -18,6 +18,6 @@ RUN cmake -S . -B build -G "Ninja"
 RUN cmake --build build
 
 # Copy the executable
-RUN cp -r build/template template
+RUN cp -r build/stpm stpm
 
-CMD ["./template"]
+CMD ["./stpm"]

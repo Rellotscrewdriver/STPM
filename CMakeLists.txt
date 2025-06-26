@@ -3,7 +3,7 @@ set(CMAKE_CXX_SCAN_FOR_MODULES ON)
 set(BUILD_SHARED_LIBS OFF)
 
 # set the project template
-project(template)
+project(stpm)
 
 # add internal dependencies
 add_subdirectory(libs/fmt)

@@ -1,7 +1,7 @@
-site_name: My Project Template
-site_description: This is just an example 
-repo_name: My Project Template
-repo_url: https://github.com/Rellotscrewdriver/my-project-template
+site_name: STPM
+site_description: Simple Password Manager
+repo_name: STPM
+repo_url: https://github.com/Rellotscrewdriver/STPM
 
 theme:
   #logo: material/library

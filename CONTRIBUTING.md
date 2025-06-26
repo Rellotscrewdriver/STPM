@@ -1,4 +1,4 @@
-# Contributing to <project_name>
+# Contributing to STPM
 Thanks for taking the time to contribute!
 because we need volunteer developers to help this project come to fruition.
 
@@ -16,7 +16,7 @@ Include the relevant issue number if applicable and it follows the template
 ### Do you intend to add a new feature or change an existing one?
 
 Submitting changes
-Please send a GitHub Pull Request to <project_name> with a clear list of what you've done (read more about pull requests). When you send a pull request. We can always use more test coverage. Please follow our Coding Guidelines (below) and make sure all of your commits are atomic (one feature per commit).</br></br>
+Please send a GitHub Pull Request to STPM with a clear list of what you've done (read more about pull requests). When you send a pull request. We can always use more test coverage. Please follow our Coding Guidelines (below) and make sure all of your commits are atomic (one feature per commit).</br></br>
 
 Always write a clear log message for your commits. One-line messages are fine for small changes, but bigger changes should look like this:
 
