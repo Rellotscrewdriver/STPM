@@ -6,7 +6,6 @@ set(BUILD_SHARED_LIBS OFF)
 project(stpm)
 
 # add internal dependencies
-add_subdirectory(libs/fmt)
 add_subdirectory(libs/googletest)
 
 # Recursively finds c++ source files
