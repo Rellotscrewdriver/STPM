@@ -1,10 +1,18 @@
 #include "dectargs.h"
 
-dectargs::dectargs(int& cArgs, char* argVect[]) {
-  for(int i = 1; i < cArgs; i++) {
-    std::cout << argVect[i] << "\n";
+void dectargs::checkArgs() {
+  if(mArgc <= 4) {
+    dectTypeArgs();
+  } else {
+    std::cout << "not enough parameters or too many parameters"
+              << "paramter count: " << mArgc << std::endl;
   }
 }
 
-dectargs::~dectargs() {
+void dectargs::dectTypeArgs() {
+  if(strcmp(mArgVect[1], "add") == 0) {
+    std::cout << "Stuff added\n";
+  } else if (strcmp(mArgVect[1], "list") == 0) {
+    std::cout << "none";
+  }
 }
