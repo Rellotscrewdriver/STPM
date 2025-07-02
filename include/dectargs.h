@@ -17,6 +17,7 @@ private:
   int& mArgc;
   char** mArgVect;
 
+  bool funcNameCmp(const char* funcName);
   void checkArgs();
   void dectTypeArgs();
 };

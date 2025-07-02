@@ -10,9 +10,13 @@ void dectargs::checkArgs() {
 }
 
 void dectargs::dectTypeArgs() {
-  if(strcmp(mArgVect[1], "add") == 0) {
+  if(funcNameCmp("add") || funcNameCmp("Add")) {
     std::cout << "Stuff added\n";
-  } else if (strcmp(mArgVect[1], "list") == 0) {
+  } else if (funcNameCmp("list") || funcNameCmp("List")) {
     std::cout << "none";
   }
+}
+
+bool dectargs::funcNameCmp(const char* funcName){
+  return (strcmp(mArgVect[1], "add") == 0);
 }
