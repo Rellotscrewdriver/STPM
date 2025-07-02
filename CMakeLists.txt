@@ -15,7 +15,7 @@ file(GLOB_RECURSE PROJECT_SOURCES "src/*.cpp")
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
 target_sources(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCES})
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
-target_link_libraries(${PROJECT_NAME} PRIVATE fmt)
+#target_link_libraries(${PROJECT_NAME} PRIVATE fmt)
 
 # add Unit tests
 add_subdirectory(tests)

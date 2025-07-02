@@ -3,11 +3,23 @@
 
 #include <memory>
 #include <iostream>
-
+#include <print>
+#include <string>
+#include <string_view>
+#include <cstring>
 class dectargs {
 public:
-  dectargs(int& cArgs, char* argVect[]);
-  ~dectargs();
+  dectargs(int& cArgs, char* argVect[]) : mArgc(cArgs), mArgVect(argVect) {
+    checkArgs();
+  };
+
+private:
+  int& mArgc;
+  char** mArgVect;
+
+  bool funcNameCmp(const char* funcName);
+  void checkArgs();
+  void dectTypeArgs();
 };
 
 #endif
