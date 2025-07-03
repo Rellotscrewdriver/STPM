@@ -12,6 +12,7 @@ void dectargs::checkArgs() {
 void dectargs::dectTypeArgs() {
   if(funcNameCmp("add") || funcNameCmp("Add")) {
     std::cout << "Stuff added\n";
+    std::cout << "Password is: " << pass.getgeneratedPass() << std::endl; 
   } else if (funcNameCmp("list") || funcNameCmp("List")) {
     std::cout << "none";
   }

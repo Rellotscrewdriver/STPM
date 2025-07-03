@@ -1,6 +1,7 @@
 #ifndef DECTARGS_H
 #define DECTARGS_H
 
+#include "genPass.h"
 #include <memory>
 #include <iostream>
 #include <print>
@@ -17,6 +18,7 @@ private:
   int& mArgc;
   char** mArgVect;
 
+  GeneratePass pass;
   bool funcNameCmp(const char* funcName);
   void checkArgs();
   void dectTypeArgs();
