@@ -11,8 +11,10 @@ void dectargs::checkArgs() {
 
 void dectargs::dectTypeArgs() {
   if(funcNameCmp("add") || funcNameCmp("Add")) {
+    addPassSite *aps = new addPassSite(mArgVect[2], mArgVect[3]); 
     std::cout << "Stuff added\n";
     std::cout << "Password is: " << pass->getgeneratedPass() << std::endl; 
+    delete aps;
   } else if (funcNameCmp("list") || funcNameCmp("List")) {
     std::cout << "none";
   }
