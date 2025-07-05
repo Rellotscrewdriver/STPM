@@ -1,12 +1,16 @@
 #include "addPassSite.h"
 
 bool addPassSite::checkEmailVaild(){
-    std::string Stremail = email;
-    return Stremail.find("@");
+    strEmail = email;
+    return strEmail.find("@") != std::string::npos;
 }
 
 void addPassSite::appendToFile(){
     std::ofstream addSite(path, std::ios::app);
-    addSite << email << " : " << link << endl;
-    std::cout << "Appended" << std::endl;
+    addSite << email << " : " << link << " : " << pass->getgeneratedPass() << endl;
+    std::cout << "Appended" << link << "at" << email << std::endl;
+}
+
+addPassSite::~addPassSite(){
+    delete pass;
 }
