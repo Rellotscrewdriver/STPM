@@ -19,8 +19,9 @@ public:
 private:
     bool checkEmailVaild();
     void appendToFile();
-    std::string email;
-    std::string link;
+    char* email;
+    char* link;
+    static inline std::string path = "add.txt";
 };
 
 #endif
