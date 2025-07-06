@@ -19,7 +19,5 @@ void dectargs::dectTypeArgs() {
 }
 
 bool dectargs::funcNameCmp(const char* funcName){
-  return (strcmp(mArgVect[1], "add") == 0);
+  return (strcmp(mArgVect[1], funcName) == 0);
 }
-
-dectargs::~dectargs(){}

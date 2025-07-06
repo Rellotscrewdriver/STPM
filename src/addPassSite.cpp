@@ -9,6 +9,7 @@ void addPassSite::appendToFile(){
     std::ofstream addSite(path, std::ios::app);
     addSite << email << " : " << link << " : " << pass->getgeneratedPass() << endl;
     std::cout << "Appended" << link << "at" << email << std::endl;
+    addSite.close();
 }
 
 addPassSite::~addPassSite(){

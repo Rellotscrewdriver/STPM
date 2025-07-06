@@ -16,7 +16,6 @@ public:
   dectargs(int& cArgs, char* argVect[]) : mArgc(cArgs), mArgVect(argVect) {
     checkArgs();
   };
-  ~dectargs();
 
 private:
   int& mArgc;
