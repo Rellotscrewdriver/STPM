@@ -20,10 +20,11 @@ public:
 private:
   int& mArgc;
   char** mArgVect;
-
-  bool funcNameCmp(const char* funcName);
-  void checkArgs();
+  std::string tempVal;
+  bool funcNameCmp(std::string funcName);
   void dectTypeArgs();
+  void checkArgs();
+  void helpMessage();
 };
 
 #endif
