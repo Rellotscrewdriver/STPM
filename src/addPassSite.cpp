@@ -2,7 +2,9 @@
 
 bool addPassSite::checkEmailVaild(){
     strEmail = email;
-    return strEmail.find("@") != std::string::npos;
+    return (strEmail.find("@gmail.com") != std::string::npos) 
+    || (strEmail.find("@outlook.com") != std::string::npos) 
+    || (strEmail.find("@hotmail.com") != std::string::npos);
 }
 
 void addPassSite::appendToFile(){

@@ -8,10 +8,10 @@
 class addPassSite {
 public:
     addPassSite(char* emailAddress, char* LinkName) : email(emailAddress), link(LinkName){
-        if(!checkEmailVaild()){
-            std::cout << "The Email address is not vaild";
-        } else {
+        if(checkEmailVaild()){
             appendToFile();
+        } else {
+            std::cout << "The Email address is not vaild";            
         }
     };
     ~addPassSite();
