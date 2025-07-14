@@ -1,9 +1,8 @@
 #ifndef ADDPASSITE_H
 #define ADDPASSITE_H
 
-#include "dectargs.h"
+#include "includes.h"
 #include "genPass.h"
-#include <fstream>
 
 class addPassSite {
 public:

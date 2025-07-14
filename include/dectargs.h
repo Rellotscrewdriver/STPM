@@ -1,14 +1,8 @@
 #ifndef DECTARGS_H
 #define DECTARGS_H
 
+#include "includes.h"
 #include "addPassSite.h"
-#include <memory>
-#include <iostream>
-#include <string>
-#include <string_view>
-#include <cstring>
-
-using namespace std;
 
 class dectargs {
 public:
