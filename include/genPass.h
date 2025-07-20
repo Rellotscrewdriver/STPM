@@ -1,9 +1,7 @@
 #ifndef GENERATEPASS_H
 #define GENERATEPASS_H
 
-#include <string>
-#include <iostream>
-#include <random>
+#include "includes.h"
 
 class GeneratePass {
 public:
