@@ -1,24 +1,16 @@
 #include "removeSite.h"
 
-#include <iostream>
-#include <fstream>
-    
-
-void removeSite::finalRemoveIt(std::string path, char* eraseLine){
-    std::ifstream fin;
+void removeSite::finalRemoveIt(){
+    std::ifstream file;
     std::ofstream temp;
-
-    std::string eraseLineLink = link;
-    std::string eraseLineEmail = email;
-
-    fin.open(path);
+    file.open(path);
     temp.open("temp.txt");
 
-    if (fin.is_open()) {
-        while (getline(fin, line)) {
-            int pos = line.find(eraseLineLink);
-            int pos1 = line.find(eraseLineEmail);
-            if(pos == -1 || pos1 == -1){
+    if (file.is_open()) {
+        while (getline(file, line)) {
+            posLink = line.find(eraseLineLink);
+            posEmail = line.find(eraseLineEmail);
+            if(posLink == -1 || posEmail == -1){
                 temp << line << endl;
             }/* could be useful in future if I wanna restore the passwords
                 else {
@@ -30,9 +22,8 @@ void removeSite::finalRemoveIt(std::string path, char* eraseLine){
     } else {
         std::cout << "The File is not open!" << endl;
     }
- 
+    std::cout << "Removed " << eraseLineLink << " from " << eraseLineEmail;
     temp.close();
-    fin.close();
+    file.close();
     rename("temp.txt", path.c_str());
-
 }

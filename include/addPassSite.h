@@ -5,6 +5,8 @@
 #include "genPass.h"
 #include <fstream>
 
+extern inline std::string path = "add.txt";
+
 class addPassSite {
 public:
     addPassSite(char* emailAddress, char* LinkName) : email(emailAddress), link(LinkName){
@@ -20,8 +22,7 @@ private:
     bool checkEmailVaild();
     void appendToFile();
     char* email;
-    char* link;
-    static inline std::string path = "add.txt";
+    char* link;    
     std::string strEmail;
 };
 

@@ -5,20 +5,23 @@
 //#include "includes.h"
 #include "genPass.h"
 
-#include <vector>
 
 class removeSite {
 public:
-    removeSite(char* emailAddress, char* LinkName) : email(emailAddress), link(LinkName){finalRemoveIt(fileName, link);};
+    removeSite(char* emailAddress, char* LinkName) : email(emailAddress), link(LinkName){finalRemoveIt();};
 private:
     char* email;
     char* link;
-    std::string eraseLineLink;
-    std::string eraseLineEmail;
-    void finalRemoveIt(std::string path, char* eraseLine);
-    std::string fileName = "add.txt"; //temporary to make it working
+
+    void finalRemoveIt();
+    //std::string fileName = "add.txt"; //temporary to make it working
 
     std::string line;
+
+    std::string eraseLineLink = link;
+    std::string eraseLineEmail = email;
+    int posLink;
+    int posEmail;
 };
 
 #endif
