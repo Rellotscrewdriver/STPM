@@ -2,6 +2,7 @@
 #define DECTARGS_H
 
 #include "addPassSite.h"
+#include "removeSite.h"
 #include <memory>
 #include <iostream>
 #include <string>

@@ -9,15 +9,16 @@
 
 class removeSite {
 public:
-    removeSite(char* LinkName) : link(LinkName){finalRemoveIt(fileName, link);};
+    removeSite(char* emailAddress, char* LinkName) : email(emailAddress), link(LinkName){finalRemoveIt(fileName, link);};
 private:
+    char* email;
     char* link;
-    std::string linkStr;
+    std::string eraseLineLink;
+    std::string eraseLineEmail;
     void finalRemoveIt(std::string path, char* eraseLine);
     std::string fileName = "add.txt"; //temporary to make it working
 
     std::string line;
-    std::vector<std::string> AddLines;
 };
 
 #endif
