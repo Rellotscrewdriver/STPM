@@ -11,6 +11,10 @@ add_subdirectory(libs/googletest)
 # Recursively finds c++ source files
 file(GLOB_RECURSE PROJECT_SOURCES "src/*.cpp")
 
+if(MSVC)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /m /std:c++17")
+endif()   
+
 # Add and link executable with internal libraries
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
 target_sources(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCES})

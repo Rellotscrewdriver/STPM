@@ -20,9 +20,9 @@ void dectargs::dectTypeArgs() {
   } else if (funcNameCmp("change") || funcNameCmp("Change") && mArgc > 2) {
     std::cout << "Change Function here";
   } else if (funcNameCmp("remove") || funcNameCmp("Remove") && mArgc > 2) {
-    std::cout << "Remove Function here";
-  }
-   else {
+    removeSite *rs = new removeSite(mArgVect[2], mArgVect[3]);
+    delete rs;
+  } else {
     std::cout << "Not FOUND";
   }
 }
