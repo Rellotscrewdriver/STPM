@@ -1,5 +1,4 @@
-#ifndef ADDPASSITE_H
-#define ADDPASSITE_H
+#pragma once
 
 #include "includes.h"
 #include "genPass.h"
@@ -24,5 +23,3 @@ private:
     char* link;    
     std::string strEmail;
 };
-
-#endif

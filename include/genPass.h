@@ -1,5 +1,4 @@
-#ifndef GENERATEPASS_H
-#define GENERATEPASS_H
+#pragma once
 
 #include "includes.h"
 
@@ -16,5 +15,3 @@ private:
     int passLen = 15;
     int randonNum;
 };
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef CONSTANTS_H
-#define CONSTANTS_H
+#pragma once
 
 #include <memory>
 #include <iostream>
@@ -9,5 +8,3 @@
 #include <fstream>
 #include <random>
 using namespace std;
-
-#endif

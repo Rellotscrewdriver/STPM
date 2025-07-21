@@ -1,5 +1,4 @@
-#ifndef DECTARGS_H
-#define DECTARGS_H
+#pragma once
 
 #include "includes.h"
 #include "addPassSite.h"
@@ -21,5 +20,3 @@ private:
   void checkArgs();
   void helpMessage();
 };
-
-#endif

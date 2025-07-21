@@ -1,8 +1,7 @@
-#ifndef REMOVESITE_H
-#define REMOVESITE_H
+#pragma once
 
-#include "dectargs.h"
-//#include "includes.h"
+#include "includes.h"
+#include "addPassSite.h"
 #include "genPass.h"
 
 
@@ -12,7 +11,6 @@ public:
 private:
     char* email;
     char* link;
-
     void finalRemoveIt();
     //std::string fileName = "add.txt"; //temporary to make it working
 
@@ -24,4 +22,3 @@ private:
     int posEmail;
 };
 
-#endif
