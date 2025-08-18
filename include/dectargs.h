@@ -3,7 +3,7 @@
 #include "includes.h"
 #include "addPassSite.h"
 #include "removeSite.h"
-
+#include "changeSite.h"
 
 class dectargs {
 public:
