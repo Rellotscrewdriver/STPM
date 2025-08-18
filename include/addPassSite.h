@@ -3,8 +3,6 @@
 #include "includes.h"
 #include "genPass.h"
 
-extern inline std::string path = "add.txt";
-
 class addPassSite {
 public:
     addPassSite(char* emailAddress, char* LinkName) : email(emailAddress), link(LinkName){

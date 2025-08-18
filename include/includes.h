@@ -7,4 +7,8 @@
 #include <cstring>
 #include <fstream>
 #include <random>
+
+extern inline std::string path = "add.txt";
+extern inline std::string tempfile = "temp.txt";
+
 using namespace std;
