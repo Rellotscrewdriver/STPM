@@ -1,9 +1,6 @@
 #pragma once
 
 #include "includes.h"
-#include "addPassSite.h"
-#include "genPass.h"
-
 
 class removeSite {
 public:
@@ -12,7 +9,6 @@ private:
     char* email;
     char* link;
     void finalRemoveIt();
-    //std::string fileName = "add.txt"; //temporary to make it working
 
     std::string line;
 
