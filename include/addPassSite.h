@@ -5,7 +5,7 @@
 
 class addPassSite {
 public:
-    addPassSite(char* emailAddress, char* LinkName) : email(emailAddress), link(LinkName){
+    addPassSite(const char* emailAddress, const char* LinkName) : email(emailAddress), link(LinkName){
         if(checkEmailVaild()){
             appendToFile();
         } else {
@@ -17,7 +17,7 @@ private:
     GeneratePass *pass = new GeneratePass();
     bool checkEmailVaild();
     void appendToFile();
-    char* email;
-    char* link;    
+    const char* email;
+    const char* link;    
     std::string strEmail;
 };

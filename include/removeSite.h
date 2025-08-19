@@ -4,10 +4,10 @@
 
 class removeSite {
 public:
-    removeSite(char* emailAddress, char* LinkName) : email(emailAddress), link(LinkName){finalRemoveIt();};
+    removeSite(const char* emailAddress, const char* LinkName) : email(emailAddress), link(LinkName){finalRemoveIt();};
 private:
-    char* email;
-    char* link;
+    const char* email;
+    const char* link;
     void finalRemoveIt();
 
     std::string line;
