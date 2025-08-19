@@ -1,18 +1,19 @@
 #include "changeSite.h"
 
 void changeSite::regenPassword(){
-    
+    auto rs = std::make_unique<removeSite>(flag1.c_str(), oldWord.c_str());
+    auto aps = std::make_unique<addPassSite>(flag1.c_str(), oldWord.c_str());
 }
 
 void changeSite::replaceLink(){
-    tempFunction(flag1, oldWord, newWord);
+    replaceFunc(flag1, oldWord, newWord);
 }
 
 void changeSite::replaceEmail(){
-    tempFunction(flag1, oldWord, newWord);
+    replaceFunc(flag1, oldWord, newWord);
 }
 
-void changeSite::tempFunction(const std::string& flag1, const std::string& oldWord, const std::string& newWord){
+void changeSite::replaceFunc(const std::string& flag1, const std::string& oldWord, const std::string& newWord){
     // 2. Open input and output files
     std::ifstream inputFile(path);
     std::ofstream tempFile(tempfile);

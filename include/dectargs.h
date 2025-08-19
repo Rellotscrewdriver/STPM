@@ -19,4 +19,5 @@ private:
   void dectTypeArgs();
   void checkArgs();
   void helpMessage();
+  void ArgNumberDetectchangeFeat();
 };
