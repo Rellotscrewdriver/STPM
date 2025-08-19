@@ -22,7 +22,7 @@ void removeSite::finalRemoveIt(){
     } else {
         std::cout << "The File is not open!" << endl;
     }
-    std::cout << "Removed " << eraseLineLink << " from " << eraseLineEmail;
+    std::cout << "Removed " << eraseLineLink << " from " << eraseLineEmail << "\n";
     temp.close();
     file.close();
     rename("temp.txt", path.c_str());
