@@ -18,8 +18,7 @@ void dectargs::dectTypeArgs() {
   } else if (funcNameCmp("list") || funcNameCmp("List") && mArgc > 2) {
     std::cout << "List Function here";
   } else if (funcNameCmp("change") || funcNameCmp("Change") && mArgc > 2) {
-    changeSite *cs = new changeSite(mArgVect[2], mArgVect[3], mArgVect[4]);
-    delete cs;
+    ArgNumberDetectchangeFeat();
   } else if (funcNameCmp("remove") || funcNameCmp("Remove") && mArgc > 2) {
     removeSite *rs = new removeSite(mArgVect[2], mArgVect[3]);
     delete rs;
@@ -38,3 +37,12 @@ void dectargs::helpMessage(){
   std::cout << "Help Section Here \nThis software is in early development :)";
 }
 
+void dectargs::ArgNumberDetectchangeFeat(){
+    if(mArgc == 5){
+      changeSite *cs = new changeSite(mArgVect[2], mArgVect[3], mArgVect[4]);
+      delete cs;
+    } else {
+      changeSite *cs = new changeSite(mArgVect[2], mArgVect[3]);
+      delete cs;
+    }
+}

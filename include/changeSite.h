@@ -1,8 +1,8 @@
 #pragma once
 
 #include "includes.h"
-#include "genPass.h"
-
+#include "removeSite.h"
+#include "addPassSite.h"
 class changeSite {
 public: 
     changeSite(char* email, char* link) : 
@@ -23,9 +23,8 @@ private:
     std::string oldWord;
     std::string flag1;
     std::string newWord;
-
     void regenPassword();
     void replaceLink();
     void replaceEmail();
-    void tempFunction(const std::string& flag1, const std::string& oldWord, const std::string& newWord);
+    void replaceFunc(const std::string& flag1, const std::string& oldWord, const std::string& newWord);
 };
