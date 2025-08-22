@@ -4,6 +4,7 @@
 #include "addPassSite.h"
 #include "removeSite.h"
 #include "changeSite.h"
+#include "listSite.h"
 
 class dectargs {
 public:

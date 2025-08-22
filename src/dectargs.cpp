@@ -16,7 +16,8 @@ void dectargs::dectTypeArgs() {
     addPassSite *aps = new addPassSite(mArgVect[2], mArgVect[3]); 
     delete aps;
   } else if (funcNameCmp("list") || funcNameCmp("List") && mArgc > 2) {
-    std::cout << "List Function here";
+    listSite *ls = new listSite();
+    delete ls;
   } else if (funcNameCmp("change") || funcNameCmp("Change") && mArgc > 2) {
     ArgNumberDetectchangeFeat();
   } else if (funcNameCmp("remove") || funcNameCmp("Remove") && mArgc > 2) {
