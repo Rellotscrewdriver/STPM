@@ -4,6 +4,8 @@
 #include "includes.h"
 #include "plusaes.hpp"
 #include "changeSite.h"
+#include <sodium.h>
+
 class encryption {
 public:
     encryption();
@@ -37,7 +39,6 @@ private:
     const std::string checkerFileName = "check.txt";
     std::string StoretoFile;
     void replaceCheckFunc(const std::string& flag1, const std::string& oldWord, const std::string& newWord);
-
     std::vector<std::string> OutCheckFile;
     std::vector<unsigned char> SiteDataVec;
     std::vector<unsigned char> input_buffer;

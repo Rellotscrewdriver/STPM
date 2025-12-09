@@ -1,6 +1,14 @@
 #include "encryption.h"
 
 encryption::encryption(){
+
+    if (sodium_init() < 0) {
+        /* panic! the library couldn't be initialized; it is not safe to use */
+        std::cout << "Sodium Couldn't be initialized!\n";
+    } else {
+        std::cout << "Sodium loaded\n";
+    }
+    
     std::ifstream file(checkerFileName);
     std::string line;
 
