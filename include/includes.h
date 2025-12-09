@@ -8,6 +8,7 @@
 #include <fstream>
 #include <random>
 #include <iomanip>
+#include <filesystem>
 
 extern inline std::string path = "add.txt";
 extern inline std::string tempfile = "temp.txt";

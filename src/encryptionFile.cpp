@@ -1,169 +1,162 @@
 #include "encryption.h"
 
 encryption::encryption(){
+    // 2. Generate a fresh, random key
+    crypto_secretstream_xchacha20poly1305_keygen(key);
 
-    if (sodium_init() < 0) {
-        /* panic! the library couldn't be initialized; it is not safe to use */
-        std::cout << "Sodium Couldn't be initialized!\n";
-    } else {
-        std::cout << "Sodium loaded\n";
-    }
-    
-    std::ifstream file(checkerFileName);
-    std::string line;
-
-    while (file >> line) {
-        OutCheckFile.push_back(line);
-    }
-
-    std::cout << "Size: " << OutCheckFile[1] << " Status: " << OutCheckFile[3] << endl;
-    std::cout << "\n" << std::boolalpha << (OutCheckFile[3] == "true") << endl;
-/*
-    if(OutCheckFile[3] == "true"){
-        decrypt();
-    } else {
-        encrypt();
-    }
-*/
-    std::cout << "Size: " << OutCheckFile[1] << " Status: " << OutCheckFile[3] << endl;
 }
 
 //NOTE: tell users to not edit the password file or else it will be damaged
 void encryption::encrypt(){
-    encryptFile(path, path, key, iv);
+    encryptFile(pathC, tempFile);
+    std::rename(tempFile, pathC);
 }
 
 void encryption::decrypt(){
-    decryptFile(path, path, key);
+    decryptFile(pathC, tempFile);
+    std::rename(tempFile, pathC);
 }
 
-// Helper function to read a vector to a binary file
-bool encryption::read_file(const std::string& path, std::vector<unsigned char>& buffer) {
-    std::ifstream file(path, std::ios::binary);
-    if (!file) return false;
-    buffer.assign(std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>());
-    return true;
-}
-
-// Helper function to write a vector to a binary file
-bool encryption::write_file(const std::string& path, const std::vector<unsigned char>& buffer) {
-    std::ofstream file(path, std::ios::binary);
-    if (!file) return false;
-    file.write(reinterpret_cast<const char*>(buffer.data()), buffer.size());
-    return true;
-}
-
-void encryption::encryptFile(
-    const std::string& inputFile,
-    const std::string& outputFile,
-    const std::vector<unsigned char>& key,
-    const std::vector<unsigned char>& iv)
+int encryption::encryptFile(const char *target_file, const char *source_file) 
 {
-    if (!read_file(inputFile, SiteDataVec)) {
-        std::cerr << "Error: Could not read input file: " << inputFile << std::endl;
-        return;
-    }
 
-    const unsigned long encrypted_size = plusaes::get_padded_encrypted_size(SiteDataVec.size());
-    std::string eSize = std::to_string(encrypted_size);
-    std::vector<unsigned char> encrypted_data(encrypted_size);
-    std::vector<unsigned char> iv_copy = iv; // Use a copy as the IV is modified
+    std::FILE *fp_t = nullptr;
+    std::FILE *fp_s = nullptr;
+
+    // Buffers for input and output chunks
+    unsigned char buf_in[CHUNK_SIZE];
+    // Output buffer is larger: CHUNK_SIZE + crypto_secretstream_xchacha20poly1305_ABYTES (for the tag)
+    unsigned char buf_out[CHUNK_SIZE + crypto_secretstream_xchacha20poly1305_ABYTES];
     
-    replaceCheckFunc("size", OutCheckFile[1], eSize);
-    replaceCheckFunc("status", OutCheckFile[3], "true");
-
-    // Encrypt the data, casting the IV's data pointer to the required C-style array pointer
-    plusaes::encrypt_cbc(
-        SiteDataVec.data(), SiteDataVec.size(), 
-        key.data(), key.size(), 
-        reinterpret_cast<unsigned char(*)[16]>(iv_copy.data()), 
-        encrypted_data.data(), encrypted_data.size(), true
-    );
-
-    // Prepend the original IV to the ciphertext for storage
-    std::vector<unsigned char> output_buffer = iv;
-    output_buffer.insert(output_buffer.end(), encrypted_data.begin(), encrypted_data.end());
-    rename(tempfile.c_str(), path.c_str());
+    // Header for the stream (must be stored/sent before the ciphertext)
+    unsigned char header[crypto_secretstream_xchacha20poly1305_HEADERBYTES];
     
-    if (write_file(outputFile, output_buffer)) {
-        std::cout << "✅ Successfully encrypted '" << inputFile << "' to '" << outputFile << "'" << std::endl;
-    } else {
-        std::cerr << "Error: Could not write to output file: " << outputFile << std::endl;
-    }
-}
+    crypto_secretstream_xchacha20poly1305_state st;
+    unsigned long long out_len;
+    size_t rlen;
+    int eof;
+    unsigned char tag = 0; // Default tag for stream chunks
 
-void encryption::decryptFile(
-    const std::string& inputFile,
-    const std::string& outputFile,
-    const std::vector<unsigned char>& key)
-{
-    if (!read_file(inputFile, input_buffer)) {
-        std::cerr << "Error: Could not read encrypted file: " << inputFile << std::endl;
-        return;
+    // 1. Open files
+    if ((fp_s = std::fopen(source_file, "rb")) == nullptr) return -1;
+    if ((fp_t = std::fopen(target_file, "wb")) == nullptr) {
+        std::fclose(fp_s);
+        return -1;
     }
 
-    if (input_buffer.size() < 16) { // File must contain at least the IV
-        std::cerr << "Error: Invalid encrypted file format." << std::endl;
-        return;
+    // 2. Initialize the state and get the header
+    if (crypto_secretstream_xchacha20poly1305_init_push(&st, header, key) != 0) {
+        std::fclose(fp_s);
+        std::fclose(fp_t);
+        return -1;
     }
 
-    // Extract the IV from the beginning of the file
-    std::vector<unsigned char> iv(input_buffer.begin(), 
-    input_buffer.begin() + 16);
-    
-    // The rest of the buffer is the ciphertext
-    std::vector<unsigned char> encrypted_data(
-        input_buffer.begin() + 16, 
-        input_buffer.end());
-
-    const unsigned long encrypted_size = std::stoul(OutCheckFile[1], nullptr, 10);
-    std::vector<unsigned char> decrypted_padded_data(encrypted_size);
-    unsigned long padded_size = 0;
-
-    plusaes::decrypt_cbc(
-        encrypted_data.data(), encrypted_data.size(), 
-        key.data(), key.size(), 
-        reinterpret_cast<unsigned char(*)[16]>(iv.data()), 
-        decrypted_padded_data.data(), decrypted_padded_data.size(),
-        &padded_size
-    );
-
-    //rename(tempfile.c_str(), path.c_str());
-    replaceCheckFunc("status", OutCheckFile[3], "false");
-
-    if (write_file(outputFile, decrypted_padded_data)) {
-        std::cout << "✅ Successfully decrypted '" << inputFile << "' to '" << outputFile << "'" << std::endl;
-    } else {
-        std::cerr << "Error: Could not write decrypted file: " << outputFile << std::endl;
+    // 3. Write the header to the target file
+    if (std::fwrite(header, 1, sizeof header, fp_t) != sizeof header) {
+        std::fclose(fp_s);
+        std::fclose(fp_t);
+        return -1;
     }
-}
 
-void encryption::replaceCheckFunc(const std::string& flag1, const std::string& oldWord, const std::string& newWord){
-    // 2. Open input and output files
-    std::ifstream inputFile(checkerFileName);
-    std::ofstream tempFile(tempfile);
+    // 4. Process file in chunks
+    do {
+        // Read a chunk of the source file
+        rlen = std::fread(buf_in, 1, sizeof buf_in, fp_s);
+        eof = std::feof(fp_s);
+        
+        // If it's the last chunk, set the TAG_FINAL flag
+        tag = eof ? crypto_secretstream_xchacha20poly1305_TAG_FINAL : 0;
 
-    std::string line;
-
-    // 3. Read the original file line by line
-    while (std::getline(inputFile, line)) {
-        // THE CORE LOGIC: Check if the line contains BOTH flag words
-        if (line.find(flag1) != std::string::npos && line.find(oldWord) != std::string::npos) {
-            
-            // This is a target line. Now, replace all occurrences of oldWord.
-            size_t pos = 0;
-            while ((pos = line.find(oldWord, pos)) != std::string::npos) {
-                line.replace(pos, oldWord.length(), newWord);
-                pos += newWord.length(); // Move past the replaced word
-            }
+        // Encrypt the chunk (push)
+        if (crypto_secretstream_xchacha20poly1305_push(&st, buf_out, &out_len,
+                                                      buf_in, rlen, NULL, 0, tag) != 0) {
+            std::fclose(fp_s);
+            std::fclose(fp_t);
+            return -1;
         }
-        // Write the (possibly modified) line to our temporary file
-        tempFile << line << '\n';
+        
+        // Write the encrypted chunk (with its tag) to the target file
+        if (std::fwrite(buf_out, 1, (size_t)out_len, fp_t) != (size_t)out_len) {
+            std::fclose(fp_s);
+            std::fclose(fp_t);
+            return -1;
+        }
+    } while (!eof);
+
+    // 5. Close files
+    std::fclose(fp_s);
+    std::fclose(fp_t);
+    return 0; // Success
+}
+
+// --- Decryption Function ---
+int encryption::decryptFile(const char *target_file, const char *source_file) 
+{
+
+    std::FILE *fp_t = nullptr;
+    std::FILE *fp_s = nullptr;
+
+    // Buffers for input and output chunks
+    // Input buffer is larger: CHUNK_SIZE + crypto_secretstream_xchacha20poly1305_ABYTES (for the tag)
+    unsigned char buf_in[CHUNK_SIZE + crypto_secretstream_xchacha20poly1305_ABYTES];
+    unsigned char buf_out[CHUNK_SIZE];
+    
+    // Header to be read from the source file
+    unsigned char header[crypto_secretstream_xchacha20poly1305_HEADERBYTES];
+    
+    crypto_secretstream_xchacha20poly1305_state st;
+    unsigned long long out_len;
+    size_t rlen;
+    int eof;
+    int ret = -1; // Default return is failure
+    unsigned char tag;
+
+    // 1. Open files
+    if ((fp_s = std::fopen(source_file, "rb")) == nullptr) return -1;
+    if ((fp_t = std::fopen(target_file, "wb")) == nullptr) {
+        std::fclose(fp_s);
+        return -1;
     }
 
-    // 4. Close the streams
-    inputFile.close();
-    tempFile.close();
+    // 2. Read the header from the source file
+    if (std::fread(header, 1, sizeof header, fp_s) != sizeof header) goto ret_label;
 
-    rename(tempfile.c_str(), checkerFileName.c_str());
+    // 3. Initialize the state for decryption (pull)
+    if (crypto_secretstream_xchacha20poly1305_init_pull(&st, header, key) != 0) {
+        std::cerr << "Decryption failed: Invalid header/key." << std::endl;
+        goto ret_label;
+    }
+
+    // 4. Process file in chunks
+    do {
+        // Read an encrypted chunk (with tag)
+        rlen = std::fread(buf_in, 1, sizeof buf_in, fp_s);
+        eof = std::feof(fp_s);
+        
+        // Decrypt the chunk (pull)
+        if (crypto_secretstream_xchacha20poly1305_pull(&st, buf_out, &out_len, &tag, 
+                                                      buf_in, rlen, NULL, 0) != 0) {
+            std::cerr << "Decryption failed: Corrupted chunk or authentication failure." << std::endl;
+            goto ret_label; // Authentication failure/corruption detected
+        }
+        
+        // Write the decrypted chunk to the target file
+        if (std::fwrite(buf_out, 1, (size_t)out_len, fp_t) != (size_t)out_len) {
+            goto ret_label;
+        }
+
+        // Check for premature end of file (e.g., file truncated)
+        if (tag == crypto_secretstream_xchacha20poly1305_TAG_FINAL && !eof) {
+            std::cerr << "Decryption failed: Premature end of stream." << std::endl;
+            goto ret_label;
+        }
+    } while (!eof);
+
+    ret = 0; // Success
+
+ret_label:
+    // 5. Close files and return
+    std::fclose(fp_s);
+    std::fclose(fp_t);
+    return ret;
 }
