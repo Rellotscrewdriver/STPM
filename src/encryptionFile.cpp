@@ -66,7 +66,9 @@ bool encryption::verifyUser(){
         return true; //passwords match
     } else {
         std::cout << "passwords dont match brother, try again\n";
-        return false; //passwords dont match brother
+        //exit(EXIT_FAILURE); //this doesn't clean up objects
+        verifyUser();
+        return false;
     }
 }
 
