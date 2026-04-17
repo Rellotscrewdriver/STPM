@@ -1,14 +1,35 @@
 #include "listSite.h"
 
-listSite::listSite(){
-    std::ifstream file;
-    file.open(path);
 
+listSite::listSite(){
+    std::ifstream file(path, std::ios::app);
+    std::string line;
+    /*
     std::string line;
     while (file >> line) {
         addLines.push_back(line);
     }
     std::erase(addLines, separator);
+    */
+    while (std::getline(file, line)) {
+        std::stringstream ss(line);
+        std::string word;
+
+        // Step 2: Split the line by commas
+        while (std::getline(ss, word, ':')) {
+            
+            // OPTIONAL: Basic cleanup
+            // Remove leading spaces (handles "word1, word2")
+            word.erase(0, word.find_first_not_of(" "));
+            // Remove trailing spaces or carriage returns (\r)
+            word.erase(word.find_last_not_of(" \r\n\t") + 1);
+
+            if (!word.empty()) {
+                addLines.push_back(word);
+            }
+        }
+    }
+
     displayInANiceTable(addLines);
 };
 
