@@ -1,162 +1,205 @@
 #include "encryption.h"
 
 encryption::encryption(){
-    // 2. Generate a fresh, random key
-    crypto_secretstream_xchacha20poly1305_keygen(key);
 
 }
 
-//NOTE: tell users to not edit the password file or else it will be damaged
+bool encryption::firstTimeUser(){
+  namespace fs = std::filesystem;
+  if (!fs::exists(path) || fs::is_empty(path)) {
+    std::cout << "file is empty, creating it" << std::endl;
+    createPassword();
+    //create an empty file
+    std::ofstream outFile(path);
+    outFile.close();
+    encrypt();
+    return true; //means the user is new
+  } else {
+    if(verifyUser()){
+        //std::cout << "Access Granted! Decrypting now";
+        decrypt();
+    }
+  }
+    return false; //means the user is old and grumpy
+}
+
+void encryption::createPassword(){
+    std::string localPass;
+    std::string localPass2;
+    std::cout << "Welcome User! Please put a strong master password!\n";
+    std::cout << "and make sure to remember it! you won't be able to retrive the sites if the master password is lost!\n";
+    std::cout << "Password: ";
+    std::getline(std::cin, localPass);
+    std::cout << "enter the master password again!\n";
+    std::cout << "Password: ";
+    std::getline(std::cin, localPass2);
+
+    if(localPass == localPass2){
+        genHashtoFile(localPass);
+    }
+}
+
+void encryption::genHashtoFile(std::string hashpass){
+    std::ofstream password(passFile);
+    password << hashPassword(hashpass);
+    password.close();
+};
+
+std::string encryption::fetchHash(){
+    std::ifstream password(passFile, std::ios::binary);    
+    std::string temp;
+    if(std::getline(password, temp)){
+        password.close();
+        return temp; //retrives the hash
+    }
+    return "FUCK YOU!! Stupid piece of shit";
+}
+
+bool encryption::verifyUser(){
+    std::string password;
+    
+    std::cout << "Welcome back! Please put your master password!" << std::endl;
+    std::cout << "Password: ";
+    std::getline(std::cin, password);
+    if (isPasswordCorrect(password, fetchHash())) {
+        //std::cout << "passwords match!\n";
+        return true; //passwords match
+    } else {
+        std::cout << "passwords dont match brother, try again\n";
+        return false; //passwords dont match brother
+    }
+}
+
+//using the hash as key
 void encryption::encrypt(){
-    encryptFile(pathC, tempFile);
-    std::rename(tempFile, pathC);
+    encryptFile(tempFileS, pathS, fetchHash());
+    std::rename(tempFileS, pathS);
 }
 
 void encryption::decrypt(){
-    decryptFile(pathC, tempFile);
-    std::rename(tempFile, pathC);
+    decryptFile(tempFileS, pathS, fetchHash());
+    std::rename(tempFileS, pathS);
 }
 
-int encryption::encryptFile(const char *target_file, const char *source_file) 
-{
-
-    std::FILE *fp_t = nullptr;
-    std::FILE *fp_s = nullptr;
-
-    // Buffers for input and output chunks
-    unsigned char buf_in[CHUNK_SIZE];
-    // Output buffer is larger: CHUNK_SIZE + crypto_secretstream_xchacha20poly1305_ABYTES (for the tag)
-    unsigned char buf_out[CHUNK_SIZE + crypto_secretstream_xchacha20poly1305_ABYTES];
-    
-    // Header for the stream (must be stored/sent before the ciphertext)
-    unsigned char header[crypto_secretstream_xchacha20poly1305_HEADERBYTES];
-    
-    crypto_secretstream_xchacha20poly1305_state st;
-    unsigned long long out_len;
-    size_t rlen;
-    int eof;
-    unsigned char tag = 0; // Default tag for stream chunks
-
-    // 1. Open files
-    if ((fp_s = std::fopen(source_file, "rb")) == nullptr) return -1;
-    if ((fp_t = std::fopen(target_file, "wb")) == nullptr) {
-        std::fclose(fp_s);
-        return -1;
-    }
-
-    // 2. Initialize the state and get the header
-    if (crypto_secretstream_xchacha20poly1305_init_push(&st, header, key) != 0) {
-        std::fclose(fp_s);
-        std::fclose(fp_t);
-        return -1;
-    }
-
-    // 3. Write the header to the target file
-    if (std::fwrite(header, 1, sizeof header, fp_t) != sizeof header) {
-        std::fclose(fp_s);
-        std::fclose(fp_t);
-        return -1;
-    }
-
-    // 4. Process file in chunks
-    do {
-        // Read a chunk of the source file
-        rlen = std::fread(buf_in, 1, sizeof buf_in, fp_s);
-        eof = std::feof(fp_s);
-        
-        // If it's the last chunk, set the TAG_FINAL flag
-        tag = eof ? crypto_secretstream_xchacha20poly1305_TAG_FINAL : 0;
-
-        // Encrypt the chunk (push)
-        if (crypto_secretstream_xchacha20poly1305_push(&st, buf_out, &out_len,
-                                                      buf_in, rlen, NULL, 0, tag) != 0) {
-            std::fclose(fp_s);
-            std::fclose(fp_t);
-            return -1;
-        }
-        
-        // Write the encrypted chunk (with its tag) to the target file
-        if (std::fwrite(buf_out, 1, (size_t)out_len, fp_t) != (size_t)out_len) {
-            std::fclose(fp_s);
-            std::fclose(fp_t);
-            return -1;
-        }
-    } while (!eof);
-
-    // 5. Close files
-    std::fclose(fp_s);
-    std::fclose(fp_t);
-    return 0; // Success
+bool encryption::isPasswordCorrect(const std::string& password, const std::string& storedHash) {
+    if (crypto_pwhash_str_verify(storedHash.c_str(), password.c_str(), password.length()) == 0) {
+        return true; // Password matches
+    }    
+    return false; // Wrong password or corrupted hash
 }
 
-// --- Decryption Function ---
-int encryption::decryptFile(const char *target_file, const char *source_file) 
-{
+std::string encryption::hashPassword(const std::string& password) {
+    char hashed_password[crypto_pwhash_STRBYTES];
 
-    std::FILE *fp_t = nullptr;
-    std::FILE *fp_s = nullptr;
+    // crypto_pwhash_str handles salt generation automatically
+    if (crypto_pwhash_str(hashed_password, password.c_str(), password.length(),
+            crypto_pwhash_OPSLIMIT_INTERACTIVE, // Moderate CPU usage
+            crypto_pwhash_MEMLIMIT_INTERACTIVE  // Moderate RAM usage
+        ) != 0) {
+        return "\nOut of memory or system error during hashing\n";
+    }
+    return std::string(hashed_password);
+}
 
-    // Buffers for input and output chunks
-    // Input buffer is larger: CHUNK_SIZE + crypto_secretstream_xchacha20poly1305_ABYTES (for the tag)
-    unsigned char buf_in[CHUNK_SIZE + crypto_secretstream_xchacha20poly1305_ABYTES];
-    unsigned char buf_out[CHUNK_SIZE];
-    
-    // Header to be read from the source file
-    unsigned char header[crypto_secretstream_xchacha20poly1305_HEADERBYTES];
-    
-    crypto_secretstream_xchacha20poly1305_state st;
-    unsigned long long out_len;
-    size_t rlen;
-    int eof;
-    int ret = -1; // Default return is failure
-    unsigned char tag;
+bool encryption::encryptFile(const char* target_file, const char* source_file, const std::string& password) {
+    std::ifstream fp_t(source_file, std::ios::binary | std::ios::app);
+    std::ofstream fp_e(target_file, std::ios::binary | std::ios::app);
+    if (!fp_t.is_open() || !fp_e.is_open()) return false;
 
-    // 1. Open files
-    if ((fp_s = std::fopen(source_file, "rb")) == nullptr) return -1;
-    if ((fp_t = std::fopen(target_file, "wb")) == nullptr) {
-        std::fclose(fp_s);
-        return -1;
+    // generate a random salt
+    unsigned char salt[crypto_pwhash_SALTBYTES];
+    randombytes_buf(salt, sizeof salt);
+
+    // derive the key from the password and salt
+    unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES];
+    if (crypto_pwhash(key, sizeof key, password.c_str(), password.length(), salt,
+                      crypto_pwhash_OPSLIMIT_INTERACTIVE, crypto_pwhash_MEMLIMIT_INTERACTIVE,
+                      crypto_pwhash_ALG_DEFAULT) != 0) {
+        return false; // Out of memory
     }
 
-    // 2. Read the header from the source file
-    if (std::fread(header, 1, sizeof header, fp_s) != sizeof header) goto ret_label;
+    crypto_secretstream_xchacha20poly1305_state st;
+    unsigned char header[crypto_secretstream_xchacha20poly1305_HEADERBYTES];
 
-    // 3. Initialize the state for decryption (pull)
+    crypto_secretstream_xchacha20poly1305_init_push(&st, header, key);
+
+    // Anyone can see this, but they can't decrypt without the password
+    fp_e.write(reinterpret_cast<char*>(salt), sizeof(salt));
+    fp_e.write(reinterpret_cast<char*>(header), sizeof(header));
+
+    std::vector<unsigned char> in_buf(CHUNK_SIZE);
+    std::vector<unsigned char> out_buf(CHUNK_SIZE + crypto_secretstream_xchacha20poly1305_ABYTES); 
+    unsigned long long out_len;
+    bool eof = false;
+
+    while (!eof) {
+        fp_t.read(reinterpret_cast<char*>(in_buf.data()), CHUNK_SIZE);
+        std::streamsize read_bytes = fp_t.gcount();
+        eof = fp_t.eof();
+        unsigned char tag = eof ? crypto_secretstream_xchacha20poly1305_TAG_FINAL : 0;
+
+        crypto_secretstream_xchacha20poly1305_push(&st, out_buf.data(), &out_len, in_buf.data(), read_bytes, NULL, 0, tag);
+        fp_e.write(reinterpret_cast<char*>(out_buf.data()), out_len);
+    }
+
+    // Clear the key from memory immediately for security
+    sodium_memzero(key, sizeof key); 
+    return true;
+}
+
+bool encryption::decryptFile(const char* target_file, const char* source_file, const std::string& password) {
+    std::ifstream fp_e(source_file, std::ios::binary | std::ios::app);
+    std::ofstream fp_t(target_file, std::ios::binary);
+    if (!fp_e.is_open()) return false;
+
+    unsigned char salt[crypto_pwhash_SALTBYTES];
+    unsigned char header[crypto_secretstream_xchacha20poly1305_HEADERBYTES];
+
+    //Read the Salt + Header stored in the file
+    fp_e.read(reinterpret_cast<char*>(salt), sizeof(salt));
+    fp_e.read(reinterpret_cast<char*>(header), sizeof(header));
+
+    //Re-derive the exact same key using the file's salt and the user's password
+    unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES];
+    if (crypto_pwhash(key, sizeof key, password.c_str(), password.length(), salt,
+                      crypto_pwhash_OPSLIMIT_INTERACTIVE, //moderate CPU usage 
+                      crypto_pwhash_MEMLIMIT_INTERACTIVE, //limit RAM usage
+                      crypto_pwhash_ALG_DEFAULT) != 0) {
+        return false; // Out of memory
+    }
+
+    // Initialize decryption
+    crypto_secretstream_xchacha20poly1305_state st;
     if (crypto_secretstream_xchacha20poly1305_init_pull(&st, header, key) != 0) {
-        std::cerr << "Decryption failed: Invalid header/key." << std::endl;
-        goto ret_label;
+        std::cerr << "Invalid header or wrong password!" << std::endl;
+        sodium_memzero(key, sizeof key);
+        return false;
     }
 
-    // 4. Process file in chunks
-    do {
-        // Read an encrypted chunk (with tag)
-        rlen = std::fread(buf_in, 1, sizeof buf_in, fp_s);
-        eof = std::feof(fp_s);
-        
-        // Decrypt the chunk (pull)
-        if (crypto_secretstream_xchacha20poly1305_pull(&st, buf_out, &out_len, &tag, 
-                                                      buf_in, rlen, NULL, 0) != 0) {
-            std::cerr << "Decryption failed: Corrupted chunk or authentication failure." << std::endl;
-            goto ret_label; // Authentication failure/corruption detected
-        }
-        
-        // Write the decrypted chunk to the target file
-        if (std::fwrite(buf_out, 1, (size_t)out_len, fp_t) != (size_t)out_len) {
-            goto ret_label;
-        }
+    std::vector<unsigned char> in_buf(CHUNK_SIZE + crypto_secretstream_xchacha20poly1305_ABYTES);
+    std::vector<unsigned char> out_buf(CHUNK_SIZE);
+    unsigned long long out_len;
+    unsigned char tag;
+    bool eof = false;
 
-        // Check for premature end of file (e.g., file truncated)
-        if (tag == crypto_secretstream_xchacha20poly1305_TAG_FINAL && !eof) {
-            std::cerr << "Decryption failed: Premature end of stream." << std::endl;
-            goto ret_label;
+    while (!eof) {
+        fp_e.read(reinterpret_cast<char*>(in_buf.data()), in_buf.size());
+        std::streamsize read_bytes = fp_e.gcount();
+        eof = fp_e.eof();
+        if (read_bytes == 0) break;
+
+        if (crypto_secretstream_xchacha20poly1305_pull(&st, out_buf.data(), &out_len, &tag, in_buf.data(), read_bytes, NULL, 0) != 0) {
+            std::cerr << "Wrong password or file corrupted." << std::endl;
+            sodium_memzero(key, sizeof key);
+            return false;
         }
-    } while (!eof);
+        fp_t.write(reinterpret_cast<char*>(out_buf.data()), out_len);
+    }
 
-    ret = 0; // Success
+    // Clear the key from memory
+    sodium_memzero(key, sizeof key);
+    fp_e.close();
+    fp_t.close();
 
-ret_label:
-    // 5. Close files and return
-    std::fclose(fp_s);
-    std::fclose(fp_t);
-    return ret;
+    return true;
 }
