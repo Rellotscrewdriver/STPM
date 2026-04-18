@@ -17,7 +17,7 @@ if(NOT SODIUM_SOURCES)
     message(FATAL_ERROR "No source files found in: ${LIBSODIUM_SRC_DIR}")
 endif()
 
-add_library(sodium ${SODIUM_SOURCES})
+add_library(sodium STATIC ${SODIUM_SOURCES})
 
 # 3. Comprehensive Include Paths (Fixes core.h error)
 target_include_directories(sodium PUBLIC 
@@ -34,3 +34,7 @@ target_compile_definitions(sodium PRIVATE
     CONFIGURED=1
     HAVE_ATOMIC_OPS=1
 )
+
+if(MSVC)
+    target_compile_definitions(sodium PUBLIC SODIUM_STATIC=1)
+endif()
