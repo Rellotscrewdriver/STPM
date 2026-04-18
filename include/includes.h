@@ -8,8 +8,11 @@
 #include <fstream>
 #include <random>
 #include <iomanip>
+#include <filesystem>
+#include <sstream>
+#include <algorithm>
 
-extern inline std::string path = "add.txt";
-extern inline std::string tempfile = "temp.txt";
+const inline std::string path = "add.txt";
+const inline std::string tempfile = "temp.txt";
 
 using namespace std;

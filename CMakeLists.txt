@@ -8,6 +8,7 @@ project(stpm)
 
 # add internal dependencies
 add_subdirectory(libs/googletest)
+add_subdirectory(libs) # for those libs which doesn't have CMakeLists.txt file
 
 # Recursively finds c++ source files
 file(GLOB_RECURSE PROJECT_SOURCES "src/*.cpp")
@@ -20,7 +21,8 @@ endif()
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
 target_sources(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCES})
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
-#target_link_libraries(${PROJECT_NAME} PRIVATE fmt)
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/libs)
+target_link_libraries(${PROJECT_NAME} PRIVATE sodium)
 
 # add Unit tests
 add_subdirectory(tests)

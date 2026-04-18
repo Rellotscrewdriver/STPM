@@ -3,8 +3,8 @@
 void removeSite::finalRemoveIt(){
     std::ifstream file;
     std::ofstream temp;
-    file.open(path);
-    temp.open("temp.txt");
+    file.open(path, std::ios::app);
+    temp.open("temp.txt", std::ios::app);
 
     if (file.is_open()) {
         while (getline(file, line)) {
