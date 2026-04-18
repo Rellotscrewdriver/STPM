@@ -1,24 +1,36 @@
-# this CMakeLists.txt file is used for projects not having a CMakeLists.txt file
-
 cmake_minimum_required(VERSION 3.10)
 project(libsodium C)
 
-# 2. Add all relevant source files (simplified example)
-# Note: For a production build, you should list the specific 
-# source files required for your target architecture.
-file(GLOB_RECURSE SODIUM_SOURCES "libsodium/src/libsodium/*.c")
+set(LIBSODIUM_SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libsodium/src/libsodium")
 
-# 3. Create the library
-add_library(sodium ${SODIUM_SOURCES})
+if(NOT EXISTS "${LIBSODIUM_SRC_DIR}/include/sodium/version.h")
+    file(WRITE "${LIBSODIUM_SRC_DIR}/include/sodium/version.h" 
+        "#ifndef sodium_version_H\n#define sodium_version_H\n"
+        "#define SODIUM_VERSION_STRING \"1.0.19\"\n"
+        "#define SODIUM_LIBRARY_VERSION_MAJOR 26\n"
+        "#define SODIUM_LIBRARY_VERSION_MINOR 1\n#endif\n")
+endif()
 
-# 4. Set include directories so your main project can find the headers
+file(GLOB_RECURSE SODIUM_SOURCES "${LIBSODIUM_SRC_DIR}/*.c")
+
+if(NOT SODIUM_SOURCES)
+    message(FATAL_ERROR "No source files found in: ${LIBSODIUM_SRC_DIR}")
+endif()
+
+add_library(sodium STATIC ${SODIUM_SOURCES})
+
+# 3. Comprehensive Include Paths (Fixes core.h error)
 target_include_directories(sodium PUBLIC 
-    ${CMAKE_CURRENT_SOURCE_DIR}/libsodium/src/libsodium/include/sodium
+    $<BUILD_INTERFACE:${LIBSODIUM_SRC_DIR}/include>
+)
+target_include_directories(sodium PRIVATE 
+    ${LIBSODIUM_SRC_DIR}/include/sodium
+    ${LIBSODIUM_SRC_DIR}/include/sodium/private
 )
 
-# 5. Handle platform-specific defines
-if(MSVC)
-    target_compile_definitions(sodium PRIVATE SODIUM_STATIC=1 SODIUM_EXPORT=)
-else()
-    target_compile_definitions(sodium PRIVATE HAVE_ATOMIC_OPS=1)
-endif()
+# 4. Suppress warnings and define environment
+target_compile_definitions(sodium PRIVATE 
+    SODIUM_DLL_EXPORT=1 
+    CONFIGURED=1
+    HAVE_ATOMIC_OPS=1
+)
