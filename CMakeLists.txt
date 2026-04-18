@@ -8,7 +8,7 @@ project(stpm)
 
 # add internal dependencies
 add_subdirectory(libs/googletest)
-add_subdirectory(libs/libsodium)
+add_subdirectory(libs) # for those libs which doesn't have CMakeLists.txt file
 
 # Recursively finds c++ source files
 file(GLOB_RECURSE PROJECT_SOURCES "src/*.cpp")
