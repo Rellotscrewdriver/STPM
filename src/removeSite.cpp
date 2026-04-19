@@ -1,29 +1,24 @@
 #include "removeSite.h"
 
 void removeSite::finalRemoveIt(){
-    std::ifstream file;
-    std::ofstream temp;
-    file.open(path, std::ios::app);
-    temp.open("temp.txt", std::ios::app);
+    rapidcsv::Document doc(path);
+    bool isSiteFound = false;
+    std::vector<std::string> emailCols = doc.GetColumn<std::string>(0);
+    std::vector<std::string> siteCols = doc.GetColumn<std::string>(1);
+    
+    auto it = std::find(emailCols.begin(), emailCols.end(), eraseLineEmail);
+    auto it2 = std::find(siteCols.begin(), siteCols.end(), eraseLineLink);
 
-    if (file.is_open()) {
-        while (getline(file, line)) {
-            posLink = line.find(eraseLineLink);
-            posEmail = line.find(eraseLineEmail);
-            if(posLink == -1 || posEmail == -1){
-                temp << line << endl;
-            }/* could be useful in future if I wanna restore the passwords
-                else {
-                if (line != eraseLineLink) {
-                    temp << line << endl;
-                }
-            }*/
-        }
-    } else {
-        std::cout << "The File is not open!" << endl;
+    if(it != emailCols.end() && it2 != siteCols.end()){
+        isSiteFound = true;
+        int index = std::distance(emailCols.begin(), it);
+        doc.RemoveRow(index);
+        doc.Save();
     }
-    std::cout << "Removed " << eraseLineLink << " from " << eraseLineEmail << "\n";
-    temp.close();
-    file.close();
-    rename("temp.txt", path.c_str());
+
+    if(isSiteFound){
+        std::cout << "Successfully Removed " << eraseLineLink << " from " << eraseLineEmail << "\n";
+    } else {
+        std::cout << "The Specified Site could not found :(\n";
+    }
 }

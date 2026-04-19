@@ -11,6 +11,7 @@
 #include <filesystem>
 #include <sstream>
 #include <algorithm>
+#include "rapidcsv.h"
 
 const inline std::string path = "add.txt";
 const inline std::string tempfile = "temp.txt";
