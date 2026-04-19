@@ -36,6 +36,9 @@ void encryption::createPassword(){
 
     if(localPass == localPass2){
         genHashtoFile(localPass);
+    } else {
+        std::cout << "master Passwords DONT MATCH. try again\n";
+        createPassword();
     }
 }
 
