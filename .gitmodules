@@ -4,3 +4,6 @@
 [submodule "libs/libsodium"]
 	path = libs/libsodium
 	url = https://github.com/jedisct1/libsodium.git
+[submodule "libs/rapidcsv"]
+	path = libs/rapidcsv
+	url = https://github.com/d99kris/rapidcsv.git
