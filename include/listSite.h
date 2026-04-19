@@ -12,7 +12,7 @@ public:
 */
 private:
     std::string strFlag;
-    std::string separator = ":";
+    char separator = ',';
     std::vector<std::string> addLines;
     void displayInANiceTable(const std::vector<std::string>& all_lines, int columns = 3);
     //void safeguard();

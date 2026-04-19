@@ -8,10 +8,14 @@ bool addPassSite::checkEmailVaild(){
 }
 
 void addPassSite::appendToFile(){
-    std::ofstream addSite(path, std::ios::app);
-    addSite << email << " : " << link << " : " << pass->getgeneratedPass() << endl;
+    rapidcsv::Document doc(path);
+    std::vector<std::string> addData = {email, link, pass->getgeneratedPass()};
+    doc.InsertRow<std::string>(doc.GetRowCount(), addData);
+    doc.Save(path);
+    //std::ofstream addSite(path, std::ios::app);
+    //addSite << email << " : " << link << " : " << pass->getgeneratedPass() << endl;
     std::cout << "Appended " << link << " at " << email << std::endl;
-    addSite.close();
+    //addSite.close();
 }
 
 addPassSite::~addPassSite(){

@@ -4,19 +4,13 @@
 listSite::listSite(){
     std::ifstream file(path, std::ios::app);
     std::string line;
-    /*
-    std::string line;
-    while (file >> line) {
-        addLines.push_back(line);
-    }
-    std::erase(addLines, separator);
-    */
+
     while (std::getline(file, line)) {
         std::stringstream ss(line);
         std::string word;
 
         // Step 2: Split the line by commas
-        while (std::getline(ss, word, ':')) {
+        while (std::getline(ss, word, separator)) {
             
             // OPTIONAL: Basic cleanup
             // Remove leading spaces (handles "word1, word2")

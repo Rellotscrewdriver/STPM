@@ -1,8 +1,9 @@
 #pragma once
 
 #include "includes.h"
-#include "removeSite.h"
 #include "addPassSite.h"
+#include "removeSite.h"
+
 class changeSite {
 public: 
     changeSite(char* email, char* link) : 
