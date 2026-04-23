@@ -1,8 +1,6 @@
 #pragma once
 
 #include "includes.h"
-#include "addPassSite.h"
-#include "removeSite.h"
 
 class changeSite {
 public: 

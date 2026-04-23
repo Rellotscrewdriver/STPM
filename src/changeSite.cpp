@@ -1,8 +1,8 @@
 #include "changeSite.h"
 
 void changeSite::regenPassword(){
-    auto rs = std::make_unique<removeSite>(flag1.c_str(), oldWord.c_str());
-    auto aps = std::make_unique<addPassSite>(flag1.c_str(), oldWord.c_str());
+    //auto rs = std::make_unique<removeSite>(flag1.c_str(), oldWord.c_str());
+    //auto aps = std::make_unique<addPassSite>(flag1.c_str(), oldWord.c_str());
 }
 
 void changeSite::replaceLink(){

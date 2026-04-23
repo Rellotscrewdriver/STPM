@@ -1,23 +1,17 @@
-#include "addPassSite.h"
+#include "siteOps.h"
 
-bool addPassSite::checkEmailVaild(){
-    strEmail = email;
-    return (strEmail.find("@gmail.com") != std::string::npos) 
-    || (strEmail.find("@outlook.com") != std::string::npos) 
-    || (strEmail.find("@hotmail.com") != std::string::npos);
+bool siteOps::checkEmailVaild(){
+    return (email.find("@gmail.com") != std::string::npos) 
+    || (email.find("@outlook.com") != std::string::npos) 
+    || (email.find("@hotmail.com") != std::string::npos);
 }
 
-void addPassSite::appendToFile(){
-    rapidcsv::Document doc(path);
+void siteOps::appendToFile(){
+    //rapidcsv::Document doc(path);
+    GeneratePass *pass = new GeneratePass();
     std::vector<std::string> addData = {email, link, pass->getgeneratedPass()};
-    doc.InsertRow<std::string>(doc.GetRowCount(), addData);
-    doc.Save(path);
-    //std::ofstream addSite(path, std::ios::app);
-    //addSite << email << " : " << link << " : " << pass->getgeneratedPass() << endl;
-    std::cout << "Appended " << link << " at " << email << std::endl;
-    //addSite.close();
-}
-
-addPassSite::~addPassSite(){
+    //doc.InsertRow<std::string>(doc.GetRowCount(), addData);
+    //doc.Save(path);
     delete pass;
+    std::cout << "Appended " << link << " at " << email << std::endl;
 }

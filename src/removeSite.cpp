@@ -1,23 +1,23 @@
-#include "removeSite.h"
+#include "siteOps.h"
 
-void removeSite::finalRemoveIt(){
+void siteOps::removeShit(){
     rapidcsv::Document doc(path);
     bool isSiteFound = false;
     std::vector<std::string> emailCols = doc.GetColumn<std::string>(0);
     std::vector<std::string> siteCols = doc.GetColumn<std::string>(1);
     
-    auto it = std::find(emailCols.begin(), emailCols.end(), eraseLineEmail);
-    auto it2 = std::find(siteCols.begin(), siteCols.end(), eraseLineLink);
+    auto it = std::find(emailCols.begin(), emailCols.end(), email);
+    auto it2 = std::find(siteCols.begin(), siteCols.end(), link);
 
     if(it != emailCols.end() && it2 != siteCols.end()){
         isSiteFound = true;
         int index = std::distance(emailCols.begin(), it);
-        doc.RemoveRow(index);
-        doc.Save();
+        //doc.RemoveRow(index);
+        //doc.Save();
     }
 
     if(isSiteFound){
-        std::cout << "Successfully Removed " << eraseLineLink << " from " << eraseLineEmail << "\n";
+        std::cout << "Successfully Removed " << link << " from " << email << "\n";
     } else {
         std::cout << "The Specified Site could not found :(\n";
     }
