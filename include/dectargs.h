@@ -18,6 +18,7 @@ public:
 
 private:
   int mArgc;
+  int noOfArgsDetect = 2;
   std::vector<std::string> mArgVect;
   bool funcNameCmp(std::string funcName);
   void dectTypeArgs();

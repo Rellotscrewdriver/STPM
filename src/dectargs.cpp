@@ -1,10 +1,10 @@
 #include "dectargs.h"
 
 void dectargs::checkArgs() {
-  std::cout << mArgc << std::endl;
-  for(auto &i : mArgVect){
-      std::cout << i << std::endl;
-  }
+  // std::cout << mArgc << std::endl;
+  // for(auto &i : mArgVect){
+  //     std::cout << i << std::endl;
+  // }
   if(mArgc >= 1) {
     dectTypeArgs();
   } else if(mArgc == 0){
@@ -16,21 +16,18 @@ void dectargs::checkArgs() {
 }
 
 void dectargs::dectTypeArgs() {
-  if((funcNameCmp("add") || funcNameCmp("Add")) && mArgc > 2) {
+  if((funcNameCmp("add") || funcNameCmp("Add")) && mArgc > noOfArgsDetect) {
     siteOps site(mArgVect[1], mArgVect[2]);
     site.addSite();
-  } else if (funcNameCmp("list") || funcNameCmp("List") && mArgc > 2) {
-    // listSite *ls = new listSite();
-    // delete ls;
-  } else if (funcNameCmp("change") || funcNameCmp("Change") && mArgc > 2) {
+  } else if ((funcNameCmp("list") || funcNameCmp("List")) && mArgc == 1) {
+    siteOps site;
+  } else if ((funcNameCmp("change") || funcNameCmp("Change")) && mArgc > noOfArgsDetect) {
     ArgNumberDetectchangeFeat();
-  } else if (funcNameCmp("remove") || funcNameCmp("Remove") && mArgc > 2) {
+  } else if ((funcNameCmp("remove") || funcNameCmp("Remove")) && mArgc > noOfArgsDetect) {
     siteOps site(mArgVect[1], mArgVect[2]);
     site.removeSite();
-    // removeSite *rs = new removeSite(mArgVect[2], mArgVect[3]);
-    // delete rs;
   } else {
-    std::cout << "Not FOUND";
+    std::cout << "Not FOUND\n";
   }
 }
 
@@ -43,11 +40,12 @@ void dectargs::helpMessage(){
 }
 
 void dectargs::ArgNumberDetectchangeFeat(){
-    if(mArgc == 5){
-      // changeSite *cs = new changeSite(mArgVect[2], mArgVect[3], mArgVect[4]);
-      // delete cs;
+    if(mArgc == 4){
+      siteOps site(mArgVect[1], mArgVect[2], mArgVect[3]);
+      site.changeSite();
     } else {
-      // changeSite *cs = new changeSite(mArgVect[2], mArgVect[3]);
-      // delete cs;
+      std::string Nothing = "";
+      siteOps site(mArgVect[1], mArgVect[2], Nothing);
+      site.changeSite();
     }
 }

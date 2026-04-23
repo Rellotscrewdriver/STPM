@@ -1,7 +1,6 @@
-#include "listSite.h"
+#include "siteOps.h"
 
-
-listSite::listSite(){
+void siteOps::putEveryShitInRAM(){
     std::ifstream file(path, std::ios::app);
     std::string line;
 
@@ -27,7 +26,7 @@ listSite::listSite(){
     displayInANiceTable(addLines);
 };
 
-void listSite::displayInANiceTable(const std::vector<std::string>& all_lines, int columns){
+void siteOps::displayInANiceTable(const std::vector<std::string>& all_lines, int columns){
     if (all_lines.empty()) {
         std::cout << "The file is empty." << std::endl;
         return;
