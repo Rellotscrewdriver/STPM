@@ -17,3 +17,12 @@ const inline std::string path = "add.txt";
 const inline std::string tempfile = "temp.txt";
 
 using namespace std;
+
+enum siteOp {
+    addSite,
+    removeSite,
+    listSite,
+    changeSiteEmail = 30,
+    changeSiteLink,
+    changeSiteRegenPass
+};

@@ -1,20 +1,21 @@
-#include "changeSite.h"
+#include "siteOps.h"
 
-void changeSite::regenPassword(){
-    auto rs = std::make_unique<removeSite>(flag1.c_str(), oldWord.c_str());
-    auto aps = std::make_unique<addPassSite>(flag1.c_str(), oldWord.c_str());
+void siteOps::regenPassword(){
+    siteOps site(mFlag, mOldStr);
+    site.removeSite();
+    site.addSite();
 }
 
-void changeSite::replaceLink(){
-    replaceFunc(flag1, oldWord, newWord);
+void siteOps::replaceLink(){
+    replaceFunc(mFlag, mOldStr, mNewStr);
 }
 
-void changeSite::replaceEmail(){
-    replaceFunc(flag1, oldWord, newWord);
+void siteOps::replaceEmail(){
+    replaceFunc(mFlag, mOldStr, mNewStr);
 }
 
 //if you have a better idea to replace it with using rapidcsv functions be my guest 
-void changeSite::replaceFunc(const std::string& flag1, const std::string& oldWord, const std::string& newWord){
+void siteOps::replaceFunc(const std::string& flag1, const std::string& oldWord, const std::string& newWord){
     std::ifstream inputFile(path);
     std::ofstream tempFile(tempfile);
 
