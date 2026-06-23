@@ -13,6 +13,7 @@ bool encryption::firstTimeUser(){
   } else {
     if(verifyUser()){
         //std::cout << "Access Granted! Decrypting now";
+        decryptRAM();
         decrypt();
     }
   }

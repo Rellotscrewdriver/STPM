@@ -13,13 +13,15 @@ public:
     bool firstTimeUser();
     void encrypt();
     void decrypt();
+    void decryptRAM();
 
 private:
     const char* pathS = path.c_str();
     const char* tempFileS = tempfile.c_str();
 
     std::string passFile = "untitled.txt";
-    std::string userPass; 
+    std::string userPass;
+
     void createPassword();
     std::string fetchHash();
     void genHashtoFile(std::string hashpass); //TODO: make it public to be used later in TUI frontend
@@ -28,6 +30,7 @@ private:
     std::string hashPassword(const std::string& password);
 
     bool decryptFile(const char* target_file, const char* source_file, const std::string& password);
+    bool decryptContentToRAM(const char* target_file, const char* source_file, const std::string& password);
     bool encryptFile(const char* target_file, const char* source_file, const std::string& password);
 };
 

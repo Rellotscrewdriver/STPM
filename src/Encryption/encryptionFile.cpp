@@ -15,6 +15,11 @@ void encryption::decrypt(){
     std::rename(tempFileS, pathS);
 }
 
+void encryption::decryptRAM(){
+    decryptContentToRAM(pathS, pathS, fetchHash());
+}
+
+
 bool encryption::isPasswordCorrect(const std::string& password, const std::string& storedHash) {
     if (crypto_pwhash_str_verify(storedHash.c_str(), password.c_str(), password.length()) == 0) {
         return true; // Password matches
@@ -134,6 +139,80 @@ bool encryption::decryptFile(const char* target_file, const char* source_file, c
     sodium_memzero(key, sizeof key);
     fp_e.close();
     fp_t.close();
+
+    return true;
+}
+
+bool encryption::decryptContentToRAM(const char* target_file, const char* source_file, const std::string& password) {
+    std::ifstream fp_e(source_file, std::ios::binary | std::ios::app);
+    if (!fp_e.is_open()) return false;
+
+    unsigned char salt[crypto_pwhash_SALTBYTES];
+    unsigned char header[crypto_secretstream_xchacha20poly1305_HEADERBYTES];
+
+    //Read the Salt + Header stored in the file
+    fp_e.read(reinterpret_cast<char*>(salt), sizeof(salt));
+    fp_e.read(reinterpret_cast<char*>(header), sizeof(header));
+
+    //Re-derive the exact same key using the file's salt and the user's password
+    unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES];
+    if (crypto_pwhash(key, sizeof key, password.c_str(), password.length(), salt,
+                      crypto_pwhash_OPSLIMIT_INTERACTIVE, //moderate CPU usage 
+                      crypto_pwhash_MEMLIMIT_INTERACTIVE, //limit RAM usage
+                      crypto_pwhash_ALG_DEFAULT) != 0) {
+        return false; // Out of memory
+    }
+
+    // Initialize decryption
+    crypto_secretstream_xchacha20poly1305_state st;
+    if (crypto_secretstream_xchacha20poly1305_init_pull(&st, header, key) != 0) {
+        std::cerr << "Invalid header or wrong password!" << std::endl;
+        sodium_memzero(key, sizeof key);
+        return false;
+    }
+
+    std::vector<unsigned char> in_buf(CHUNK_SIZE + crypto_secretstream_xchacha20poly1305_ABYTES);
+    std::vector<unsigned char> out_buf(CHUNK_SIZE);
+    std::vector<std::string> out_lines;
+    std::string line_accumulator = "";
+    unsigned long long out_len;
+    unsigned char tag;
+    bool eof = false;
+
+    while (!eof) {
+        fp_e.read(reinterpret_cast<char*>(in_buf.data()), in_buf.size());
+        std::streamsize read_bytes = fp_e.gcount();
+        eof = fp_e.eof();
+        if (read_bytes == 0) break;
+
+        if (crypto_secretstream_xchacha20poly1305_pull(&st, out_buf.data(), &out_len, &tag, in_buf.data(), read_bytes, NULL, 0) != 0) {
+            std::cerr << "Wrong password or file corrupted." << std::endl;
+            sodium_memzero(key, sizeof key);
+            return false;
+        }
+        
+        for (unsigned long long i = 0; i < out_len; ++i) {
+            char ch = static_cast<char>(out_buf[i]);
+            if (ch == '\n') {
+                out_lines.push_back(line_accumulator);
+                line_accumulator.clear();
+            } else if (ch != '\r') { // Ignore carriage returns for cross-platform safety
+                line_accumulator.push_back(ch);
+            }
+        }
+    }
+
+    if (!line_accumulator.empty()) {
+        out_lines.push_back(line_accumulator);
+    }
+
+    for(const auto &i : out_lines){
+        std::cout << "Data: " << i << "\n";
+    }
+
+    // Clear the key from memory
+    sodium_memzero(key, sizeof key);
+    fp_e.close();
 
     return true;
 }
