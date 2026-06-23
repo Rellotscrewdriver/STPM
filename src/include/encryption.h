@@ -14,6 +14,7 @@ public:
     void encrypt();
     void decrypt();
     void decryptRAM();
+    void encryptRAM();
 
 private:
     const char* pathS = path.c_str();
@@ -32,6 +33,7 @@ private:
     bool decryptFile(const char* target_file, const char* source_file, const std::string& password);
     bool decryptContentToRAM(const char* target_file, const char* source_file, const std::string& password);
     bool encryptFile(const char* target_file, const char* source_file, const std::string& password);
+    bool encryptVectorToFile(const char* target_file, const std::string& password);
 };
 
 #endif

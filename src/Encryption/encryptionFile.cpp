@@ -15,6 +15,11 @@ void encryption::decrypt(){
     std::rename(tempFileS, pathS);
 }
 
+void encryption::encryptRAM(){
+    encryptVectorToFile(pathS, fetchHash());
+}
+
+
 void encryption::decryptRAM(){
     decryptContentToRAM(pathS, pathS, fetchHash());
 }
@@ -83,6 +88,88 @@ bool encryption::encryptFile(const char* target_file, const char* source_file, c
 
     // Clear the key from memory immediately for security
     sodium_memzero(key, sizeof key); 
+    return true;
+}
+
+bool encryption::encryptVectorToFile(const char* target_file, const std::string& password) {
+    // Open target file for writing (Overwrites file. Remove std::ios::app bugs)
+    const std::vector<std::string> input_lines;
+    std::ofstream fp_e(target_file, std::ios::binary);
+    if (!fp_e.is_open()) return false;
+
+    // Generate a random salt
+    unsigned char salt[crypto_pwhash_SALTBYTES];
+    randombytes_buf(salt, sizeof salt);
+
+    // Derive the key from the password and salt
+    unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES];
+    if (crypto_pwhash(key, sizeof key, password.c_str(), password.length(), salt,
+                      crypto_pwhash_OPSLIMIT_INTERACTIVE, 
+                      crypto_pwhash_MEMLIMIT_INTERACTIVE,
+                      crypto_pwhash_ALG_DEFAULT) != 0) {
+        return false; // Out of memory
+    }
+
+    crypto_secretstream_xchacha20poly1305_state st;
+    unsigned char header[crypto_secretstream_xchacha20poly1305_HEADERBYTES];
+
+    // Initialize encryption stream state
+    crypto_secretstream_xchacha20poly1305_init_push(&st, header, key);
+
+    // Write salt and stream header to the front of the file
+    fp_e.write(reinterpret_cast<char*>(salt), sizeof(salt));
+    fp_e.write(reinterpret_cast<char*>(header), sizeof(header));
+
+    // Dynamic buffer to bundle string bytes into fixed CHUNK_SIZE pieces
+    std::vector<unsigned char> in_buf;
+    in_buf.reserve(CHUNK_SIZE);
+    
+    std::vector<unsigned char> out_buf(CHUNK_SIZE + crypto_secretstream_xchacha20poly1305_ABYTES); 
+    unsigned long long out_len;
+
+    // Helper lambda to encrypt and flush whatever is currently in the buffer
+    auto flush_chunk = [&](unsigned char tag) {
+        if (crypto_secretstream_xchacha20poly1305_push(&st, out_buf.data(), &out_len, 
+                                                       in_buf.data(), in_buf.size(), 
+                                                       NULL, 0, tag) != 0) {
+            return false;
+        }
+        fp_e.write(reinterpret_cast<char*>(out_buf.data()), out_len);
+        in_buf.clear(); // Reset buffer for next batch
+        return true;
+    };
+
+    // Process all strings in the RAM vector
+    for (size_t i = 0; i < input_lines.size(); ++i) {
+        // Append a delimiter newline so the decryptor can cleanly separate strings back into a vector
+        std::string line_to_buffer = input_lines[i] + "\n";
+        
+        for (char ch : line_to_buffer) {
+            in_buf.push_back(static_cast<unsigned char>(ch));
+            
+            // Once the input buffer fills up to CHUNK_SIZE, encrypt and save it
+            if (in_buf.size() == CHUNK_SIZE) {
+                if (!flush_chunk(0)) {
+                    sodium_memzero(key, sizeof key);
+                    return false;
+                }
+            }
+        }
+    }
+
+    // Encrypt any leftover data in the buffer using the crypto FINAL tag
+    unsigned char final_tag = crypto_secretstream_xchacha20poly1305_TAG_FINAL;
+    if (!flush_chunk(final_tag)) {
+        sodium_memzero(key, sizeof key);
+        return false;
+    }
+
+    fp_e.write(reinterpret_cast<char*>(in_buf.data()), out_len);    
+
+    // Wipe key for memory security
+    sodium_memzero(key, sizeof key); 
+    fp_e.close();
+    
     return true;
 }
 
@@ -190,7 +277,7 @@ bool encryption::decryptContentToRAM(const char* target_file, const char* source
             sodium_memzero(key, sizeof key);
             return false;
         }
-        
+
         for (unsigned long long i = 0; i < out_len; ++i) {
             char ch = static_cast<char>(out_buf[i]);
             if (ch == '\n') {
