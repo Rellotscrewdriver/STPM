@@ -13,8 +13,10 @@
 #include <algorithm>
 #include "rapidcsv.h"
 
-const inline std::string path = "add.txt";
-const inline std::string tempfile = "temp.txt";
+constinit inline std::string path = "add.txt";
+constinit inline std::string tempfile = "temp.txt";
+//std::vector<siteObj> meow;
+static std::vector<std::string> siteData;
 
 using namespace std;
 

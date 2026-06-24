@@ -12,9 +12,7 @@ bool encryption::firstTimeUser(){
     return true; //means the user is new
   } else {
     if(verifyUser()){
-        //std::cout << "Access Granted! Decrypting now";
         decryptRAM();
-        decrypt();
     }
   }
     return false; //means the user is old and grumpy
