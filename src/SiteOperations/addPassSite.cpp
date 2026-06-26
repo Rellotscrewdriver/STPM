@@ -7,11 +7,8 @@ bool siteOps::checkEmailVaild(){
 }
 
 void siteOps::appendToFile(){
-    rapidcsv::Document doc(path);
     GeneratePass *pass = new GeneratePass();
-    std::vector<std::string> addData = {email, link, pass->getgeneratedPass()};
-    doc.InsertRow<std::string>(doc.GetRowCount(), addData);
-    doc.Save(path);
-    delete pass;
+    std::string a = email + "," + link + "," + pass->getgeneratedPass();
+    siteData.push_back(a);
     std::cout << "Appended " << link << " at " << email << std::endl;
 }

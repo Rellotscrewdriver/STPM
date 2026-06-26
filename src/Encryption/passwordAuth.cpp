@@ -6,14 +6,13 @@ bool encryption::firstTimeUser(){
     std::cout << "file is empty, creating it" << std::endl;
     createPassword();
     //create an empty file
-    std::ofstream outFile(path);
-    outFile.close();
-    encrypt();
+    // std::ofstream outFile(path);
+    // outFile.close();
+    encryptRAM();
     return true; //means the user is new
   } else {
     if(verifyUser()){
-        //std::cout << "Access Granted! Decrypting now";
-        decrypt();
+        decryptRAM();
     }
   }
     return false; //means the user is old and grumpy

@@ -1,32 +1,12 @@
 #include "siteOps.h"
 
-void siteOps::putEveryShitInRAM(){
-    std::ifstream file(path, std::ios::app);
+void siteOps::putEveryShitInRAM(){    
     std::string line;
-
-    while (std::getline(file, line)) {
-        std::stringstream ss(line);
-        std::string word;
-
-        // Step 2: Split the line by commas
-        while (std::getline(ss, word, separator)) {
-            
-            // OPTIONAL: Basic cleanup
-            // Remove leading spaces (handles "word1, word2")
-            word.erase(0, word.find_first_not_of(" "));
-            // Remove trailing spaces or carriage returns (\r)
-            word.erase(word.find_last_not_of(" \r\n\t") + 1);
-
-            if (!word.empty()) {
-                addLines.push_back(word);
-            }
-        }
-    }
-
-    displayInANiceTable(addLines);
+    //std::erase(siteData, separator);
+    displayInANiceTable(siteData);
 };
 
-void siteOps::displayInANiceTable(const std::vector<std::string>& all_lines, int columns){
+void siteOps::displayInANiceTable(const std::vector<std::string> all_lines, int columns){
     if (all_lines.empty()) {
         std::cout << "The file is empty." << std::endl;
         return;

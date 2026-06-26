@@ -27,12 +27,10 @@ private:
     char separator = ',';
     std::vector<std::string> addLines;
     void putEveryShitInRAM();
-    void displayInANiceTable(const std::vector<std::string>& all_lines, int columns = 3);
+    void displayInANiceTable(const std::vector<std::string> all_lines, int columns = 3);
 
     void regenPassword();
     void replaceLink();
     void replaceEmail();
     void replaceFunc(const std::string& flag1, const std::string& oldWord, const std::string& newWord);
-
-
 };
