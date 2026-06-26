@@ -13,10 +13,11 @@
 #include <algorithm>
 #include "rapidcsv.h"
 
-constinit inline std::string path = "add.txt";
-constinit inline std::string tempfile = "temp.txt";
-//std::vector<siteObj> meow;
-static std::vector<std::string> siteData;
+//TODO: rename the formats to .passes
+constinit inline std::string path = "creden.mypass";
+constinit inline std::string tempfile = "temp.db";
+
+extern std::vector<std::string> siteData;
 
 using namespace std;
 
