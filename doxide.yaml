@@ -1,7 +1,4 @@
 title: STPM
-description: 
-output: docs
+description: A TUI based password manager 
 files:
-  - "include/*.h"
-  - "src/*.cpp"
-
+  - "src/include/*.h"
