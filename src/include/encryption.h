@@ -33,9 +33,7 @@ private:
     bool isPasswordCorrect(const std::string& password, const std::string& storedHash);
     std::string hashPassword(const std::string& password);
 
-    bool decryptFile(const char* target_file, const char* source_file, const std::string& password);
     bool decryptContentToRAM(const filesystem::path& sourcePath, std::vector<std::string>& outVector, const std::string& password);
-    bool encryptFile(const char* target_file, const char* source_file, const std::string& password);
     bool encryptVectorToFile(const filesystem::path &targetPath, const std::vector<std::string>& dataVector, const std::string& password);
 };
 
