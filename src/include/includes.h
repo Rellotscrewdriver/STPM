@@ -11,13 +11,14 @@
 #include <filesystem>
 #include <sstream>
 #include <algorithm>
-#include "rapidcsv.h"
+#include "siteObj.h"
 
-//TODO: rename the formats to .passes
 constinit inline std::string path = "creden.mypass";
 constinit inline std::string tempfile = "temp.db";
 
 extern std::vector<std::string> siteData;
+extern std::vector<siteObj> siteDataNew;
+
 
 using namespace std;
 
