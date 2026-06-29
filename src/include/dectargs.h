@@ -2,12 +2,6 @@
 
 #include "includes.h"
 #include "siteOps.h"
-/*
-#include "addPassSite.h"
-#include "removeSite.h"
-#include "changeSite.h"
-#include "listSite.h"
-*/
 
 /**
  * This class handles the incoming calls of commandline arguements
@@ -30,7 +24,7 @@ public:
   dectargs(std::vector<std::string> &vects) : mArgVect(vects) {
     mArgc = vects.size();
     checkArgs();
-  };
+  }
 
 private:
   int mArgc;
