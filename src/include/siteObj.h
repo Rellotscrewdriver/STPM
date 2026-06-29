@@ -9,7 +9,9 @@ public:
     std::string &getEmail(){return email;}
     std::string &getLink(){return link;}
     std::string getPass(){return password;}
-
+    std::string getRawString(){
+        return email + "," + link + "," + password;
+    }
 private:
     std::string email;
     std::string link;

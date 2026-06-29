@@ -20,30 +20,31 @@ void encryption::decrypt(){
 
 void encryption::encryptRAM(){
     auto startTime = std::chrono::steady_clock::now();
-    encryptVectorToFile(pathS, siteData, fetchHash());
+    convertToRawString();
+    encryptVectorToFile(pathS, rawStr, fetchHash());
     auto endTime = std::chrono::steady_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
     std::cout << "[BENCHMARK] Encryption took: " << duration << " ms (" 
               << (duration / 1000.0) << " seconds)\n";
 
     std::cout << "EncryptionRAM\n";
-    for(auto &i : siteData){
-        std::cout << "Data: " << i << "\n";
+    for(auto &i : siteDataNew){
+      std::cout << "Data: " << i.getEmail() << " " << i.getLink() << " " << i.getPass() << "\n";
     }
-
 }
 
 void encryption::decryptRAM(){
     auto startTime = std::chrono::steady_clock::now();
-    decryptContentToRAM(pathS, siteData, fetchHash());
+    decryptContentToRAM(pathS, rawStr, fetchHash());
     auto endTime = std::chrono::steady_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
     std::cout << "[BENCHMARK] Decryption took: " << duration << " ms (" 
               << (duration / 1000.0) << " seconds)\n";
 
+    convertToVectObj();
     std::cout << "DecryptionRAM\n";
-    for(auto &i : siteData){
-        std::cout << "Data: " << i << "\n";
+    for(auto &i : siteDataNew){
+      std::cout << "Data: " << i.getEmail() << " " << i.getLink() << " " << i.getPass() << "\n";
     }
 }
 
