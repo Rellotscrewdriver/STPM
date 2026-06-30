@@ -16,7 +16,7 @@ void siteOps::replaceLink(){
 
 void siteOps::replaceEmail(){
     for (siteObj& s : siteDataNew) {
-        if (s.getEmail() == mFlag && s.getLink() == mOldStr) {
+        if (s.getLink() == mFlag && s.getEmail() == mOldStr) {
             s.getEmail() = mNewStr;
         }
     }
