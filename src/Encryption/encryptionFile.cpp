@@ -1,7 +1,7 @@
 #include "encryption.h"
 #include <chrono>
 
-std::vector<std::string> siteData;
+std::vector<siteObj> siteDataNew;
 
 encryption::encryption(){
 
@@ -9,28 +9,29 @@ encryption::encryption(){
 
 //using the hash as key
 void encryption::encrypt(){
-    encryptFile(tempFileS, pathS, fetchHash());
+    //encryptFile(tempFileS, pathS, fetchHash());
     std::rename(tempFileS, pathS);
 }
 
 void encryption::decrypt(){
-    decryptFile(tempFileS, pathS, fetchHash());
+    //decryptFile(tempFileS, pathS, fetchHash());
     std::rename(tempFileS, pathS);
 }
 
+//TODO: figure out where the values duplicate from after adding third object
 void encryption::encryptRAM(){
     auto startTime = std::chrono::steady_clock::now();
-    convertToRawString();
-    encryptVectorToFile(pathS, rawStr, fetchHash());
+    
+    encryptVectorToFile(pathS, convertToRawString(siteDataNew), fetchHash());
     auto endTime = std::chrono::steady_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
     std::cout << "[BENCHMARK] Encryption took: " << duration << " ms (" 
               << (duration / 1000.0) << " seconds)\n";
 
-    std::cout << "EncryptionRAM\n";
-    for(auto &i : siteDataNew){
-      std::cout << "Data: " << i.getEmail() << " " << i.getLink() << " " << i.getPass() << "\n";
-    }
+    // std::cout << "EncryptionRAM\n";
+    // for(auto &i : siteDataNew){
+    //   std::cout << "Data: " << i.getEmail() << " " << i.getLink() << " " << i.getPass() << "\n";
+    // }
 }
 
 void encryption::decryptRAM(){

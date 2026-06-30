@@ -1,14 +1,17 @@
 #include "encryption.h"
 #include "includes.h"
 
-void encryption::convertToRawString(){
-    for(auto &i : siteDataNew){
-        rawStr.push_back(i.getRawString());
+std::vector<std::string> encryption::convertToRawString(std::vector<siteObj> &sites){
+    std::vector<std::string> temp;
+    for(auto &i : sites){
+        temp.push_back(i.getRawString());
     }
+    rawStr = temp;
+    return temp;
 }
 
 void encryption::convertToVectObj(){
-    siteDataNew.reserve(rawStr.size()); // Optimization: Prevent multiple reallocations 
+    //siteDataNew.reserve(rawStr.size()); // Optimization: Prevent multiple reallocations 
 
     for (const auto& item : rawStr) {
         std::stringstream ss(item);
@@ -22,11 +25,11 @@ void encryption::convertToVectObj(){
 
         // Construct object and add to vector
         // Using emplace_back to construct in-place and avoid copies 
-        siteDataNew.emplace_back(parts[0], parts[1], parts[2]);
+        siteDataNew.push_back(siteObj(parts[0], parts[1], parts[2]));
     }
 
     std::cout << "Converted shit to objects\n";
     for(auto &i : siteDataNew){
-        std::cout << i.getEmail() << "\n" << i.getLink() << "\n" << i.getPass() << "\n";
+        std::cout << i.getEmail() << " " << i.getLink() << " " << i.getPass() << "\n";
     }
 }

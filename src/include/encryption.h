@@ -23,6 +23,10 @@ private:
     std::string passFile = "untitled.txt";
     std::string userPass;
 
+    std::vector<std::string> rawStr;
+    std::vector<std::string> convertToRawString(std::vector<siteObj> &sites);
+    void convertToVectObj();
+
     void createPassword();
     std::vector<uint8_t> serializeVector(const std::vector<std::string>& vec);
     std::vector<std::string> deserializeVector(const std::vector<uint8_t>& buffer);
