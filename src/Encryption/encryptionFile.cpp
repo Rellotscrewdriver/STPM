@@ -18,15 +18,15 @@ void encryption::decrypt(){
     std::rename(tempFileS, pathS);
 }
 
-//TODO: figure out where the values duplicate from after adding third object
+
 void encryption::encryptRAM(){
-    auto startTime = std::chrono::steady_clock::now();
+    // auto startTime = std::chrono::steady_clock::now();
     
     encryptVectorToFile(pathS, convertToRawString(siteDataNew), fetchHash());
-    auto endTime = std::chrono::steady_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
-    std::cout << "[BENCHMARK] Encryption took: " << duration << " ms (" 
-              << (duration / 1000.0) << " seconds)\n";
+    // auto endTime = std::chrono::steady_clock::now();
+    // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
+    // std::cout << "[BENCHMARK] Encryption took: " << duration << " ms (" 
+    //           << (duration / 1000.0) << " seconds)\n";
 
     // std::cout << "EncryptionRAM\n";
     // for(auto &i : siteDataNew){
@@ -35,18 +35,18 @@ void encryption::encryptRAM(){
 }
 
 void encryption::decryptRAM(){
-    auto startTime = std::chrono::steady_clock::now();
+    // auto startTime = std::chrono::steady_clock::now();
     decryptContentToRAM(pathS, rawStr, fetchHash());
-    auto endTime = std::chrono::steady_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
-    std::cout << "[BENCHMARK] Decryption took: " << duration << " ms (" 
-              << (duration / 1000.0) << " seconds)\n";
+    // auto endTime = std::chrono::steady_clock::now();
+    // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
+    // std::cout << "[BENCHMARK] Decryption took: " << duration << " ms (" 
+    //           << (duration / 1000.0) << " seconds)\n";
 
     convertToVectObj();
-    std::cout << "DecryptionRAM\n";
-    for(auto &i : siteDataNew){
-      std::cout << "Data: " << i.getEmail() << " " << i.getLink() << " " << i.getPass() << "\n";
-    }
+    // std::cout << "DecryptionRAM\n";
+    // for(auto &i : siteDataNew){
+    //   std::cout << "Data: " << i.getEmail() << " " << i.getLink() << " " << i.getPass() << "\n";
+    // }
 }
 
 
@@ -89,16 +89,6 @@ std::vector<uint8_t> encryption::serializeVector(const std::vector<std::string>&
         buffer.insert(buffer.end(), str.begin(), str.end());
     }
     return buffer;
-    // std::vector<uint8_t> buffer;
-    // for (const auto& str : vec) {
-    //     uint64_t len = str.size();
-    //     // Append length (8 bytes)
-    //     const uint8_t* lenBytes = reinterpret_cast<const uint8_t*>(&len);
-    //     buffer.insert(buffer.end(), lenBytes, lenBytes + sizeof(len));
-    //     // Append string data
-    //     buffer.insert(buffer.end(), str.begin(), str.end());
-    // }
-    // return buffer;
 }
 
 
@@ -111,7 +101,7 @@ bool encryption::encryptVectorToFile(const filesystem::path& targetPath, const s
     unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES];
 
 
-    // Using SENSITIVE limits to dramatically increase offline brute-force cost
+    // Using MODERATE limits
     if (crypto_pwhash(key, sizeof key, password.c_str(), password.length(), salt,
                      crypto_pwhash_OPSLIMIT_MODERATE, 
                      crypto_pwhash_MEMLIMIT_MODERATE,
@@ -155,7 +145,6 @@ bool encryption::encryptVectorToFile(const filesystem::path& targetPath, const s
     
     size_t bytesProcessed = 0;
     while (bytesProcessed < serializedData.size()) {
-        std::cout << "Infinite loop?\n";
         size_t bytesToRead = std::min(CHUNK_SIZE_EN, serializedData.size() - bytesProcessed);
         unsigned char tag = (bytesProcessed + bytesToRead == serializedData.size()) 
                             ? crypto_secretstream_xchacha20poly1305_TAG_FINAL 

@@ -7,8 +7,8 @@ void siteOps::putEveryShitInRAM(){
 void siteOps::displayInANiceTable(const std::vector<siteObj>& data){
     const int credRowWidth = 20;
 
-    std::cout << std::left << std::setw(credRowWidth) << "Site Name" 
-              << std::setw(credRowWidth) << "Username"
+    std::cout << std::left << std::setw(credRowWidth) << "Email" 
+              << std::setw(credRowWidth) << "Sites"
               << std::setw(credRowWidth) << "Password" << std::endl;
     std::cout << std::string(credRowWidth + credRowWidth + credRowWidth, '-') << std::endl;
 

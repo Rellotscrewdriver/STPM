@@ -28,8 +28,8 @@ void encryption::convertToVectObj(){
         siteDataNew.push_back(siteObj(parts[0], parts[1], parts[2]));
     }
 
-    std::cout << "Converted shit to objects\n";
-    for(auto &i : siteDataNew){
-        std::cout << i.getEmail() << " " << i.getLink() << " " << i.getPass() << "\n";
-    }
+    // std::cout << "Converted shit to objects\n";
+    // for(auto &i : siteDataNew){
+    //     std::cout << i.getEmail() << " " << i.getLink() << " " << i.getPass() << "\n";
+    // }
 }
