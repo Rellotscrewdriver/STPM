@@ -7,19 +7,7 @@ encryption::encryption(){
 
 }
 
-//using the hash as key
 void encryption::encrypt(){
-    //encryptFile(tempFileS, pathS, fetchHash());
-    std::rename(tempFileS, pathS);
-}
-
-void encryption::decrypt(){
-    //decryptFile(tempFileS, pathS, fetchHash());
-    std::rename(tempFileS, pathS);
-}
-
-
-void encryption::encryptRAM(){
     // auto startTime = std::chrono::steady_clock::now();
     
     encryptVectorToFile(pathS, convertToRawString(siteDataNew), fetchHash());
@@ -34,7 +22,7 @@ void encryption::encryptRAM(){
     // }
 }
 
-void encryption::decryptRAM(){
+void encryption::decrypt(){
     // auto startTime = std::chrono::steady_clock::now();
     decryptContentToRAM(pathS, rawStr, fetchHash());
     // auto endTime = std::chrono::steady_clock::now();

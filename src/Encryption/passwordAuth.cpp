@@ -8,11 +8,11 @@ bool encryption::firstTimeUser(){
     //create an empty file
     // std::ofstream outFile(path);
     // outFile.close();
-    encryptRAM();
+    encrypt();
     return true; //means the user is new
   } else {
     if(verifyUser()){
-        decryptRAM();
+        decrypt();
     }
   }
     return false; //means the user is old and grumpy

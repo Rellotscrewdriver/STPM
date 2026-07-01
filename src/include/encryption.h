@@ -11,10 +11,8 @@ class encryption {
 public:
     encryption();
     bool firstTimeUser();
-    void encrypt();
     void decrypt();
-    void decryptRAM();
-    void encryptRAM();
+    void encrypt();
 
 private:
     const char* pathS = path.c_str();

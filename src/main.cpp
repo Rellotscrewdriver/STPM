@@ -36,7 +36,7 @@ int main(int argc, char* argv[]) {
   // dectargs d3(o3);
 
   if(!isDecrypted){
-    e->encryptRAM();
+    e->encrypt();
   }
 
   // std::cout << "Final: \n";
