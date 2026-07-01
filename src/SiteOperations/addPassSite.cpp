@@ -8,7 +8,6 @@ bool siteOps::checkEmailVaild(){
 
 void siteOps::appendToFile(){
     GeneratePass *pass = new GeneratePass();
-    std::string a = email + "," + link + "," + pass->getgeneratedPass();
-    siteData.push_back(a);
+    siteDataNew.push_back(siteObj(email, link, pass->getgeneratedPass()));
     std::cout << "Appended " << link << " at " << email << std::endl;
 }

@@ -10,7 +10,7 @@ public:
 private:
     std::string genPass();
     std::random_device rd;  // Seed source
-    std::string passchars = "abcdefghijklmnopqrstuvwxyz123456789!@#$%&*";
+    std::string passchars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789!@#$%&*";
     std::string passStr;
     int passLen = 15;
     int randonNum;

@@ -3,7 +3,7 @@
 siteOps::siteOps(std::string &emailAddress, std::string &LinkName) : email(emailAddress), link(LinkName){
     if(!checkEmailVaild()){
         std::cout << "The Email address is not vaild\n";
-        exit(EXIT_FAILURE);                   
+        exit(EXIT_FAILURE);                  
     }
 }
 
