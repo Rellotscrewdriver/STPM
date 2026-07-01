@@ -16,17 +16,6 @@
 constinit inline std::string path = "creden.mypass";
 constinit inline std::string tempfile = "temp.db";
 
-extern std::vector<std::string> siteData;
 extern std::vector<siteObj> siteDataNew;
 
-
 using namespace std;
-
-enum siteOp {
-    addSite,
-    removeSite,
-    listSite,
-    changeSiteEmail = 30,
-    changeSiteLink,
-    changeSiteRegenPass
-};
