@@ -6,6 +6,7 @@
 enum idenStr {
     isEmail,
     isLink,
+    justGenPass,
     notValid,
 };
 

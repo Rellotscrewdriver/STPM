@@ -33,33 +33,39 @@ void siteOps::removeSite(){
     removeShit();
 }
 
+
 void siteOps::hugeRegexCheck(){
     regexValid rv;
-    if(rv.identify(mFlag) == isEmail || rv.identify(mOldStr) == isEmail){
+    idenStr regexCheckFlag = rv.identify(mFlag);
+    idenStr regexCheckOldWord = rv.identify(mOldStr);
+    idenStr regexCheckNewWord = rv.identify(mNewStr);
 
-    } else if(rv.identify(mFlag) == isLink || rv.identify(mOldStr) == isLink){
-        
+    if(regexCheckFlag == isLink && 
+        (regexCheckOldWord == isEmail && regexCheckNewWord == isEmail)
+    ){
+        //sets to change email
+        replaceWhat = isEmail;
+    } else if(regexCheckFlag == isEmail && 
+        (regexCheckOldWord == isLink && regexCheckNewWord == isLink)
+    ){
+        //sets to change link
+        replaceWhat = isLink;
+    } else if(regexCheckFlag == isEmail && (regexCheckOldWord == isLink && mNewStr.empty())){
+        //simply just regenerate password
+        replaceWhat = justGenPass;
     } else {
-        std::cout << "The flag/current Email address or link name is not vaild\n";
+        std::cout << "Email addresses or links are not vaild format\n";
         exit(EXIT_FAILURE);
     }
-    // if( (!checkEmailVaild(mFlag) || !checkLinkVaild(mOldStr)) 
-    //     || (!checkEmailVaild(mOldStr) || !checkLinkVaild(mFlag))){
-    //     std::cout << "The flag/current Email address or link name is not vaild\n";
-    //     exit(EXIT_FAILURE);                  
-    // } else if(){
-
-    // }
 }
 
 void siteOps::changeSite(){
     if(!mNewStr.empty()){
-        std::cout << "Replacing: " << mFlag << std::endl;
-        regexValid rv;
-        if(rv.identify(mFlag) == isEmail){
+        // std::cout << "Replacing Flag: " << mFlag << std::endl;
+        if(replaceWhat == isLink){
             std::cout << "Replacing Link" << std::endl;
             replaceLink();
-        } else if(rv.identify(mFlag) == isLink) {
+        } else if(replaceWhat == isEmail) {
             std::cout << "Replacing Email" << std::endl;
             replaceEmail();
         } else {

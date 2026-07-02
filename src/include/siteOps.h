@@ -28,6 +28,7 @@ private:
     bool checkLinkVaild(std::string flag);
     void hugeRegexCheck();
 
+    enum idenStr replaceWhat;
     char separator = ',';
     std::vector<std::string> addLines;
     void putEveryShitInRAM();
