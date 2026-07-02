@@ -3,6 +3,7 @@
 #include "includes.h"
 #include "genPass.h"
 #include "siteObj.h"
+#include "validation.h"
 
 class siteOps {
 public:
@@ -23,7 +24,9 @@ private:
     
     void appendToFile();
     void removeShit();
-    bool checkEmailVaild();
+    bool checkEmailVaild(std::string flag);
+    bool checkLinkVaild(std::string flag);
+    void hugeRegexCheck();
 
     char separator = ',';
     std::vector<std::string> addLines;
