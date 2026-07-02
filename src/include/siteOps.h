@@ -21,6 +21,9 @@ public:
     
 private:
     std::string email, link, mFlag, mOldStr, mNewStr;
+    bool isSiteFound = false;
+    enum idenStr replaceWhat;
+    char separator = ',';
     
     void appendToFile();
     void removeShit();
@@ -28,8 +31,6 @@ private:
     bool checkLinkVaild(std::string flag);
     void hugeRegexCheck();
 
-    enum idenStr replaceWhat;
-    char separator = ',';
     std::vector<std::string> addLines;
     void putEveryShitInRAM();
     void displayInANiceTable(const std::vector<siteObj>& data);
