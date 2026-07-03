@@ -3,7 +3,9 @@
 void siteOps::regenPassword(){
     siteOps site(mFlag, mOldStr);
     site.removeSite();
-    site.addSite();
+    if(isSiteFound){
+        site.addSite();
+    }
 }
 
 void siteOps::replaceLink(){

@@ -1,13 +1,12 @@
 #include "siteOps.h"
 
 void siteOps::removeShit(){
-    bool isSiteFound = false;
 
     siteDataNew.erase(
-        std::remove_if(siteDataNew.begin(), siteDataNew.end(), [this, &isSiteFound](siteObj& obj) {
+        std::remove_if(siteDataNew.begin(), siteDataNew.end(), [this](siteObj& obj) {
             bool compare = (obj.getEmail() == this->email) && (obj.getLink() == this->link);
             if(compare){
-                isSiteFound = true;
+                this->isSiteFound = true;
             }
             return compare; 
         }), 

@@ -3,6 +3,7 @@
 #include "includes.h"
 #include "genPass.h"
 #include "siteObj.h"
+#include "validation.h"
 
 class siteOps {
 public:
@@ -20,12 +21,16 @@ public:
     
 private:
     std::string email, link, mFlag, mOldStr, mNewStr;
+    bool isSiteFound = false;
+    enum idenStr replaceWhat;
+    char separator = ',';
     
     void appendToFile();
     void removeShit();
-    bool checkEmailVaild();
+    bool checkEmailVaild(std::string flag);
+    bool checkLinkVaild(std::string flag);
+    void hugeRegexCheck();
 
-    char separator = ',';
     std::vector<std::string> addLines;
     void putEveryShitInRAM();
     void displayInANiceTable(const std::vector<siteObj>& data);
