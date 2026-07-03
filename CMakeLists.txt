@@ -27,7 +27,7 @@ add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
 target_sources(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCES})
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/include)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/libs)
-target_link_libraries(${PROJECT_NAME} PRIVATE sodium re2)
+target_link_libraries(${PROJECT_NAME} PRIVATE sodium re2 absl::base)
 target_compile_options(${PROJECT_NAME} PRIVATE 
     $<$<CONFIG:Release>:-Ofast>
 )
