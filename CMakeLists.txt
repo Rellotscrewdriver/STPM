@@ -11,8 +11,8 @@ project(stpm)
 
 # add internal dependencies
 add_subdirectory(libs/googletest)
-add_subdirectory(libs/re2)
 add_subdirectory(libs/abseil-cpp)
+add_subdirectory(libs/re2)
 add_subdirectory(libs) # for those libs which doesn't have CMakeLists.txt file
 
 # Recursively finds c++ source files
