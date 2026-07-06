@@ -29,7 +29,6 @@ public:
      * wrapper function to decrypt the file
      */
     void decrypt();
-    void encrypt();
 
 private:
     /**
