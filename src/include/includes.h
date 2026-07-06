@@ -11,19 +11,11 @@
 #include <filesystem>
 #include <sstream>
 #include <algorithm>
-#include "rapidcsv.h" //TODO: remove this lib
+#include "siteObj.h"
 
-const inline std::string path = "add.txt";
-const inline std::string tempfile = "temp.txt";
+constinit inline std::string path = "creden.mypass";
+constinit inline std::string tempfile = "temp.db";
+
+extern std::vector<siteObj> siteDataNew;
 
 using namespace std;
-
-//TODO: remove this 
-enum siteOp {
-    addSite,
-    removeSite,
-    listSite,
-    changeSiteEmail = 30,
-    changeSiteLink,
-    changeSiteRegenPass
-};

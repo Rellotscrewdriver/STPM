@@ -5,7 +5,7 @@
 #include <sodium.h>
 
 // Chunk size for file reading/writing (e.g., 4KB)
-#define CHUNK_SIZE 4096
+#define CHUNK_SIZE 1048576
 
 class encryption {
 public:
@@ -29,6 +29,7 @@ public:
      * wrapper function to decrypt the file
      */
     void decrypt();
+    void encrypt();
 
 private:
     /**
@@ -44,19 +45,26 @@ private:
      * a file to store the key
      */
     std::string passFile = "untitled.txt";
-    std::string userPass; 
-    
-    /**
-     * creates the master password from the user
-     * if both the passwords match generate the hash using argon2id
-     */
-    void createPassword();
 
     /**
      * fetches the hash from file defined in passFile string
      * 
      * @return hash string
      */
+    std::string userPass;
+
+    std::vector<std::string> rawStr;
+    std::vector<std::string> convertToRawString(std::vector<siteObj> &sites);
+    void convertToVectObj();
+    
+    /**
+     * creates the master password from the user
+     * if both the passwords match generate the hash using argon2id
+     */
+    void createPassword();
+    std::vector<uint8_t> serializeVector(const std::vector<std::string>& vec);
+    std::vector<std::string> deserializeVector(const std::vector<uint8_t>& buffer);
+
     std::string fetchHash();
 
     /**
@@ -100,7 +108,7 @@ private:
      * 
      * @return whether a file was successfully decrypted and loaded into RAM using a vector
      */
-    bool decryptFile(const char* target_file, const char* source_file, const std::string& password);
+    bool decryptContentToRAM(const filesystem::path& sourcePath, std::vector<std::string>& outVector, const std::string& password);
     
     /**
      * encrypts to the file from siteData vector which is a global variable
@@ -111,7 +119,7 @@ private:
      * 
      * @return a boolean where a file was successfully encrypted or not
      */
-    bool encryptFile(const char* target_file, const char* source_file, const std::string& password);
+    bool encryptVectorToFile(const filesystem::path &targetPath, const std::vector<std::string>& dataVector, const std::string& password);
 };
 
 #endif

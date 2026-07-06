@@ -4,6 +4,7 @@
 #include "siteOps.h"
 
 /**
+ * A class where the arguments are detected and moves to appropriate operations
  * This class handles the incoming calls of commandline arguements
  * if no arguements are given, then this class calls the TUI frontend
  */

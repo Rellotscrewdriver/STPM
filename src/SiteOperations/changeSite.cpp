@@ -3,43 +3,23 @@
 void siteOps::regenPassword(){
     siteOps site(mFlag, mOldStr);
     site.removeSite();
-    site.addSite();
+    if(isSiteFound){
+        site.addSite();
+    }
 }
 
 void siteOps::replaceLink(){
-    replaceFunc(mFlag, mOldStr, mNewStr);
+    for (siteObj& s : siteDataNew) {
+        if (s.getEmail() == mFlag && s.getLink() == mOldStr) {
+            s.getLink() = mNewStr;
+        }
+    }
 }
 
 void siteOps::replaceEmail(){
-    replaceFunc(mFlag, mOldStr, mNewStr);
-}
-
-//if you have a better idea to replace it with using rapidcsv functions be my guest 
-void siteOps::replaceFunc(const std::string& flag1, const std::string& oldWord, const std::string& newWord){
-    std::ifstream inputFile(path);
-    std::ofstream tempFile(tempfile);
-
-    std::string line;
-
-    // Read the file line by line
-    while (std::getline(inputFile, line)) {
-        // THE CORE LOGIC: Check if the line contains BOTH flag words
-        if (line.find(flag1) != std::string::npos && line.find(oldWord) != std::string::npos) {
-            
-            // This is a target line. Now, replace all occurrences of oldWord.
-            size_t pos = 0;
-            while ((pos = line.find(oldWord, pos)) != std::string::npos) {
-                line.replace(pos, oldWord.length(), newWord);
-                pos += newWord.length(); // Move past the replaced word
-            }
+    for (siteObj& s : siteDataNew) {
+        if (s.getLink() == mFlag && s.getEmail() == mOldStr) {
+            s.getEmail() = mNewStr;
         }
-        // Write the (possibly modified) line to our temporary file
-        tempFile << line << '\n';
     }
-
-    // 4. Close the streams
-    inputFile.close();
-    tempFile.close();
-
-    rename(tempfile.c_str(), path.c_str());
 }

@@ -2,6 +2,8 @@
 
 #include "includes.h"
 #include "genPass.h"
+#include "siteObj.h"
+#include "validation.h"
 
 /**
  * this is the class where it handles the credentials operations
@@ -53,6 +55,9 @@ public:
     
 private:
     std::string email, link, mFlag, mOldStr, mNewStr;
+    bool isSiteFound = false;
+    enum idenStr replaceWhat;
+    char separator = ',';
     
     /**
      * this function adds the site to the last position
@@ -67,9 +72,10 @@ private:
     /**
      * this function checks whether email is vaild or not.
      */
-    bool checkEmailVaild();
+    bool checkEmailVaild(std::string flag);
+    bool checkLinkVaild(std::string flag);
+    void hugeRegexCheck();
 
-    char separator = ',';
     std::vector<std::string> addLines;
     /**
      * this function splits the thing into words by a separator
@@ -79,7 +85,7 @@ private:
     /**
      * this function prints out everything in a nice table
      */
-    void displayInANiceTable(const std::vector<std::string>& all_lines, int columns = 3);
+    void displayInANiceTable(const std::vector<siteObj>& data);
 
     /**
      * this site re-generates the password by deleting and adding the site
@@ -98,10 +104,4 @@ private:
      * it's done like that avoid changing links of the same link name
      */
     void replaceEmail();
-    
-    /**
-     * this method is where the changing happens, it searches for the word linearly
-     */
-    //TODO: if the size is too large, perhaps do a binary search?
-    void replaceFunc(const std::string& flag1, const std::string& oldWord, const std::string& newWord);
 };

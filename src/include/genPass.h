@@ -24,8 +24,7 @@ private:
      */
     std::string genPass();
     std::random_device rd;  // Seed source
-    // TODO: add captial letters
-    std::string passchars = "abcdefghijklmnopqrstuvwxyz123456789!@#$%&*";
+    std::string passchars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789!@#$%&*";
     std::string passStr;
     int passLen = 15;
     int randonNum;
