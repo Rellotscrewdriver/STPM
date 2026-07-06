@@ -8,13 +8,15 @@ void dectargs::checkArgs() {
   if(mArgc >= 1) {
     dectTypeArgs();
   } else if(mArgc == 0){
-    helpMessage();
+    //helpMessage();
+    //This type of arguement should start the TUI session
   } else {
     std::cout << "not enough parameters or too many parameters"
               << "\nparamter count: " << mArgc << std::endl;
   }
 }
 
+// TODO: add an exception when mArgVect[n] are empty
 void dectargs::dectTypeArgs() {
   if((funcNameCmp("add") || funcNameCmp("Add")) && mArgc > noOfArgsDetect) {
     siteOps site(mArgVect[1], mArgVect[2]);

@@ -19,21 +19,12 @@ int main(int argc, char* argv[]) {
   // for(auto &i : siteDataNew){
   //   std::cout << "Data: " << i.getEmail() << " " << i.getLink() << " " << i.getPass() << "\n";
   // }
-  // std::ofstream outFile(path);
-  // outFile.close();
 
-  if(!isDecrypted && !argList.empty()){
+  if(!isDecrypted || !argList.empty()){
     std::unique_ptr<dectargs> d = std::make_unique<dectargs>(argList);
   } else {
     std::cerr << "can't accept arguements if you are the new user \n";
   }
-
-  // std::vector<std::string> o1 = {"add", "meow@gmail.com", "FH4.com"};
-  // dectargs d1(o1);
-  // std::vector<std::string> o2 = {"add", "meow@gmail.com", "FH5.com"};
-  // dectargs d2(o2);  
-  // std::vector<std::string> o3 = {"add", "meow@gmail.com", "FH6.com"};
-  // dectargs d3(o3);
 
   if(!isDecrypted){
     e->encrypt();
