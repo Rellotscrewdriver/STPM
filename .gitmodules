@@ -11,3 +11,6 @@
 	path = libs/abseil-cpp
 	url = https://github.com/abseil/abseil-cpp
 	branch = lts_2026_05_26
+[submodule "libs/FTXUI"]
+	path = libs/FTXUI
+	url = https://github.com/ArthurSonzogni/FTXUI.git
