@@ -1,4 +1,5 @@
 #include "dectargs.h"
+#include "tui.h"
 
 void dectargs::checkArgs() {
   // std::cout << mArgc << std::endl;
@@ -8,6 +9,7 @@ void dectargs::checkArgs() {
   if(mArgc >= 1) {
     dectTypeArgs();
   } else if(mArgc == 0){
+    TUIFrontEnd ft;
     //helpMessage();
     //This type of arguement should start the TUI session
   } else {
