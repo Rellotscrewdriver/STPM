@@ -5,10 +5,12 @@
 
 using namespace ftxui;
 
-class TUIFrontEnd {
+class TUIFrontEnd : Element {
 public:
     TUIFrontEnd();
 
 private:
 
+    Element combineMainLayout();
+    Element renderTitle();
 };
