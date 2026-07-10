@@ -13,4 +13,7 @@ private:
 
     Element combineMainLayout();
     Element renderTitle();
+    Element renderShortcutsBox();
+    Component renderMenuTable(const std::vector<siteObj>& vault_data, int* selected_row_out);
+    //Element renderDialog();
 };
