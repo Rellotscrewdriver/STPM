@@ -30,10 +30,6 @@ TUIFrontEnd::TUIFrontEnd(){
 
     std::string edit_name;
     std::string edit_role;
-    
-    auto copy = Button("󰆏", [&] {
-        active_layer = 79;
-    });
 
     MenuOption menu_option;
     menu_option.entries_option.transform = [&](const EntryState& state) {
@@ -44,14 +40,14 @@ TUIFrontEnd::TUIFrontEnd(){
 
         // Build a dynamic row: ID (fixed 10) | Name (flexible) | Role (fixed 15)
         Element e = hbox({
-            text(row.id) | size(WIDTH, EQUAL, 40),
+            text(row.id) | size(WIDTH, EQUAL, 20),
             text(row.name) | flex, 
             text(row.role) | size(WIDTH, EQUAL, 20)
         });
         
 
         if (state.focused){
-            e = e | color(Color::Blue) | bold;
+            e = e | bgcolor(Color::Blue) | color(Color::Black) | bold;
         }
         
         return e;
@@ -77,55 +73,118 @@ TUIFrontEnd::TUIFrontEnd(){
 
     auto menu = Menu(&menu_entries, &selected_row, menu_option);
 
-    auto input_name = Input(&edit_name, "Enter Username...");
-    auto input_role = Input(&edit_role, "Enter Email...");
+    ButtonOption save_option;
+    save_option.transform = [](const EntryState& state) {
+        auto element = text(state.label) | borderEmpty | center | size(HEIGHT, EQUAL, 4) | size(WIDTH, EQUAL, 20);
+        if (state.focused) {
+            return element | bgcolor(Color::Green) | color(Color::Black) | bold;
+        } else if (state.active) {
+            return element | bgcolor(Color::GreenLight) | color(Color::White);
+        }
+        return element | bgcolor(Color::DarkGreen) | color(Color::GrayLight);
+    };
+
+    ButtonOption cancel_option;
+    cancel_option.transform = [](const EntryState& state) {
+        auto element = text(state.label) | borderEmpty | center | size(HEIGHT, EQUAL, 4) | size(WIDTH, EQUAL, 20);
+        if (state.focused) {
+            return element | bgcolor(Color::Red) | color(Color::Black) | bold;
+        } else if (state.active) {
+            return element | bgcolor(Color::RedLight) | color(Color::White);
+        }
+        return element | bgcolor(Color::DarkRed) | color(Color::GrayLight);
+    };
+
+    InputOption input_opt_name;
+    input_opt_name.transform = [](InputState state) {
+        if (state.focused) {
+            // Styled when selected via keyboard tab/arrows or mouse click
+            return state.element | color(Color::Blue) | bold;
+        } else {
+            // Default idle state
+            return state.element | color(Color::Red);
+        }
+    };
+
+    InputOption input_opt_role;
+    input_opt_role.transform = [](InputState state) {
+        if (state.focused) {
+            return state.element | color(Color::Blue) | bold;
+        } else {
+            return state.element | color(Color::White);
+        }
+    };
+
+    auto input_name = Input(&edit_name, "Enter Username...", input_opt_name);
+    auto input_role = Input(&edit_role, "Enter Email...", input_opt_role);
 
     auto btn_save = Button("Save", [&] {
         data[selected_row].name = edit_name;
         data[selected_row].role = edit_role;
         update_menu_entries();
         active_layer = 0;
-    });
+    }, save_option);
 
     auto btn_cancel = Button("Cancel", [&] {
         active_layer = 0;
-    });
+    }, cancel_option);
 
     auto button_row = ftxui::Container::Horizontal({
         btn_save, 
         btn_cancel
     });
-
+    
+    int dialog_selector = 0;
     auto dialog_container = Container::Vertical({
         input_name,
         input_role,
         button_row
-    });
+    }, &dialog_selector);
 
-// Add a new empty row
-auto add_row = [&]() {
-    data.push_back({"007", "James Bond", "Secret Service Agent"});
-    menu_entries.push_back(""); // Sync the menu
-};
+    // Add a new empty row
+    auto add_row = [&]() {
+        data.push_back({"007", "James Bond", "Secret Service Agent"});
+        menu_entries.push_back(""); // Sync the menu
+    };
 
-// Delete the currently selected row
-auto delete_row = [&]() {
-    if (data.size() <= 1) return; // Optional: Prevent deleting the last row
+    // Delete the currently selected row
+    //TODO: add a confirmation dialog when removing
+    auto delete_row = [&]() {
+        if (data.size() <= 1) return; // Optional: Prevent deleting the last row
 
-    data.erase(data.begin() + selected_row);
-    menu_entries.erase(menu_entries.begin() + selected_row);
+        data.erase(data.begin() + selected_row);
+        menu_entries.erase(menu_entries.begin() + selected_row);
 
-    // Ensure selection stays within bounds
-    if (selected_row >= data.size()) {
-        selected_row = data.size() - 1;
-    }
-};
+        // Ensure selection stays within bounds
+        if (selected_row >= data.size()) {
+            selected_row = data.size() - 1;
+        }
+    };
 
     // ENHANCEMENT 1: Catch 'Escape' to close the dialog
     auto dialog_with_keys = CatchEvent(dialog_container, [&](Event event) {
         if (event == Event::Escape) {
             active_layer = 0;
             return true; // Event handled
+        }
+        if (event == Event::ArrowDown) {
+        // Only move down if we haven't reached the button row (index 2)
+            if (dialog_selector < 2) {
+                dialog_selector++;
+                return true; // Consume the event
+            }
+            // Optional: Uncomment the line below if you want to loop back to the top input
+            // dialog_selector = 0; return true;
+        }
+    
+        if (event == Event::ArrowUp) {
+            // Move up instantly, bypassing the button_row's internal event interceptor
+            if (dialog_selector > 0) {
+                dialog_selector--;
+                return true; // Consume the event
+            }
+            // Optional: Uncomment the line below if you want to loop from top to buttons
+            // dialog_selector = 2; return true;
         }
         return false;
     });
@@ -157,11 +216,10 @@ auto delete_row = [&]() {
         }
 
         if (event == Event::Character('j')) {
-            //selected_row = std::min((int)data.size() - 1, selected_row + 1);
             return menu->OnEvent(Event::ArrowDown);
         }
+
         if (event == Event::Character('k')) {
-            //selected_row = std::max(0, selected_row - 1);
             return menu->OnEvent(Event::ArrowUp);
         }
         
@@ -221,7 +279,7 @@ auto delete_row = [&]() {
     bool is_loading = true;
 
     auto table_header = hbox({
-        text(" ID")   | size(WIDTH, EQUAL, 40) | color(Color::Green) | bold | center,
+        text(" ID")   | size(WIDTH, EQUAL, 20) | color(Color::Green) | bold | center,
         text(" Name") | flex | color(Color::Green) | bold,
         text(" Role") | size(WIDTH, EQUAL, 20) | color(Color::Green) | bold | center
     }) | bold;
