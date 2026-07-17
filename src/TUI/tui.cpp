@@ -16,7 +16,6 @@ TUIFrontEnd::TUIFrontEnd(){
         {"004", "Diana Prince", "Security"},
         {"005", "Alice Smith", "Engineer"},
         {"006", "Bob Jones", "Designer"},
-        {"007", "Charlie Brown", "Manager"},
         {"008", "Diana Prince", "Security"},
         {"009", "Alice Smith", "Engineer"},
         {"0010", "Bob Jones", "Designer"},
@@ -105,7 +104,7 @@ TUIFrontEnd::TUIFrontEnd(){
 
 // Add a new empty row
 auto add_row = [&]() {
-    data.push_back({"000", "New User", "New Role"});
+    data.push_back({"007", "James Bond", "Secret Service Agent"});
     menu_entries.push_back(""); // Sync the menu
 };
 
@@ -139,10 +138,27 @@ auto delete_row = [&]() {
             screen.Exit();
             return true;
         }
+
+        //Scrolling effect
+        if (!data.empty()) {
+            int max_index = static_cast<int>(data.size()) - 1;
+
+            // Loop Up: If at the first row and pressing Up or 'k', jump to the last row
+            if ((event == Event::ArrowUp || event == Event::Character('k')) && selected_row == 0) {
+                selected_row = max_index;
+                return true; // Consume event to prevent native menu from blocking it
+            }
+
+            // Loop Down: If at the last row and pressing Down or 'j', jump to the first row
+            if ((event == Event::ArrowDown || event == Event::Character('j')) && selected_row == max_index) {
+                selected_row = 0;
+                return true; // Consume event to prevent native menu from blocking it
+            }
+        }
+
         if (event == Event::Character('j')) {
             //selected_row = std::min((int)data.size() - 1, selected_row + 1);
             return menu->OnEvent(Event::ArrowDown);
-            return true;
         }
         if (event == Event::Character('k')) {
             //selected_row = std::max(0, selected_row - 1);
@@ -208,7 +224,7 @@ auto delete_row = [&]() {
         text(" ID")   | size(WIDTH, EQUAL, 40) | color(Color::Green) | bold | center,
         text(" Name") | flex | color(Color::Green) | bold,
         text(" Role") | size(WIDTH, EQUAL, 20) | color(Color::Green) | bold | center
-    }) | bold ;
+    }) | bold;
     
     auto renderer = Renderer(layout_manager, [&] {
         auto table_ui = vbox({
