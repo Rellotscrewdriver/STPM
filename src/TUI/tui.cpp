@@ -6,35 +6,35 @@ struct Record {
     std::string role;
 };
 
-std::string PadString(const std::string& str, size_t width) {
-    if (str.length() >= width) return str.substr(0, width - 1) + " ";
-    return str + std::string(width - str.length(), ' ');
-}
-
 TUIFrontEnd::TUIFrontEnd(){
     auto screen = ScreenInteractive::Fullscreen();
-
+    
     std::vector<Record> data = {
         {"001", "Alice Smith", "Engineer"},
         {"002", "Bob Jones", "Designer"},
         {"003", "Charlie Brown", "Manager"},
         {"004", "Diana Prince", "Security"},
-        {"001", "Alice Smith", "Engineer"},
-        {"002", "Bob Jones", "Designer"},
-        {"003", "Charlie Brown", "Manager"},
-        {"004", "Diana Prince", "Security"},
-        {"001", "Alice Smith", "Engineer"},
-        {"002", "Bob Jones", "Designer"},
-        {"003", "Charlie Brown", "Manager"},
-        {"004", "Diana Prince", "Security"},
+        {"005", "Alice Smith", "Engineer"},
+        {"006", "Bob Jones", "Designer"},
+        {"007", "Charlie Brown", "Manager"},
+        {"008", "Diana Prince", "Security"},
+        {"009", "Alice Smith", "Engineer"},
+        {"0010", "Bob Jones", "Designer"},
+        {"0011", "Charlie Brown", "Manager"},
+        {"0012", "Diana Prince", "Security"},
     };
 
     int selected_row = 0;
     int active_layer = 0;
+    bool edit_layer = false;
     bool show_dialog = false;
 
     std::string edit_name;
     std::string edit_role;
+    
+    auto copy = Button("󰆏", [&] {
+        active_layer = 79;
+    });
 
     MenuOption menu_option;
     menu_option.entries_option.transform = [&](const EntryState& state) {
@@ -45,18 +45,25 @@ TUIFrontEnd::TUIFrontEnd(){
 
         // Build a dynamic row: ID (fixed 10) | Name (flexible) | Role (fixed 15)
         Element e = hbox({
-            text(" " + row.id)   | size(WIDTH, EQUAL, 20),
-            separator(), // Native FTXUI vertical line
-            text(" " + row.name) | flex, 
-            separator(),
-            text(" " + row.role) | size(WIDTH, EQUAL, 20)
-        }) | borderRounded;
+            text(row.id) | size(WIDTH, EQUAL, 40),
+            text(row.name) | flex, 
+            text(row.role) | size(WIDTH, EQUAL, 20)
+        });
         
-        // Apply selection styles
-        if (state.active) e = e | bold;
-        if (state.focused) e = e | inverted;
+
+        if (state.focused){
+            e = e | color(Color::Blue) | bold;
+        }
         
         return e;
+    };
+
+    menu_option.on_enter = [&]() {
+    // Validate we are within bounds
+        if (selected_row >= 0 && selected_row < data.size()) {
+        // Grab the exact text you want to copy
+        std::string text_to_copy = data[selected_row].name;
+        }
     };
 
     std::vector<std::string> menu_entries;
@@ -69,7 +76,7 @@ TUIFrontEnd::TUIFrontEnd(){
     };
     update_menu_entries();
 
-    auto menu = Menu(&menu_entries, &selected_row, menu_option) | borderEmpty;
+    auto menu = Menu(&menu_entries, &selected_row, menu_option);
 
     auto input_name = Input(&edit_name, "Enter Username...");
     auto input_role = Input(&edit_role, "Enter Email...");
@@ -96,10 +103,28 @@ TUIFrontEnd::TUIFrontEnd(){
         button_row
     });
 
+// Add a new empty row
+auto add_row = [&]() {
+    data.push_back({"000", "New User", "New Role"});
+    menu_entries.push_back(""); // Sync the menu
+};
+
+// Delete the currently selected row
+auto delete_row = [&]() {
+    if (data.size() <= 1) return; // Optional: Prevent deleting the last row
+
+    data.erase(data.begin() + selected_row);
+    menu_entries.erase(menu_entries.begin() + selected_row);
+
+    // Ensure selection stays within bounds
+    if (selected_row >= data.size()) {
+        selected_row = data.size() - 1;
+    }
+};
+
     // ENHANCEMENT 1: Catch 'Escape' to close the dialog
     auto dialog_with_keys = CatchEvent(dialog_container, [&](Event event) {
         if (event == Event::Escape) {
-            //show_dialog = false;
             active_layer = 0;
             return true; // Event handled
         }
@@ -122,8 +147,46 @@ TUIFrontEnd::TUIFrontEnd(){
         if (event == Event::Character('k')) {
             //selected_row = std::max(0, selected_row - 1);
             return menu->OnEvent(Event::ArrowUp);
-            //return true;
         }
+        
+        if (event == Event::Character('n')) {
+            add_row();
+            return true;
+        }
+
+        if (event == Event::Character('d')) {
+            delete_row();
+            return true;
+        }
+
+        //theme override
+        if (event == Event::Character('a')) {
+            active_layer = 1;
+            dialog_container->TakeFocus();
+            return true;
+        }
+
+        if (event == Event::Character('c')) {
+            if (selected_row >= 0 && selected_row < data.size()) {
+                std::string text_to_copy = data[selected_row].name; // Copying the "Name" column
+                //copy_to_clipboard(text_to_copy);
+            
+                status_message = "✅ Copied Name: \"" + text_to_copy + "\" to clipboard!";
+                return true; // Stop event propagation
+            }
+        }
+    
+        // Check if the user pressed 'r' or 'R' (for copying "Role")
+        if (event == Event::Character('v')) {
+            if (selected_row >= 0 && selected_row < data.size()) {
+                std::string text_to_copy = data[selected_row].role; // Copying the "Role" column
+                //copy_to_clipboard(text_to_copy);
+
+                status_message = "✅ Copied Role: \"" + text_to_copy + "\" to clipboard!";
+                return true; // Stop event propagation
+            }
+        }
+
         if (event == Event::Return) {
             edit_name = data[selected_row].name;
             edit_role = data[selected_row].role;
@@ -139,24 +202,30 @@ TUIFrontEnd::TUIFrontEnd(){
         dialog_with_keys
     }, &active_layer);
 
-    auto renderer = Renderer(layout_manager, [&] {
-        renderTitle();
-        auto table_header = hbox({
-            text(" ID")   | size(WIDTH, EQUAL, 10),
-            separator(),
-            text(" Name") | flex,
-            separator(),
-            text(" Role") | size(WIDTH, EQUAL, 15)
-        }) | bold | color(Color::Blue) | borderRounded;
+    bool is_loading = true;
 
+    auto table_header = hbox({
+        text(" ID")   | size(WIDTH, EQUAL, 40) | color(Color::Green) | bold | center,
+        text(" Name") | flex | color(Color::Green) | bold,
+        text(" Role") | size(WIDTH, EQUAL, 20) | color(Color::Green) | bold | center
+    }) | bold ;
+    
+    auto renderer = Renderer(layout_manager, [&] {
         auto table_ui = vbox({
-            text(" Employee Database ") | bold | center,
+            vbox({
+                renderTitle(),
+            }),
             separator(),
-            table_header, // Inject our dynamic header here
+            vbox({
+                table_header,
+                menu->Render() | vscroll_indicator | yframe | flex
+            }) | flex,
             separator(),
-            menu->Render() | vscroll_indicator | yframe | flex,
-            separator(),
-            text(" Shortcuts: [↑/↓] or [j/k] Navigate   [Enter] Edit   [q] Quit ") | center | dim
+            vbox({
+                text("Shortcuts: [↑/↓] Navigate  [Enter] Edit  [n] Add  [d] Delete  [q] Quit") | center,
+                text("Status: " + status_message) | bold | center,
+                text(copyIns) | color(Color::GreenLight) | center
+            })
         }) | borderRounded;
 
         if (active_layer == 1) {
@@ -170,7 +239,7 @@ TUIFrontEnd::TUIFrontEnd(){
                     hbox(btn_save->Render(), text("   "), btn_cancel->Render()) | center
                 })
             ) | clear_under | center;
-
+        
             return dbox({
                 table_ui | dim,
                 dialog_ui
@@ -193,18 +262,16 @@ Element TUIFrontEnd::combineMainLayout()
             filler(),
             //renderMainBox().Render(),
             filler()
-        }) | bgcolor(Color::Grey0) | color(Color::Blue),
+        }) | color(Color::Blue),
     });
 }
 
 Element TUIFrontEnd::renderTitle()
 {
     return hbox({
-        filler(),
         text("STPM - Simple Terminal Password Manager ") | bold,
         text("v1.0.0"),
-        filler()
-    }) | bgcolor(Color::Black) | color(Color::Blue);
+    }) | color(Color::Blue) | center;
 }
 
 

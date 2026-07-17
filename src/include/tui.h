@@ -10,6 +10,8 @@ public:
     TUIFrontEnd();
 
 private:
+    std::string status_message = "nothing was copied to clipboard";
+    std::string copyIns = "Use Arrows to navigate | Press 'c' to copy Name | Press 'v' to copy Role";
 
     Element combineMainLayout();
     Element renderTitle();
