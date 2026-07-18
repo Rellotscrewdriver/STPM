@@ -8,7 +8,7 @@ struct Record {
 
 TUIFrontEnd::TUIFrontEnd(){
     auto screen = ScreenInteractive::Fullscreen();
-    
+
     std::vector<Record> data = {
         {"001", "Alice Smith", "Engineer"},
         {"002", "Bob Jones", "Designer"},
@@ -40,9 +40,9 @@ TUIFrontEnd::TUIFrontEnd(){
 
         // Build a dynamic row: ID (fixed 10) | Name (flexible) | Role (fixed 15)
         Element e = hbox({
-            text(row.id) | size(WIDTH, EQUAL, 20),
-            text(row.name) | flex, 
-            text(row.role) | size(WIDTH, EQUAL, 20)
+            paragraph(row.id) | size(WIDTH, EQUAL, 20),
+            paragraph(row.name) | flex, 
+            paragraph(row.role) | size(WIDTH, EQUAL, 20),
         });
         
 
@@ -75,46 +75,49 @@ TUIFrontEnd::TUIFrontEnd(){
 
     ButtonOption save_option;
     save_option.transform = [](const EntryState& state) {
-        auto element = text(state.label) | borderEmpty | center | size(HEIGHT, EQUAL, 4) | size(WIDTH, EQUAL, 20);
+        auto element = text(" " + state.label + " ") | center;
         if (state.focused) {
             return element | bgcolor(Color::Green) | color(Color::Black) | bold;
         } else if (state.active) {
-            return element | bgcolor(Color::GreenLight) | color(Color::White);
+            return element | bgcolor(Color::GreenLight) | color(Color::Black);
         }
-        return element | bgcolor(Color::DarkGreen) | color(Color::GrayLight);
+        return element | bgcolor(Color::DarkGreen) | color(Color::White);
     };
 
     ButtonOption cancel_option;
     cancel_option.transform = [](const EntryState& state) {
-        auto element = text(state.label) | borderEmpty | center | size(HEIGHT, EQUAL, 4) | size(WIDTH, EQUAL, 20);
+        auto element = text(" " + state.label + " ") | center;
         if (state.focused) {
             return element | bgcolor(Color::Red) | color(Color::Black) | bold;
         } else if (state.active) {
-            return element | bgcolor(Color::RedLight) | color(Color::White);
+            return element | bgcolor(Color::RedLight) | color(Color::Black);
         }
-        return element | bgcolor(Color::DarkRed) | color(Color::GrayLight);
+        return element | bgcolor(Color::DarkRed) | color(Color::White);
     };
 
     InputOption input_opt_name;
     input_opt_name.transform = [](InputState state) {
         if (state.focused) {
             // Styled when selected via keyboard tab/arrows or mouse click
-            return state.element | color(Color::Blue) | bold;
+            return state.element | color(Color::Blue) | bgcolor(Color::GrayDark) | bold | underlined;
         } else {
             // Default idle state
-            return state.element | color(Color::Red);
+            return state.element | color(Color::White);
         }
     };
 
     InputOption input_opt_role;
     input_opt_role.transform = [](InputState state) {
         if (state.focused) {
-            return state.element | color(Color::Blue) | bold;
+            return state.element | color(Color::Blue) | bgcolor(Color::GrayDark) | bold | underlined;
         } else {
             return state.element | color(Color::White);
         }
     };
 
+    input_opt_name.multiline = false;
+    input_opt_role.multiline = false;
+    
     auto input_name = Input(&edit_name, "Enter Username...", input_opt_name);
     auto input_role = Input(&edit_role, "Enter Email...", input_opt_role);
 
@@ -167,29 +170,27 @@ TUIFrontEnd::TUIFrontEnd(){
             active_layer = 0;
             return true; // Event handled
         }
+
         if (event == Event::ArrowDown) {
-        // Only move down if we haven't reached the button row (index 2)
             if (dialog_selector < 2) {
                 dialog_selector++;
                 return true; // Consume the event
             }
-            // Optional: Uncomment the line below if you want to loop back to the top input
-            // dialog_selector = 0; return true;
+            dialog_selector = 0; 
+            return true;
         }
     
         if (event == Event::ArrowUp) {
-            // Move up instantly, bypassing the button_row's internal event interceptor
             if (dialog_selector > 0) {
                 dialog_selector--;
                 return true; // Consume the event
             }
-            // Optional: Uncomment the line below if you want to loop from top to buttons
-            // dialog_selector = 2; return true;
+            dialog_selector = 2; 
+            return true;
         }
         return false;
     });
 
-    // ENHANCEMENT 2: Add Vim bindings (j/k) to the main menu
     auto main_container = CatchEvent(menu, [&](Event event) {
         if (show_dialog) return true; // Let the dialog handle events if it's open
 
@@ -202,16 +203,15 @@ TUIFrontEnd::TUIFrontEnd(){
         if (!data.empty()) {
             int max_index = static_cast<int>(data.size()) - 1;
 
-            // Loop Up: If at the first row and pressing Up or 'k', jump to the last row
             if ((event == Event::ArrowUp || event == Event::Character('k')) && selected_row == 0) {
                 selected_row = max_index;
-                return true; // Consume event to prevent native menu from blocking it
+                return true;
             }
 
             // Loop Down: If at the last row and pressing Down or 'j', jump to the first row
             if ((event == Event::ArrowDown || event == Event::Character('j')) && selected_row == max_index) {
                 selected_row = 0;
-                return true; // Consume event to prevent native menu from blocking it
+                return true;
             }
         }
 
@@ -225,11 +225,15 @@ TUIFrontEnd::TUIFrontEnd(){
         
         if (event == Event::Character('n')) {
             add_row();
+            // active_layer = 1;
+            // dialog_container->TakeFocus();
             return true;
         }
 
         if (event == Event::Character('d')) {
             delete_row();
+            // active_layer = 1;
+            // dialog_container->TakeFocus();
             return true;
         }
 
@@ -279,12 +283,28 @@ TUIFrontEnd::TUIFrontEnd(){
     bool is_loading = true;
 
     auto table_header = hbox({
-        text(" ID")   | size(WIDTH, EQUAL, 20) | color(Color::Green) | bold | center,
-        text(" Name") | flex | color(Color::Green) | bold,
-        text(" Role") | size(WIDTH, EQUAL, 20) | color(Color::Green) | bold | center
+        text("ID")   | size(WIDTH, EQUAL, 20) | color(Color::Green) | bold | center,
+        text("Name") | flex | color(Color::Green) | bold,
+        text("Role") | size(WIDTH, EQUAL, 20) | color(Color::Green) | bold | center
     }) | bold;
     
     auto renderer = Renderer(layout_manager, [&] {
+        auto minSize = Terminal::Size();
+
+        const int minHeight = 11;
+        const int minWidth = 55;
+
+        if (minSize.dimx <= minWidth || minSize.dimy <= minHeight) {
+            return vbox({
+                paragraph("SCREEN DIMENSION TOO LOW!") | bold | color(Color::Red) | center,
+                separator(),
+                paragraph("Please expand or zoom out your terminal windows to view the UI properly.") | center,
+                separatorEmpty(),
+                text("Required: " + std::to_string(minWidth) + "x" + std::to_string(minHeight)) | color(Color::Red) | bold | center,
+                text("Current:  " + std::to_string(minSize.dimx) + "x" + std::to_string(minSize.dimy)) | color(Color::Yellow) | center,
+            }) | center | borderRounded;
+        }
+
         auto table_ui = vbox({
             vbox({
                 renderTitle(),
@@ -296,19 +316,19 @@ TUIFrontEnd::TUIFrontEnd(){
             }) | flex,
             separator(),
             vbox({
-                text("Shortcuts: [↑/↓] Navigate  [Enter] Edit  [n] Add  [d] Delete  [q] Quit") | center,
-                text("Status: " + status_message) | bold | center,
-                text(copyIns) | color(Color::GreenLight) | center
+                paragraphAlignCenter("Shortcuts: [↑/↓] Navigate  [Enter] Edit  [n] Add  [d] Delete  [q] Quit"),
+                paragraphAlignCenter("Status: " + status_message) | bold,
+                paragraphAlignCenter(copyIns) | color(Color::GreenLight),
             })
         }) | borderRounded;
 
         if (active_layer == 1) {
             auto dialog_ui = window(text(" Edit Record "), 
                 vbox({
-                    text(" Navigation: [↑/↓] Switch Fields  [←/→] Select Options ") | center,
+                    paragraphAlignCenter(" Navigation: [↑/↓] Switch Fields  [←/→] Select Options ") | center,
                     separator(),
-                    hbox(text(" Name: "), input_name->Render()),
-                    hbox(text(" Role: "), input_role->Render()),
+                    hbox(paragraph(" Name: "), input_name->Render()),
+                    hbox(paragraph(" Role: "), input_role->Render()),
                     separator(),
                     hbox(btn_save->Render(), text("   "), btn_cancel->Render()) | center
                 })
@@ -343,7 +363,7 @@ Element TUIFrontEnd::combineMainLayout()
 Element TUIFrontEnd::renderTitle()
 {
     return hbox({
-        text("STPM - Simple Terminal Password Manager ") | bold,
+        paragraph("STPM - Simple Terminal Password Manager ") | bold,
         text("v1.0.0"),
     }) | color(Color::Blue) | center;
 }
