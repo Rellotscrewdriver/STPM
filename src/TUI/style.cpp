@@ -1,6 +1,8 @@
 #include "tui.h"
 
-Element TUIFrontEnd::saveBtnStyle(const EntryState &state){
+
+Element TUIFrontEnd::saveBtnStyle(const EntryState &state)
+{
     auto element = text(" " + state.label + " ") | center;
     if (state.focused) {
         return element | bgcolor(Color::Green) | color(Color::Black) | bold;

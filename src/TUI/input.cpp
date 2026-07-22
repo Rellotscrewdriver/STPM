@@ -34,10 +34,11 @@ Component TUIFrontEnd::inputMasterPass(){
 }
 
 Component TUIFrontEnd::inputEvent(){
+    keyInputs input;
     return CatchEvent(menu(), [&](Event event) {
         if (show_dialog) return true; // Let the dialog handle events if it's open
 
-        if (event == Event::Character('q')) {
+        if (event == Event::Character(input.quitApp)) {
             screen.Exit();
             return true;
         }
@@ -67,7 +68,7 @@ Component TUIFrontEnd::inputEvent(){
         }
         
         if (event == Event::Character('n')) {
-            add_row();
+            addRow();
             activeLayer = addDialog;
             // active_layer = 1;
             // dialog_container->TakeFocus();
@@ -75,16 +76,21 @@ Component TUIFrontEnd::inputEvent(){
         }
 
         if (event == Event::Character('d')) {
-            delete_row();
+            deleteRow();
             activeLayer = remDialog;
             // active_layer = 1;
             // dialog_container->TakeFocus();
             return true;
         }
 
+        if (event == Event::CtrlS) {
+            saveData();
+            return true;
+        }
+
         //theme override
         if (event == Event::Character('a')) {
-            active_layer = 1;
+            activeLayer = masterPass;
             dialogContainer()->TakeFocus();
             return true;
         }
@@ -113,7 +119,7 @@ Component TUIFrontEnd::inputEvent(){
         if (event == Event::Return) {
             emailCred = data[selected_row].name;
             siteCred = data[selected_row].role;
-            active_layer = 1;
+            activeLayer = editDialog;
             dialogContainer()->TakeFocus();
             return true;
         }
@@ -123,9 +129,9 @@ Component TUIFrontEnd::inputEvent(){
 
 Component TUIFrontEnd::dialogInputEvent()
 {
-    return CatchEvent(dialog_container, [&](Event event) {
+    return CatchEvent(dialogContainer(), [&](Event event) {
         if (event == Event::Escape) {
-            active_layer = 0;
+            activeLayer = mainMenu;
             return true; // Event handled
         }
 

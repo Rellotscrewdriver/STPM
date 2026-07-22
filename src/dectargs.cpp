@@ -10,6 +10,7 @@ void dectargs::checkArgs() {
     dectTypeArgs();
   } else if(mArgc == 0){
     TUIFrontEnd ft;
+    ft.exec();
     //helpMessage();
     //This type of arguement should start the TUI session
   } else {
