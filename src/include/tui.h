@@ -19,10 +19,26 @@ public:
 
 private:
     struct keyInputs {
-        char editDialog = 'e';
+        char addDialog = 'n';
+        char remDialog = 'd';
+
+        char moveDown = 'j';
+        char moveUp = 'k';
+
+        char themes = 't';
+        char addDialog = 'a';
+
+        char copyEmailKey = 'c';
+        char copySIteKey = 'v';
+        char copyPassKey = 'b';
+        
         char quitApp = 'q';
-        //char 
-    }
+        
+        Event save = Event::CtrlS; 
+        Event edit = Event::Return;
+        Event altMoveDown = Event::ArrowDown; 
+        Event altMoveUp = Event::ArrowUp;
+    };
 
     enum layers {
         mainMenu,
@@ -33,7 +49,9 @@ private:
     };
 
     enum copyData {
-
+        copyEmail,
+        copySite,
+        copyPass
     };
 
     std::string status_message = "nothing was copied to clipboard";
@@ -92,10 +110,16 @@ private:
     void saveData();
 
     //Style
+    InputOption input;
+    ButtonOption confirmBtn;
+    ButtonOption save_option;
+    ButtonOption cancel_option;
+    ButtonOption resetPass;
     Component btnLayout();
     Element saveBtnStyle(const EntryState &state);
     Element cancelBtnStyle(const EntryState &state);
     Element inputStyle(InputState state);
+
 
 
     //title and header
@@ -114,7 +138,7 @@ private:
     Element warningWindow(Dimensions size);
 
     Element menuRowEntry(const EntryState& state);
-    void copyCreds();
+    void copyCreds(copyData type);
     Component menu();
     void updateMenuEnteries();
     MenuOption menu_option;

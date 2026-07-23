@@ -3,33 +3,26 @@
 
 //TODO: make inputOption common 
 Component TUIFrontEnd::inputEmail(){
-    InputOption input;
     input.transform = [this](InputState state) {
         return inputStyle(state);
     };
-
-    input.multiline = false;
 
     return Input(&emailCred, "Enter your Email...", input);
 }
 
 Component TUIFrontEnd::inputSite(){
-    InputOption input;
     input.transform = [this](InputState state) {
         return inputStyle(state);
     };
 
-    input.multiline = false;
     return Input(&siteCred, "Enter the Link...", input);
 }
 
 Component TUIFrontEnd::inputMasterPass(){
-    InputOption input;
     input.transform = [this](InputState state) {
         return inputStyle(state);
     };
 
-    input.multiline = false;
     return Input(&siteCred, "Enter Master Password...", input);
 }
 
@@ -47,76 +40,69 @@ Component TUIFrontEnd::inputEvent(){
         if (!data.empty()) {
             int max_index = static_cast<int>(data.size()) - 1;
 
-            if ((event == Event::ArrowUp || event == Event::Character('k')) && selected_row == 0) {
+            if ((event == input.altMoveUp || event == Event::Character(input.moveDown)) && selected_row == 0) {
                 selected_row = max_index;
                 return true;
             }
 
             // Loop Down: If at the last row and pressing Down or 'j', jump to the first row
-            if ((event == Event::ArrowDown || event == Event::Character('j')) && selected_row == max_index) {
+            if ((event == input.altMoveUp || event == Event::Character(input.moveUp)) && selected_row == max_index) {
                 selected_row = 0;
                 return true;
             }
         }
 
-        if (event == Event::Character('j')) {
-            return menu()->OnEvent(Event::ArrowDown);
+        if (event == Event::Character(input.moveDown)) {
+            return menu()->OnEvent(input.altMoveDown);
         }
 
-        if (event == Event::Character('k')) {
-            return menu()->OnEvent(Event::ArrowUp);
+        if (event == Event::Character(input.moveUp)) {
+            return menu()->OnEvent(input.altMoveUp);
         }
         
-        if (event == Event::Character('n')) {
+        if (event == Event::Character(input.addDialog)) {
             addRow();
             activeLayer = addDialog;
-            // active_layer = 1;
             // dialog_container->TakeFocus();
             return true;
         }
 
-        if (event == Event::Character('d')) {
+        if (event == Event::Character(input.remDialog)) {
             deleteRow();
             activeLayer = remDialog;
-            // active_layer = 1;
             // dialog_container->TakeFocus();
             return true;
         }
 
-        if (event == Event::CtrlS) {
+        if (event == input.save) {
             saveData();
             return true;
         }
 
         //theme override
-        if (event == Event::Character('a')) {
+        if (event == Event::Character(input.themes)) {
             activeLayer = masterPass;
             dialogContainer()->TakeFocus();
             return true;
         }
 
-        if (event == Event::Character('c')) {
-            if (selected_row >= 0 && selected_row < data.size()) {
-                std::string text_to_copy = data[selected_row].name; // Copying the "Name" column
-                //copy_to_clipboard(text_to_copy);
-            
-                status_message = "✅ Copied Name: \"" + text_to_copy + "\" to clipboard!";
-                return true; // Stop event propagation
-            }
+        if (event == Event::Character(input.copyEmailKey)) {
+            copyCreds(copyEmail);
+            return true;
         }
     
         // Check if the user pressed 'r' or 'R' (for copying "Role")
-        if (event == Event::Character('v')) {
-            if (selected_row >= 0 && selected_row < data.size()) {
-                std::string text_to_copy = data[selected_row].role; // Copying the "Role" column
-                //copy_to_clipboard(text_to_copy);
-
-                status_message = "✅ Copied Role: \"" + text_to_copy + "\" to clipboard!";
-                return true; // Stop event propagation
-            }
+        if (event == Event::Character(input.copySIteKey)) {
+            copyCreds(copySite);
+            return true;
         }
 
-        if (event == Event::Return) {
+        if (event == Event::Character(input.copyPassKey)) {
+            copyCreds(copyPass);
+            return true;
+        }
+
+        if (event == input.edit) {
             emailCred = data[selected_row].name;
             siteCred = data[selected_row].role;
             activeLayer = editDialog;

@@ -9,7 +9,6 @@ Component TUIFrontEnd::btnLayout(){
 
 //TODO: make inputOption common
 Component TUIFrontEnd::saveBtn(){
-    ButtonOption save_option;
     save_option.transform = [this](const EntryState& state) {
         return saveBtnStyle(state);
     };
@@ -23,7 +22,6 @@ Component TUIFrontEnd::saveBtn(){
 }
 
 Component TUIFrontEnd::cancelBtn(){
-    ButtonOption cancel_option;
     cancel_option.transform = [this](const EntryState& state) {
         return cancelBtnStyle(state);
     };
@@ -34,8 +32,7 @@ Component TUIFrontEnd::cancelBtn(){
 }
 
 Component TUIFrontEnd::genPassBtn(){
-    ButtonOption save_option;
-    save_option.transform = [this](const EntryState& state) {
+    resetPass.transform = [this](const EntryState& state) {
         return saveBtnStyle(state);
     };
 
@@ -46,8 +43,7 @@ Component TUIFrontEnd::genPassBtn(){
 }
 
 Component TUIFrontEnd::confrimPassBtn(){
-    ButtonOption save_option;
-    save_option.transform = [this](const EntryState& state) {
+    confirmBtn.transform = [this](const EntryState& state) {
         return saveBtnStyle(state);
     };
 

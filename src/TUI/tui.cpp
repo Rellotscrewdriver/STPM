@@ -6,7 +6,8 @@ TUIFrontEnd::TUIFrontEnd(){
         {"002", "Bob Jones", "Designer"},
         {"003", "Charlie Brown", "Manager"}
     };
-    renderLayout();    
+    input.multiline = false;
+    renderLayout();
 }
 
 void TUIFrontEnd::exec(){
