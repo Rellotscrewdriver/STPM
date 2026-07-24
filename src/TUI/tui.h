@@ -26,7 +26,6 @@ private:
         char moveUp = 'k';
 
         char themes = 't';
-        char addDialog = 'a';
 
         char copyEmailKey = 'c';
         char copySIteKey = 'v';
@@ -76,12 +75,14 @@ private:
 
     /*
         TODO: on friday, separate these into classes
-        TUIFrontend -> userInputs
-                    -> buttons
+        
+        TUIFrontend -> style -> userInputs
+                             -> buttons
+                             -> title and header
+                    -> dialog
+                    -> instruction manual
                     -> operations
-                    -> title and header
                     -> version
-                    -> style
     */
     Component renderer;
     ScreenInteractive screen = ScreenInteractive::Fullscreen();
@@ -97,12 +98,6 @@ private:
     //Input Events
     Component inputEvent();
     Component dialogInputEvent();
-
-    //buttons
-    Component saveBtn();
-    Component cancelBtn();
-    Component genPassBtn();
-    Component confrimPassBtn();
 
     //operations
     void addRow();

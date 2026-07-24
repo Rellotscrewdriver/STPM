@@ -1,6 +1,5 @@
 #include "tui.h"
 
-//TODO: make it one function as well
 Component TUIFrontEnd::dialogContainer(){
     if(activeLayer == addDialog){
         return Container::Vertical({

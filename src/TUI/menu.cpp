@@ -5,7 +5,7 @@ Component TUIFrontEnd::menu(){
         return menuRowEntry(state);
     };
 
-    menu_option.on_enter = [&](){copyCreds();};
+    //menu_option.on_enter = [&](){copyCreds();};
 
     updateMenuEnteries();
 

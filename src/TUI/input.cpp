@@ -1,7 +1,6 @@
 #include "tui.h"
 
-
-//TODO: make inputOption common 
+ 
 Component TUIFrontEnd::inputEmail(){
     input.transform = [this](InputState state) {
         return inputStyle(state);
