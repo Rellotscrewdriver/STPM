@@ -1,5 +1,5 @@
 #include "dectargs.h"
-#include "encryption.h"
+#include "../Encryption/encryption.h"
 
 using namespace std;
 

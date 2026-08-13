@@ -1,18 +1,18 @@
-#include "tui.h"
+#include "dataManager.h"
 
-void TUIFrontEnd::copyCreds(copyData type){
-    if (selected_row >= 0 && selected_row < data.size()) {
+void dataManager::copyCreds(copyData type, int selectedRow){
+    if (selectedRow >= 0 && selectedRow < data.size()) {
         if(type == copyEmail){
-            std::string text_to_copy = data[selected_row].name;
+            std::string text_to_copy = data[selectedRow].name;
             //copyShit();
             status_message = "✅ Copied Email: \"" + text_to_copy + "\" to clipboard!";
         } else if(type == copySite){
-            std::string text_to_copy = data[selected_row].role; // Copying the "Role" column
+            std::string text_to_copy = data[selectedRow].role; // Copying the "Role" column
             //copyShit();
 
             status_message = "✅ Copied Link: \"" + text_to_copy + "\" to clipboard!";
         } else if(type == copyPass){
-            std::string text_to_copy = data[selected_row].id;
+            std::string text_to_copy = data[selectedRow].id;
             //copyShit();
             status_message = "✅ Copied Password: *********** to clipboard!";
         }

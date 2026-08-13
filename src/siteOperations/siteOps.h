@@ -1,9 +1,9 @@
 #pragma once
 
 #include "includes.h"
-#include "genPass.h"
+#include "../genPass/genPass.h"
 #include "siteObj.h"
-#include "validation.h"
+#include "../regexValid/validation.h"
 
 /**
  * this is the class where it handles the credentials operations

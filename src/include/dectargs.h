@@ -1,7 +1,7 @@
 #pragma once
 
 #include "includes.h"
-#include "siteOps.h"
+#include "../siteOperations/siteOps.h"
 
 /**
  * A class where the arguments are detected and moves to appropriate operations

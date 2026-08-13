@@ -1,5 +1,5 @@
 #include "dectargs.h"
-#include "tui.h"
+#include "TUI/tui.h"
 
 void dectargs::checkArgs() {
   // std::cout << mArgc << std::endl;

@@ -1,25 +1,25 @@
-#include "tui.h"
+#include "../tui.h"
 
 Component TUIFrontEnd::dialogContainer(){
     if(activeLayer == addDialog){
         return Container::Vertical({
-            inputEmail(),
-            inputSite(),
-            btnLayout()
+            emailInput,
+            siteInput
+            //btnLayout()
         }, &dialog_selector);
     } else if(activeLayer == editDialog){
         return Container::Vertical({
-            inputEmail(),
-            inputSite(),
-            btnLayout()
+            emailInput,
+            siteInput
+            //btnLayout()
         }, &dialog_selector);
     } else if(activeLayer == remDialog){
         return Container::Vertical({
-            btnLayout()
+            //btnLayout()
         }, &dialog_selector);
     } else {
         return Container::Vertical({
-            btnLayout()
+            //btnLayout()
         }, &dialog_selector);
     }
 }
@@ -29,11 +29,11 @@ Element TUIFrontEnd::editPopup(){
         vbox({
             paragraphAlignCenter(" Navigation: [↑/↓] Switch Fields  [←/→] Select Options ") | center,
             separator(),
-            hbox(paragraph(" Email: "), inputEmail()->Render()),
-            hbox(paragraph(" Site: "), inputSite()->Render()),
-            hbox(paragraph(" Generate Password: "), genPassBtn()->Render()),
+            hbox(paragraph(" Email: "), emailInput->Render()),
+            hbox(paragraph(" Site: "), siteInput->Render()),
+            //hbox(paragraph(" Generate Password: "), genPassBtn()->Render()),
             separator(),
-            hbox(saveBtn()->Render(), text("   "), cancelBtn()->Render()) | center
+            //hbox(saveBtn()->Render(), text("   "), cancelBtn()->Render()) | center
         })
     ) | clear_under | center;
 }

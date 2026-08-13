@@ -1,109 +1,109 @@
-#include "tui.h"
+#include "../tui.h"
 
  
-Component TUIFrontEnd::inputEmail(){
+void TUIFrontEnd::inputEmail(){
     input.transform = [this](InputState state) {
         return inputStyle(state);
     };
 
-    return Input(&emailCred, "Enter your Email...", input);
+    emailInput = Input(&emailCred, "Enter your Email...", input);
 }
 
-Component TUIFrontEnd::inputSite(){
+void TUIFrontEnd::inputSite(){
     input.transform = [this](InputState state) {
         return inputStyle(state);
     };
 
-    return Input(&siteCred, "Enter the Link...", input);
+    siteInput = Input(&siteCred, "Enter the Link...", input);
 }
 
-Component TUIFrontEnd::inputMasterPass(){
+void TUIFrontEnd::inputMasterPass(){
     input.transform = [this](InputState state) {
         return inputStyle(state);
     };
 
-    return Input(&siteCred, "Enter Master Password...", input);
+    masterPassword = Input(&siteCred, "Enter Master Password...", input);
 }
 
 Component TUIFrontEnd::inputEvent(){
-    keyInputs input;
-    return CatchEvent(menu(), [&](Event event) {
+
+    return CatchEvent(menuComponent, [&](Event event) {
         if (show_dialog) return true; // Let the dialog handle events if it's open
 
-        if (event == Event::Character(input.quitApp)) {
+        if (event == Event::Character('q')) {
             screen.Exit();
             return true;
         }
 
         //Scrolling effect
-        if (!data.empty()) {
-            int max_index = static_cast<int>(data.size()) - 1;
+        if (!db.data.empty()) {
+            int max_index = static_cast<int>(db.data.size()) - 1;
 
-            if ((event == input.altMoveUp || event == Event::Character(input.moveDown)) && selected_row == 0) {
+            if ((event == Event::Character('k') || event == Event::ArrowUp) && selected_row == 0) {
                 selected_row = max_index;
                 return true;
             }
 
             // Loop Down: If at the last row and pressing Down or 'j', jump to the first row
-            if ((event == input.altMoveUp || event == Event::Character(input.moveUp)) && selected_row == max_index) {
+            if ((event == Event::Character('j') || event == Event::ArrowDown) && selected_row == max_index) {
                 selected_row = 0;
                 return true;
             }
         }
 
-        if (event == Event::Character(input.moveDown)) {
-            return menu()->OnEvent(input.altMoveDown);
+        if (event == Event::Character('j')) {
+            return menuComponent->OnEvent(Event::ArrowDown);
         }
 
-        if (event == Event::Character(input.moveUp)) {
-            return menu()->OnEvent(input.altMoveUp);
+        if (event == Event::Character('k')) {
+            return menuComponent->OnEvent(Event::ArrowUp);
         }
         
-        if (event == Event::Character(input.addDialog)) {
-            addRow();
-            activeLayer = addDialog;
+        if (event == Event::Character('n')) {
+            db.addRow();
+            //activeLayer = addDialog;
             // dialog_container->TakeFocus();
             return true;
         }
 
-        if (event == Event::Character(input.remDialog)) {
-            deleteRow();
-            activeLayer = remDialog;
+        if (event == Event::Character('d')) {
+            db.deleteRow(selected_row);
+            //activeLayer = remDialog;
             // dialog_container->TakeFocus();
             return true;
         }
 
-        if (event == input.save) {
-            saveData();
+        if (event == Event::CtrlS) {
+            db.saveData();
             return true;
         }
 
         //theme override
-        if (event == Event::Character(input.themes)) {
+        if (event == Event::Character('p')) {
             activeLayer = masterPass;
             dialogContainer()->TakeFocus();
             return true;
         }
 
-        if (event == Event::Character(input.copyEmailKey)) {
-            copyCreds(copyEmail);
+        if (event == Event::Character('c')) {
+            db.copyCreds(dataManager::copyEmail, selected_row);
             return true;
         }
     
         // Check if the user pressed 'r' or 'R' (for copying "Role")
-        if (event == Event::Character(input.copySIteKey)) {
-            copyCreds(copySite);
+        if (event == Event::Character('v')) {
+            db.copyCreds(dataManager::copySite, selected_row);
             return true;
         }
 
-        if (event == Event::Character(input.copyPassKey)) {
-            copyCreds(copyPass);
+        if (event == Event::Character('b')) {
+            db.copyCreds(dataManager::copyPass, selected_row);
             return true;
         }
 
-        if (event == input.edit) {
-            emailCred = data[selected_row].name;
-            siteCred = data[selected_row].role;
+        if (event == Event::Return) {
+            emailCred = db.data[selected_row].name;
+            siteCred = db.data[selected_row].role;
             activeLayer = editDialog;
             dialogContainer()->TakeFocus();
             return true;
@@ -114,7 +114,7 @@ Component TUIFrontEnd::inputEvent(){
 
 Component TUIFrontEnd::dialogInputEvent()
 {
-    return CatchEvent(dialogContainer(), [&](Event event) {
+    return CatchEvent(dContainer, [&](Event event) {
         if (event == Event::Escape) {
             activeLayer = mainMenu;
             return true; // Event handled

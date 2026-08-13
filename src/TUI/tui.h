@@ -2,15 +2,10 @@
 
 #include "includes.h"
 #include "siteObj.h"
+#include "dataManager/dataManager.h"
 #include <FTXUI/include/ftxui/ftxui.hpp>
 
 using namespace ftxui;
-
-struct Record {
-    std::string id;
-    std::string name;
-    std::string role;
-};
 
 class TUIFrontEnd {
 public:
@@ -18,27 +13,12 @@ public:
     void exec();
 
 private:
-    struct keyInputs {
-        char addDialog = 'n';
-        char remDialog = 'd';
 
-        char moveDown = 'j';
-        char moveUp = 'k';
+    void initComponents();
 
-        char themes = 't';
 
-        char copyEmailKey = 'c';
-        char copySIteKey = 'v';
-        char copyPassKey = 'b';
-        
-        char quitApp = 'q';
-        
-        Event save = Event::CtrlS; 
-        Event edit = Event::Return;
-        Event altMoveDown = Event::ArrowDown; 
-        Event altMoveUp = Event::ArrowUp;
-    };
-
+    dataManager db;
+    
     enum layers {
         mainMenu,
         editDialog,
@@ -47,14 +27,8 @@ private:
         masterPass
     };
 
-    enum copyData {
-        copyEmail,
-        copySite,
-        copyPass
-    };
 
-    std::string status_message = "nothing was copied to clipboard";
-    std::string copyIns = "Use Arrows to navigate | Press 'c' to copy Name | Press 'v' to copy Role";
+
     
     //terminal window size
     const int minHeight = 11;
@@ -63,9 +37,9 @@ private:
     //UI variables and states
     int selected_row = 0;
     std::string copyCred;
-    std::vector<Record> data;
-    std::vector<std::string> menu_entries;
+
     layers activeLayer;
+    int layerNo = 0;
     int dialog_selector = 0;
     bool show_dialog = false;
 
@@ -91,18 +65,16 @@ private:
     void renderLayout();
 
     //User Input
-    Component inputEmail();
-    Component inputSite();
-    Component inputMasterPass();
+    void inputEmail();
+    void inputSite();
+    void inputMasterPass();
 
     //Input Events
     Component inputEvent();
     Component dialogInputEvent();
 
     //operations
-    void addRow();
-    void deleteRow();
-    void saveData();
+
 
     //Style
     InputOption input;
@@ -115,6 +87,17 @@ private:
     Element cancelBtnStyle(const EntryState &state);
     Element inputStyle(InputState state);
 
+    //meow
+    Component emailInput;
+    Component siteInput;
+    Component masterPassword;
+    Component menuComponent;
+    Component saveBtn;
+    Component cancelBtn;
+    Component genPassBtn;
+    Component dContainer;
+    Component mainInputEvent;
+    Component dInputEvent;
 
 
     //title and header
@@ -133,9 +116,7 @@ private:
     Element warningWindow(Dimensions size);
 
     Element menuRowEntry(const EntryState& state);
-    void copyCreds(copyData type);
-    Component menu();
+    
     void updateMenuEnteries();
     MenuOption menu_option;
-
 };

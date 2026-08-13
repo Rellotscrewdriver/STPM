@@ -1,4 +1,4 @@
-#include "tui.h"
+#include "../tui.h"
 
 Element TUIFrontEnd::title(){
     return hbox({
