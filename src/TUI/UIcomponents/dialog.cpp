@@ -1,25 +1,26 @@
 #include "../tui.h"
 
 Component TUIFrontEnd::dialogContainer(){
-    if(activeLayer == addDialog){
+    if(activeLayer == addDialog || activeLayer == editDialog){
         return Container::Vertical({
             emailInput,
-            siteInput
-            //btnLayout()
+            siteInput,
+            btnLayout()
         }, &dialog_selector);
-    } else if(activeLayer == editDialog){
+    } else if(activeLayer == editDialog || activeLayer == mainMenu){
         return Container::Vertical({
             emailInput,
-            siteInput
-            //btnLayout()
+            siteInput,
+            genPassBtn,
+            btnLayout()
         }, &dialog_selector);
     } else if(activeLayer == remDialog){
         return Container::Vertical({
-            //btnLayout()
+            btnLayout()
         }, &dialog_selector);
     } else {
         return Container::Vertical({
-            //btnLayout()
+            btnLayout()
         }, &dialog_selector);
     }
 }
@@ -31,9 +32,9 @@ Element TUIFrontEnd::editPopup(){
             separator(),
             hbox(paragraph(" Email: "), emailInput->Render()),
             hbox(paragraph(" Site: "), siteInput->Render()),
-            //hbox(paragraph(" Generate Password: "), genPassBtn()->Render()),
+            hbox(paragraph(" Regenerate Password: "), text(db.data[selected_row].id), genPassBtn->Render()),
             separator(),
-            //hbox(saveBtn()->Render(), text("   "), cancelBtn()->Render()) | center
+            hbox(saveBtn->Render(), text("   "), cancelBtn->Render()) | center
         })
     ) | clear_under | center;
 }

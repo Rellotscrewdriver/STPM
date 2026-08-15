@@ -2,34 +2,20 @@
 
  
 void TUIFrontEnd::inputEmail(){
-    input.transform = [this](InputState state) {
-        return inputStyle(state);
-    };
-
     emailInput = Input(&emailCred, "Enter your Email...", input);
 }
 
 void TUIFrontEnd::inputSite(){
-    input.transform = [this](InputState state) {
-        return inputStyle(state);
-    };
-
     siteInput = Input(&siteCred, "Enter the Link...", input);
 }
 
 void TUIFrontEnd::inputMasterPass(){
-    input.transform = [this](InputState state) {
-        return inputStyle(state);
-    };
-
     masterPassword = Input(&siteCred, "Enter Master Password...", input);
 }
 
 Component TUIFrontEnd::inputEvent(){
 
     return CatchEvent(menuComponent, [&](Event event) {
-        if (show_dialog) return true; // Let the dialog handle events if it's open
-
         if (event == Event::Character('q')) {
             screen.Exit();
             return true;
@@ -78,13 +64,6 @@ Component TUIFrontEnd::inputEvent(){
             return true;
         }
 
-        //theme override
-        if (event == Event::Character('p')) {
-            activeLayer = masterPass;
-            dialogContainer()->TakeFocus();
-            return true;
-        }
-
         if (event == Event::Character('c')) {
             db.copyCreds(dataManager::copyEmail, selected_row);
             return true;
@@ -102,26 +81,27 @@ Component TUIFrontEnd::inputEvent(){
         }
 
         if (event == Event::Return) {
+            activeLayer = editDialog;
+            passCred = db.data[selected_row].id;
             emailCred = db.data[selected_row].name;
             siteCred = db.data[selected_row].role;
-            activeLayer = editDialog;
-            dialogContainer()->TakeFocus();
+            dContainer->TakeFocus();
             return true;
         }
         return false;
     });
 }
 
-Component TUIFrontEnd::dialogInputEvent()
-{
+Component TUIFrontEnd::dialogInputEvent(){
     return CatchEvent(dContainer, [&](Event event) {
         if (event == Event::Escape) {
             activeLayer = mainMenu;
+            layerNo = 0;
             return true; // Event handled
         }
 
         if (event == Event::ArrowDown) {
-            if (dialog_selector < 2) {
+            if (dialog_selector <= 2) {
                 dialog_selector++;
                 return true; // Consume the event
             }
@@ -129,12 +109,16 @@ Component TUIFrontEnd::dialogInputEvent()
             return true;
         }
     
+        if (event == Event::P){
+            
+        }
+
         if (event == Event::ArrowUp) {
             if (dialog_selector > 0) {
                 dialog_selector--;
                 return true; // Consume the event
             }
-            dialog_selector = 2; 
+            dialog_selector = 3;
             return true;
         }
         return false;

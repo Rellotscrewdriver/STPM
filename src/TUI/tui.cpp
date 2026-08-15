@@ -12,36 +12,40 @@ TUIFrontEnd::TUIFrontEnd(){
 
 }
 
-void TUIFrontEnd::initComponents() {
-    input.multiline = false;
-    
+void TUIFrontEnd::initComponents() {    
     // Set up menu entry options & populate entries
     menu_option.entries_option.transform = [this](const EntryState& state) {
         return menuRowEntry(state);
     };
     updateMenuEnteries();
 
+    applyStyle();
+    
     // Instantiate persistent inputs
-    emailInput  = Input(&emailCred, "Enter your Email...", input);
-    siteInput   = Input(&siteCred, "Enter the Link...", input);
+    emailInput = Input(&emailCred, "Enter your Email...", input);
+    siteInput = Input(&siteCred, "Enter the Link...", input);
     masterPassword = Input(&siteCred, "Enter Master Password...", input);
 
-    input.transform = [this](InputState state) {
-        return inputStyle(state);
-    };
+    saveBtn = saveButton();
+    cancelBtn = cancelButton();
+    genPassBtn = genPassButton();
+
 
     // Instantiate persistent menu
     menuComponent = ftxui::Menu(&(db.menu_entries), &selected_row, menu_option);
 
-    //dContainer = dialogContainer();
-    dContainer = Container::Vertical({
-        emailInput,
-        siteInput,
-    }, &dialog_selector);
+    dContainer = dialogContainer();
+    // dContainer = Container::Vertical({
+    //     emailInput,
+    //     siteInput,
+    //     genPassBtn,
+    //     btnLayout()
+    // }, &dialog_selector);
 
     mainInputEvent = inputEvent();
     dInputEvent = dialogInputEvent();
 }
+
 
 void TUIFrontEnd::exec(){
     screen.Loop(renderer);
@@ -53,14 +57,14 @@ void TUIFrontEnd::renderLayout(){
         auto minSize = Terminal::Size();
 
         if (minSize.dimx <= minWidth || minSize.dimy <= minHeight) {
-            warningWindow(minSize);
+            return warningWindow(minSize);
         }
 
         buildMainLayout();
 
         if (activeLayer == editDialog) {
             auto dialog = editPopup();
-        
+
             return dbox({
                 buildMainLayout() | dim,
                 dialog
@@ -72,7 +76,6 @@ void TUIFrontEnd::renderLayout(){
 }
 
 Component TUIFrontEnd::layoutManager(){
-    layerNo = activeLayer;
     return Container::Tab({
         mainInputEvent,
         dInputEvent

@@ -15,7 +15,7 @@ public:
 private:
 
     void initComponents();
-
+    void applyStyle();
 
     dataManager db;
     
@@ -38,13 +38,13 @@ private:
     int selected_row = 0;
     std::string copyCred;
 
-    layers activeLayer;
+    layers activeLayer = mainMenu;
     int layerNo = 0;
     int dialog_selector = 0;
-    bool show_dialog = false;
 
     std::string emailCred;
     std::string siteCred;
+    std::string passCred;
 
 
     /*
@@ -73,16 +73,18 @@ private:
     Component inputEvent();
     Component dialogInputEvent();
 
-    //operations
-
+    //Buttons
+    Component saveButton();
+    Component cancelButton();
+    Component genPassButton();
+    Component btnLayout();
 
     //Style
     InputOption input;
     ButtonOption confirmBtn;
-    ButtonOption save_option;
-    ButtonOption cancel_option;
+    ButtonOption saveOption;
+    ButtonOption cancelOption;
     ButtonOption resetPass;
-    Component btnLayout();
     Element saveBtnStyle(const EntryState &state);
     Element cancelBtnStyle(const EntryState &state);
     Element inputStyle(InputState state);

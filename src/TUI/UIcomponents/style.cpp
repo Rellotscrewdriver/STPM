@@ -1,5 +1,20 @@
 #include "../tui.h"
 
+void TUIFrontEnd::applyStyle(){
+    input.multiline = false;
+
+    input.transform = [this](InputState state) {
+        return inputStyle(state);
+    };
+
+    saveOption.transform = [this](const EntryState& state) {
+        return saveBtnStyle(state);
+    };
+
+    cancelOption.transform = [this](const EntryState& state) {
+        return cancelBtnStyle(state);
+    };
+}
 
 Element TUIFrontEnd::saveBtnStyle(const EntryState &state){
     auto element = text(" " + state.label + " ") | center;
