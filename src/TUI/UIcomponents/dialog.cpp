@@ -28,7 +28,7 @@ Element TUIFrontEnd::editPopup(){
             separator(),
             hbox(paragraph(" Email: "), emailInput->Render()),
             hbox(paragraph(" Site: "), siteInput->Render()),
-            hbox(paragraph(" Regenerate Password: "), text(db.data[selected_row].id), genPassBtn->Render()),
+            hbox(paragraph(" Regenerate Password: "), genPassBtn->Render(), text(db.data[selected_row].id)),
             separator(),
             hbox(saveBtn->Render(), text("   "), cancelBtn->Render()) | center
         })
@@ -36,14 +36,14 @@ Element TUIFrontEnd::editPopup(){
 }
 
 Element TUIFrontEnd::addPopup(){
-    maxDialogSelections = 3;
+    maxDialogSelections = 2;
     return window(text(" Add Credential "), 
         vbox({
             paragraphAlignCenter(" Navigation: [↑/↓] Switch Fields  [←/→] Select Options ") | center,
             separator(),
             hbox(paragraph(" Email: "), emailInput->Render()),
             hbox(paragraph(" Site: "), siteInput->Render()),
-            //hbox(paragraph(" Regenerate Password: "), text(db.data[selected_row].id), genPassBtn->Render()),
+            hbox(paragraph(" Regenerate Password:"), genPassBtn->Render(), text(db.data[selected_row].id)),
             separator(),
             hbox(saveBtn->Render(), text("   "), cancelBtn->Render()) | center
         })
@@ -51,7 +51,7 @@ Element TUIFrontEnd::addPopup(){
 }
 
 Element TUIFrontEnd::remPopup(){
-    maxDialogSelections = 3;
+    maxDialogSelections = 1;
     return window(text(" Remove Credential "), 
         vbox({
             paragraphAlignCenter(" Navigation: [←/→] Select Options ") | center,

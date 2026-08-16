@@ -18,3 +18,11 @@ void dataManager::deleteRow(int selectedRow){
 void dataManager::saveData(){
     //encrypt the data here
 }
+
+void dataManager::updateMenuEnteries(){
+    menu_entries.clear();
+    for (size_t i = 0; i < data.size(); i++) {
+        // Push empty strings; the text is handled by the transform function above
+        menu_entries.push_back(""); 
+    }
+}

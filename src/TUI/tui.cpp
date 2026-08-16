@@ -17,7 +17,7 @@ void TUIFrontEnd::initComponents() {
     menu_option.entries_option.transform = [this](const EntryState& state) {
         return menuRowEntry(state);
     };
-    updateMenuEnteries();
+    db.updateMenuEnteries();
 
     applyStyle();
     

@@ -108,7 +108,11 @@ private:
     Element title();
     Element tableHeader();
 
-    //dialog
+    //instructions
+    Element warningWindow(Dimensions size);
+
+
+    //actual dialogs
     void switchDialog(layers dialogLayer);
     Element editPopup();
     Element addPopup();
@@ -116,11 +120,10 @@ private:
     Element passPopup();
 
 
-    //instructions
-    Element warningWindow(Dimensions size);
 
     Element menuRowEntry(const EntryState& state);
     
     void updateMenuEnteries();
+    
     MenuOption menu_option;
 };

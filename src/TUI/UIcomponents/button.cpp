@@ -1,21 +1,28 @@
 #include "../tui.h"
-
+#include "../genPass/genPass.h"
 
 Component TUIFrontEnd::saveButton(){
     //save_option = saveBtnStyle();
     return Button("Save", [&] {
         if(activeLayer == addDialog){
             db.addRow();
+            layerNo = 0;
+            activeLayer = mainMenu;
+            db.updateMenuEnteries();
             return;
         }
 
         if(activeLayer == remDialog){
             db.deleteRow(selected_row);
+            layerNo = 0;
+            activeLayer = mainMenu;
+            db.updateMenuEnteries();            
+            return;
         }
 
         db.data[selected_row].name = emailCred;
         db.data[selected_row].role = siteCred;
-        updateMenuEnteries();
+        db.updateMenuEnteries();
         layerNo = 0;
         activeLayer = mainMenu;
     }, saveOption); 
@@ -29,9 +36,10 @@ Component TUIFrontEnd::cancelButton(){
 }
 
 Component TUIFrontEnd::genPassButton(){
-    return Button("  ", [&] { 
+    return Button(" ", [&] { 
         //resetPassword()
-        db.data[selected_row].id = "meow";
+        GeneratePass ps;
+        db.data[selected_row].id = ps.getgeneratedPass();
     }, cancelOption);
 }
 

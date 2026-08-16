@@ -20,10 +20,3 @@ Element TUIFrontEnd::menuRowEntry(const EntryState &state){
     return rowElement;
 }
 
-void TUIFrontEnd::updateMenuEnteries(){
-    db.menu_entries.clear();
-    for (size_t i = 0; i < db.data.size(); i++) {
-        // Push empty strings; the text is handled by the transform function above
-        db.menu_entries.push_back(""); 
-    }
-}

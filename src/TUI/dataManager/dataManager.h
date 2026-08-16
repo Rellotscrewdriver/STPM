@@ -23,6 +23,7 @@ public:
 
     std::vector<Record> data;
     std::vector<std::string> menu_entries;
+    void updateMenuEnteries();
 
     void copyCreds(copyData type, int selectedRow);
     void addRow();
