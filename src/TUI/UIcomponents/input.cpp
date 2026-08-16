@@ -46,14 +46,21 @@ Component TUIFrontEnd::inputEvent(){
         }
         
         if (event == Event::Character('n')) {
-            db.addRow();
+            activeLayer = addDialog;
+            switchDialog(addDialog);
+            
+            dContainer->TakeFocus();
             //activeLayer = addDialog;
             // dialog_container->TakeFocus();
             return true;
         }
 
         if (event == Event::Character('d')) {
-            db.deleteRow(selected_row);
+            activeLayer = remDialog;
+            switchDialog(remDialog);
+            
+            dContainer->TakeFocus();
+            //db.deleteRow(selected_row);
             //activeLayer = remDialog;
             // dialog_container->TakeFocus();
             return true;
@@ -82,6 +89,7 @@ Component TUIFrontEnd::inputEvent(){
 
         if (event == Event::Return) {
             activeLayer = editDialog;
+            switchDialog(editDialog);
             passCred = db.data[selected_row].id;
             emailCred = db.data[selected_row].name;
             siteCred = db.data[selected_row].role;
@@ -96,29 +104,26 @@ Component TUIFrontEnd::dialogInputEvent(){
     return CatchEvent(dContainer, [&](Event event) {
         if (event == Event::Escape) {
             activeLayer = mainMenu;
+            dialog_selector = 0;
             layerNo = 0;
             return true; // Event handled
         }
 
         if (event == Event::ArrowDown) {
-            if (dialog_selector <= 2) {
+            if (dialog_selector <= maxDialogSelections) {
                 dialog_selector++;
                 return true; // Consume the event
             }
-            dialog_selector = 0; 
+            dialog_selector = 1; 
             return true;
         }
     
-        if (event == Event::P){
-            
-        }
-
         if (event == Event::ArrowUp) {
-            if (dialog_selector > 0) {
+            if (dialog_selector > 1) {
                 dialog_selector--;
                 return true; // Consume the event
             }
-            dialog_selector = 3;
+            dialog_selector = maxDialogSelections; 
             return true;
         }
         return false;

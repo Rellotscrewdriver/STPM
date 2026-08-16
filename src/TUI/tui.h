@@ -41,6 +41,7 @@ private:
     layers activeLayer = mainMenu;
     int layerNo = 0;
     int dialog_selector = 0;
+    int maxDialogSelections = 12;
 
     std::string emailCred;
     std::string siteCred;
@@ -101,13 +102,14 @@ private:
     Component mainInputEvent;
     Component dInputEvent;
 
+    Component btnContainer;
 
     //title and header
     Element title();
     Element tableHeader();
 
     //dialog
-    Component dialogContainer();
+    void switchDialog(layers dialogLayer);
     Element editPopup();
     Element addPopup();
     Element remPopup();

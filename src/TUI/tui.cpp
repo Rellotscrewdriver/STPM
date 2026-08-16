@@ -34,13 +34,8 @@ void TUIFrontEnd::initComponents() {
     // Instantiate persistent menu
     menuComponent = ftxui::Menu(&(db.menu_entries), &selected_row, menu_option);
 
-    dContainer = dialogContainer();
-    // dContainer = Container::Vertical({
-    //     emailInput,
-    //     siteInput,
-    //     genPassBtn,
-    //     btnLayout()
-    // }, &dialog_selector);
+    btnContainer = Container::Horizontal({ saveBtn, cancelBtn });
+    dContainer = Container::Vertical({}, &dialog_selector);
 
     mainInputEvent = inputEvent();
     dInputEvent = dialogInputEvent();
@@ -53,25 +48,40 @@ void TUIFrontEnd::exec(){
 
 
 void TUIFrontEnd::renderLayout(){
+
     renderer = Renderer(layoutManager(), [&] {
         auto minSize = Terminal::Size();
-
+        Element mainLayout = buildMainLayout();
         if (minSize.dimx <= minWidth || minSize.dimy <= minHeight) {
             return warningWindow(minSize);
         }
 
-        buildMainLayout();
-
         if (activeLayer == editDialog) {
-            auto dialog = editPopup();
-
+            switchDialog(editDialog);
             return dbox({
-                buildMainLayout() | dim,
-                dialog
+                mainLayout | dim,
+                editPopup()
             });
         }
 
-        return buildMainLayout();
+        if (activeLayer == remDialog) {
+            switchDialog(remDialog);
+            return dbox({
+                mainLayout | dim,
+                remPopup()
+            });
+        }
+
+        if (activeLayer == addDialog) {
+            switchDialog(addDialog);
+            return dbox({
+                mainLayout | dim,
+                addPopup()
+            });
+        }
+
+
+        return mainLayout;
     });
 }
 

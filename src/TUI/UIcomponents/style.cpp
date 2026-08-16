@@ -42,6 +42,6 @@ Element TUIFrontEnd::inputStyle(InputState state){
         return state.element | color(Color::Blue) | bgcolor(Color::GrayDark) | bold | underlined;
     } else {
         // Default idle state
-        return state.element | color(Color::White);
+        return state.element | color(Color::White) | bgcolor(Color::GrayDark);
     }
 }

@@ -4,6 +4,15 @@
 Component TUIFrontEnd::saveButton(){
     //save_option = saveBtnStyle();
     return Button("Save", [&] {
+        if(activeLayer == addDialog){
+            db.addRow();
+            return;
+        }
+
+        if(activeLayer == remDialog){
+            db.deleteRow(selected_row);
+        }
+
         db.data[selected_row].name = emailCred;
         db.data[selected_row].role = siteCred;
         updateMenuEnteries();
@@ -20,7 +29,7 @@ Component TUIFrontEnd::cancelButton(){
 }
 
 Component TUIFrontEnd::genPassButton(){
-    return Button("", [&] { 
+    return Button("  ", [&] { 
         //resetPassword()
         db.data[selected_row].id = "meow";
     }, cancelOption);
@@ -33,4 +42,3 @@ Component TUIFrontEnd::btnLayout(){
         cancelBtn
     });
 }
-
