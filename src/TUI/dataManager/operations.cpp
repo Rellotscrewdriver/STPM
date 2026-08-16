@@ -1,7 +1,8 @@
 #include "dataManager.h"
 
-void dataManager::addRow(){
-    data.push_back({"007", "James Bond", "Secret Service Agent"});
+void dataManager::addRow(std::string &email, std::string &site, std::string &pass){
+    data.push_back({pass, email, site});
+    //data.push_back({"007", "James Bond", "Secret Service Agent"});
     menu_entries.push_back("");
 }
 

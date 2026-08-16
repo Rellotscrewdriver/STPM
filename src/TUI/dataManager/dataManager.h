@@ -26,7 +26,7 @@ public:
     void updateMenuEnteries();
 
     void copyCreds(copyData type, int selectedRow);
-    void addRow();
+    void addRow(std::string &email, std::string &site, std::string &pass);
     void deleteRow(int selectedRow);
     void saveData();
 };

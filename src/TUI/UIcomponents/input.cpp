@@ -47,8 +47,11 @@ Component TUIFrontEnd::inputEvent(){
         
         if (event == Event::Character('n')) {
             activeLayer = addDialog;
+
             switchDialog(addDialog);
-            
+            passCred = "";
+            emailCred = "";
+            siteCred = "";
             dContainer->TakeFocus();
             //activeLayer = addDialog;
             // dialog_container->TakeFocus();
@@ -104,26 +107,26 @@ Component TUIFrontEnd::dialogInputEvent(){
     return CatchEvent(dContainer, [&](Event event) {
         if (event == Event::Escape) {
             activeLayer = mainMenu;
-            dialog_selector = 0;
+            dialogSelector = 0;
             layerNo = 0;
             return true; // Event handled
         }
 
         if (event == Event::ArrowDown) {
-            if (dialog_selector <= maxDialogSelections) {
-                dialog_selector++;
+            if (dialogSelector <= maxDialogSelections) {
+                dialogSelector++;
                 return true; // Consume the event
             }
-            dialog_selector = 1; 
+            dialogSelector = 1; 
             return true;
         }
     
         if (event == Event::ArrowUp) {
-            if (dialog_selector > 1) {
-                dialog_selector--;
+            if (dialogSelector > 1) {
+                dialogSelector--;
                 return true; // Consume the event
             }
-            dialog_selector = maxDialogSelections; 
+            dialogSelector = maxDialogSelections; 
             return true;
         }
         return false;
