@@ -13,7 +13,6 @@ Element TUIFrontEnd::menuRowEntry(const EntryState &state){
     });
     
     if (state.focused){
-        //TODO: put this in style.cpp
         rowElement = rowElement | bgcolor(Color::Blue) | color(Color::Black) | bold;
     }
     

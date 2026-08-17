@@ -2,6 +2,7 @@
 #include "../genPass/genPass.h"
 
 Component TUIFrontEnd::saveButton(){
+    //TODO: make some checks from regexValid class and prevent user from typing out blank string
     return Button("Save", [&] {
         db.data[selected_row].name = emailCred;
         db.data[selected_row].role = siteCred;
@@ -38,6 +39,14 @@ Component TUIFrontEnd::cancelButton(){
     }, cancelOption);
 }
 
+Component TUIFrontEnd::noButton(){
+    return Button("No", [&] { 
+        activeLayer = mainMenu;
+        layerNo = 0; 
+    }, cancelOption);
+}
+
+
 Component TUIFrontEnd::genPassButton(){
     return Button("", [&] { 
         //resetPassword()
@@ -54,19 +63,19 @@ Component TUIFrontEnd::editBtnLayout(){
     return ftxui::Container::Horizontal({
         saveBtn, 
         cancelBtn
-    });
+    }, &dialogBtnsSelector);
 }
 
 Component TUIFrontEnd::addBtnLayout(){
     return ftxui::Container::Horizontal({
         addBtn, 
         cancelBtn
-    });
+    }, &dialogBtnsSelector);
 }
 
 Component TUIFrontEnd::remBtnLayout(){
     return ftxui::Container::Horizontal({
         yesBtn, 
-        cancelBtn
-    });
+        noBtn
+    }, &dialogBtnsSelector);
 }

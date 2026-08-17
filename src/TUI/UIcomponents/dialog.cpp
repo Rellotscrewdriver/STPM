@@ -9,9 +9,13 @@ void TUIFrontEnd::switchDialog(layers dialogLayer){
         dContainer->Add(emailInput);
         dContainer->Add(siteInput);
         dContainer->Add(genPassBtn);
-        dContainer->Add(btnContainer);
+        if(dialogLayer == editDialog){
+            dContainer->Add(editBtnLayout());
+        } else {
+            dContainer->Add(addBtnLayout());
+        }
     } else if (dialogLayer == remDialog) {
-        dContainer->Add(btnContainer);
+        dContainer->Add(remBtnLayout());
     } else if (dialogLayer == masterPass) {
         dContainer->Add(masterPassword);
         dContainer->Add(btnContainer);
@@ -26,9 +30,9 @@ Element TUIFrontEnd::editPopup(){
         vbox({
             paragraphAlignCenter(" Navigation: [↑/↓] Switch Fields  [←/→] Select Options ") | center,
             separator(),
-            hbox(paragraph(" Email: "), emailInput->Render()),
-            hbox(paragraph(" Site: "), siteInput->Render()),
-            hbox(paragraph(" Regenerate Password: "), genPassBtn->Render(), text(db.data[selected_row].id)),
+            hbox(paragraph(" Email:    "), emailInput->Render()),
+            hbox(paragraph(" Site:     "), siteInput->Render()),
+            hbox(paragraph(" Password: "), genPassBtn->Render(), text("  " + db.data[selected_row].id)),
             separator(),
             hbox(saveBtn->Render(), text("   "), cancelBtn->Render()) | center
         })
@@ -36,16 +40,16 @@ Element TUIFrontEnd::editPopup(){
 }
 
 Element TUIFrontEnd::addPopup(){
-    maxDialogSelections = 2;
+    maxDialogSelections = 3;
     return window(text(" Add Credential "), 
         vbox({
             paragraphAlignCenter(" Navigation: [↑/↓] Switch Fields  [←/→] Select Options ") | center,
             separator(),
-            hbox(paragraph(" Email: "), emailInput->Render()),
-            hbox(paragraph(" Site: "), siteInput->Render()),
-            hbox(paragraph(" Regenerate Password:"), genPassBtn->Render(), text(db.data[selected_row].id)),
+            hbox(paragraph(" Email:   "), emailInput->Render()),
+            hbox(paragraph(" Site:    "), siteInput->Render()),
+            hbox(paragraph(" Password:"), genPassBtn->Render(), text("  " + db.data[selected_row].id)),
             separator(),
-            hbox(saveBtn->Render(), text("   "), cancelBtn->Render()) | center
+            hbox(addBtn->Render(), text("   "), cancelBtn->Render()) | center
         })
     ) | clear_under | center;
 }
@@ -58,7 +62,7 @@ Element TUIFrontEnd::remPopup(){
             separator(),
             paragraphAlignCenter(" Are you sure you wanna remove this? ") | center,
             separator(),
-            hbox(saveBtn->Render(), text("   "), cancelBtn->Render()) | center
+            hbox(yesBtn->Render(), text("   "), noBtn->Render()) | center
         })
     ) | clear_under | center;
 }

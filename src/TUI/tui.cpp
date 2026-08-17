@@ -27,6 +27,7 @@ void TUIFrontEnd::initComponents() {
 
     saveBtn = saveButton();
     yesBtn = confirmButton();
+    noBtn = noButton();
     addBtn = addButton();
 
     cancelBtn = cancelButton();
@@ -37,12 +38,8 @@ void TUIFrontEnd::initComponents() {
     menuComponent = ftxui::Menu(&(db.menu_entries), &selected_row, menu_option);
 
     btnContainer = Container::Horizontal({ saveBtn, cancelBtn });
-    // editBtnsContainer = Container::Horizontal({ saveBtn, cancelBtn });
-    // addBtnsContainer = Container::Horizontal({ addBtn, cancelBtn });
-    // remBtnsContainer = Container::Horizontal({ yesBtn, cancelBtn });
 
     dContainer = Container::Vertical({}, &dialogSelector);
-    // dContainer = Container::Vertical({});
 
     mainInputEvent = inputEvent();
     dInputEvent = dialogInputEvent();

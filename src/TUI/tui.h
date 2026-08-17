@@ -45,17 +45,6 @@ private:
     std::string siteCred;
     std::string passCred;
 
-    /*
-        TODO: on friday, separate these into classes
-        
-        TUIFrontend -> style -> userInputs
-                             -> buttons
-                             -> title and header
-                    -> dialog
-                    -> instruction manual
-                    -> operations
-                    -> version
-    */
     Component renderer;
     ScreenInteractive screen = ScreenInteractive::Fullscreen();
     Component layoutManager();
@@ -76,6 +65,7 @@ private:
     Component confirmButton();
     Component addButton();
     Component cancelButton();
+    Component noButton();
     Component genPassButton();
     Component editBtnLayout();
     Component addBtnLayout();
@@ -99,6 +89,7 @@ private:
     Component btnContainer;
     Component saveBtn;
     Component yesBtn;
+    Component noBtn;
     Component addBtn;
 
     Component cancelBtn;
@@ -107,10 +98,6 @@ private:
     Component dContainer;
     Component mainInputEvent;
     Component dInputEvent;
-
-    Component addBtnsContainer;
-    Component editBtnsContainer;
-    Component remBtnsContainer;
 
     //title and header
     Element title();
