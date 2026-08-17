@@ -2,24 +2,7 @@
 #include "../genPass/genPass.h"
 
 Component TUIFrontEnd::saveButton(){
-    //save_option = saveBtnStyle();
     return Button("Save", [&] {
-        if(activeLayer == addDialog){
-            db.addRow();
-            layerNo = 0;
-            activeLayer = mainMenu;
-            db.updateMenuEnteries();
-            return;
-        }
-
-        if(activeLayer == remDialog){
-            db.deleteRow(selected_row);
-            layerNo = 0;
-            activeLayer = mainMenu;
-            db.updateMenuEnteries();            
-            return;
-        }
-
         db.data[selected_row].name = emailCred;
         db.data[selected_row].role = siteCred;
         db.updateMenuEnteries();
@@ -27,6 +10,26 @@ Component TUIFrontEnd::saveButton(){
         activeLayer = mainMenu;
     }, saveOption); 
 }
+
+Component TUIFrontEnd::confirmButton(){
+    return Button("Yes", [&] {
+        db.deleteRow(selected_row);
+        layerNo = 0;
+        activeLayer = mainMenu;
+        db.updateMenuEnteries();            
+    }, saveOption); 
+}
+
+Component TUIFrontEnd::addButton(){
+    return Button("Add", [&] {
+        db.addRow(emailCred, siteCred, passCred);
+        layerNo = 0;
+        activeLayer = mainMenu;
+        db.updateMenuEnteries();
+        return;
+    }, saveOption); 
+}
+
 
 Component TUIFrontEnd::cancelButton(){
     return Button("Cancel", [&] { 
@@ -36,17 +39,34 @@ Component TUIFrontEnd::cancelButton(){
 }
 
 Component TUIFrontEnd::genPassButton(){
-    return Button(" ", [&] { 
+    return Button("", [&] { 
         //resetPassword()
         GeneratePass ps;
-        db.data[selected_row].id = ps.getgeneratedPass();
+        if(activeLayer == addDialog){
+            passCred = ps.getgeneratedPass();
+        } else {
+            db.data[selected_row].id = ps.getgeneratedPass();
+        }
     }, cancelOption);
 }
 
-
-Component TUIFrontEnd::btnLayout(){
+Component TUIFrontEnd::editBtnLayout(){
     return ftxui::Container::Horizontal({
         saveBtn, 
+        cancelBtn
+    });
+}
+
+Component TUIFrontEnd::addBtnLayout(){
+    return ftxui::Container::Horizontal({
+        addBtn, 
+        cancelBtn
+    });
+}
+
+Component TUIFrontEnd::remBtnLayout(){
+    return ftxui::Container::Horizontal({
+        yesBtn, 
         cancelBtn
     });
 }

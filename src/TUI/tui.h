@@ -26,9 +26,6 @@ private:
         remDialog,
         masterPass
     };
-
-
-
     
     //terminal window size
     const int minHeight = 11;
@@ -40,13 +37,13 @@ private:
 
     layers activeLayer = mainMenu;
     int layerNo = 0;
-    int dialog_selector = 0;
+    int dialogSelector = 0;
+    int dialogBtnsSelector = 0;
     int maxDialogSelections = 12;
 
     std::string emailCred;
     std::string siteCred;
     std::string passCred;
-
 
     /*
         TODO: on friday, separate these into classes
@@ -76,9 +73,13 @@ private:
 
     //Buttons
     Component saveButton();
+    Component confirmButton();
+    Component addButton();
     Component cancelButton();
     Component genPassButton();
-    Component btnLayout();
+    Component editBtnLayout();
+    Component addBtnLayout();
+    Component remBtnLayout();
 
     //Style
     InputOption input;
@@ -95,14 +96,21 @@ private:
     Component siteInput;
     Component masterPassword;
     Component menuComponent;
+    Component btnContainer;
     Component saveBtn;
+    Component yesBtn;
+    Component addBtn;
+
     Component cancelBtn;
+    
     Component genPassBtn;
     Component dContainer;
     Component mainInputEvent;
     Component dInputEvent;
 
-    Component btnContainer;
+    Component addBtnsContainer;
+    Component editBtnsContainer;
+    Component remBtnsContainer;
 
     //title and header
     Element title();
@@ -111,15 +119,12 @@ private:
     //instructions
     Element warningWindow(Dimensions size);
 
-
     //actual dialogs
     void switchDialog(layers dialogLayer);
     Element editPopup();
     Element addPopup();
     Element remPopup();
     Element passPopup();
-
-
 
     Element menuRowEntry(const EntryState& state);
     

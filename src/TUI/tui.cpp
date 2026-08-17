@@ -9,7 +9,6 @@ TUIFrontEnd::TUIFrontEnd(){
     initComponents();
 
     renderLayout();
-
 }
 
 void TUIFrontEnd::initComponents() {    
@@ -27,6 +26,9 @@ void TUIFrontEnd::initComponents() {
     masterPassword = Input(&siteCred, "Enter Master Password...", input);
 
     saveBtn = saveButton();
+    yesBtn = confirmButton();
+    addBtn = addButton();
+
     cancelBtn = cancelButton();
     genPassBtn = genPassButton();
 
@@ -35,7 +37,12 @@ void TUIFrontEnd::initComponents() {
     menuComponent = ftxui::Menu(&(db.menu_entries), &selected_row, menu_option);
 
     btnContainer = Container::Horizontal({ saveBtn, cancelBtn });
-    dContainer = Container::Vertical({}, &dialog_selector);
+    // editBtnsContainer = Container::Horizontal({ saveBtn, cancelBtn });
+    // addBtnsContainer = Container::Horizontal({ addBtn, cancelBtn });
+    // remBtnsContainer = Container::Horizontal({ yesBtn, cancelBtn });
+
+    dContainer = Container::Vertical({}, &dialogSelector);
+    // dContainer = Container::Vertical({});
 
     mainInputEvent = inputEvent();
     dInputEvent = dialogInputEvent();
