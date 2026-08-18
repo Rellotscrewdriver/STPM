@@ -4,6 +4,11 @@
 Component TUIFrontEnd::saveButton(){
     //TODO: make some checks from regexValid class and prevent user from typing out blank string
     return Button("Save", [&] {
+        if (!validateEmail(emailCred) || !validateSite(siteCred)) {
+            emailErrorMsg = "Email or Site is invaild";
+            return; // Prevent adding invalid data
+        }
+
         db.data[selected_row].name = emailCred;
         db.data[selected_row].role = siteCred;
         db.updateMenuEnteries();
@@ -23,6 +28,10 @@ Component TUIFrontEnd::confirmButton(){
 
 Component TUIFrontEnd::addButton(){
     return Button("Add", [&] {
+        if (!validateEmail(emailCred) || !validateSite(siteCred)) {
+            return; // Prevent adding invalid data
+        }
+
         db.addRow(emailCred, siteCred, passCred);
         layerNo = 0;
         activeLayer = mainMenu;

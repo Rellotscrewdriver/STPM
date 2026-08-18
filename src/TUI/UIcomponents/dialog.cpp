@@ -32,7 +32,7 @@ Element TUIFrontEnd::editPopup(){
             separator(),
             hbox(paragraph(" Email:    "), emailInput->Render()),
             hbox(paragraph(" Site:     "), siteInput->Render()),
-            hbox(paragraph(" Password: "), genPassBtn->Render(), text("  " + db.data[selected_row].id)),
+            hbox(paragraph(" Password: "), genPassBtn->Render(), text(" " + db.data[selected_row].id)),
             separator(),
             hbox(saveBtn->Render(), text("   "), cancelBtn->Render()) | center
         })
@@ -41,13 +41,19 @@ Element TUIFrontEnd::editPopup(){
 
 Element TUIFrontEnd::addPopup(){
     maxDialogSelections = 3;
+
+    validateEmail(emailCred);
+    validateSite(siteCred);
+
     return window(text(" Add Credential "), 
         vbox({
             paragraphAlignCenter(" Navigation: [↑/↓] Switch Fields  [←/→] Select Options ") | center,
             separator(),
             hbox(paragraph(" Email:   "), emailInput->Render()),
+            isEmailValid ? paragraphAlignCenter("All good!") | color(Color::Green) : paragraphAlignCenter(" " + emailErrorMsg) | color(Color::Red) | bold,
             hbox(paragraph(" Site:    "), siteInput->Render()),
-            hbox(paragraph(" Password:"), genPassBtn->Render(), text("  " + db.data[selected_row].id)),
+            isSiteValid ? paragraphAlignCenter("All good!") | color(Color::Green) : paragraphAlignCenter(" " + siteErrorMsg) | color(Color::Red) | bold,
+            hbox(paragraph(" Password:"), genPassBtn->Render(), text(" " + passCred)),
             separator(),
             hbox(addBtn->Render(), text("   "), cancelBtn->Render()) | center
         })

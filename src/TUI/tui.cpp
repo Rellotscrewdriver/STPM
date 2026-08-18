@@ -20,9 +20,24 @@ void TUIFrontEnd::initComponents() {
 
     applyStyle();
     
+    auto rawEmailInput = Input(&emailCred, "Enter your Email...", input);
+    
+    // Catch keystrokes on emailInput to re-evaluate validation on every keypress
+    emailInput = CatchEvent(rawEmailInput, [this](Event event) {
+        validateEmail(emailCred);
+        return false; // Return false so the Input component still processes text entry
+    });
+
     // Instantiate persistent inputs
-    emailInput = Input(&emailCred, "Enter your Email...", input);
-    siteInput = Input(&siteCred, "Enter the Link...", input);
+    // emailInput = Input(&emailCred, "Enter your Email...", input);
+    auto rawSiteInput = Input(&siteCred, "Enter the Link...", input);
+
+    siteInput = CatchEvent(rawSiteInput, [this](Event event) {
+        validateSite(siteCred);
+        return false; // Return false so the Input component still processes text entry
+    });
+
+    // siteInput = Input(&siteCred, "Enter the Link...", input);
     masterPassword = Input(&siteCred, "Enter Master Password...", input);
 
     saveBtn = saveButton();
