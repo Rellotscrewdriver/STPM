@@ -53,8 +53,8 @@ Component TUIFrontEnd::inputEvent(){
             emailCred = "";
             siteCred = "";
 
-            validateEmail(emailCred);
-            validateSite(siteCred);
+            // validateEmail(emailCred);
+            // validateSite(siteCred);
 
             dContainer->TakeFocus();
             //activeLayer = addDialog;

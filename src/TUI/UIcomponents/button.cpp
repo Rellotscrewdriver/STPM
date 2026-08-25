@@ -6,7 +6,7 @@ Component TUIFrontEnd::saveButton(){
     return Button("Save", [&] {
         if (!validateEmail(emailCred) || !validateSite(siteCred)) {
             emailErrorMsg = "Email or Site is invaild";
-            return; // Prevent adding invalid data
+            return; // Prevents adding invalid data
         }
 
         db.data[selected_row].name = emailCred;
@@ -29,6 +29,7 @@ Component TUIFrontEnd::confirmButton(){
 Component TUIFrontEnd::addButton(){
     return Button("Add", [&] {
         if (!validateEmail(emailCred) || !validateSite(siteCred)) {
+            emailErrorMsg = "Email or Site is invaild";
             return; // Prevent adding invalid data
         }
 
