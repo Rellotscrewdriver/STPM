@@ -52,12 +52,9 @@ private:
     void renderLayout();
 
     //String Validation
-    std::string emailErrorMsg;
-    std::string siteErrorMsg;
-    bool isEmailValid = true;
-    bool isSiteValid = true;
-    bool validateEmail(const std::string& email);
-    bool validateSite(const std::string& site);
+    bool isValidCredentials = true;
+    std::string validationMsg;
+    bool validateInputs(const std::string& email, const std::string& site);
 
 
     //User Input

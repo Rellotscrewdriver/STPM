@@ -4,8 +4,8 @@
 Component TUIFrontEnd::saveButton(){
     //TODO: make some checks from regexValid class and prevent user from typing out blank string
     return Button("Save", [&] {
-        if (!validateEmail(emailCred) || !validateSite(siteCred)) {
-            emailErrorMsg = "Email or Site is invaild";
+        if (!validateInputs(emailCred, siteCred)) {
+            isValidCredentials = "Email or Site is invaild";
             return; // Prevents adding invalid data
         }
 
@@ -28,8 +28,8 @@ Component TUIFrontEnd::confirmButton(){
 
 Component TUIFrontEnd::addButton(){
     return Button("Add", [&] {
-        if (!validateEmail(emailCred) || !validateSite(siteCred)) {
-            emailErrorMsg = "Email or Site is invaild";
+        if (!validateInputs(emailCred, siteCred)) {
+            isValidCredentials = "Email or Site is invaild";
             return; // Prevent adding invalid data
         }
 

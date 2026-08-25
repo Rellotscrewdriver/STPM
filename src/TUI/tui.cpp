@@ -24,7 +24,7 @@ void TUIFrontEnd::initComponents() {
     
     // Catch keystrokes on emailInput to re-evaluate validation on every keypress
     emailInput = CatchEvent(rawEmailInput, [this](Event event) {
-        validateEmail(emailCred);
+        validateInputs(emailCred, siteCred);
         return false; // Return false so the Input component still processes text entry
     });
 
@@ -33,7 +33,7 @@ void TUIFrontEnd::initComponents() {
     auto rawSiteInput = Input(&siteCred, "Enter the Link...", input);
 
     siteInput = CatchEvent(rawSiteInput, [this](Event event) {
-        validateSite(siteCred);
+        validateInputs(emailCred, siteCred);
         return false; // Return false so the Input component still processes text entry
     });
 

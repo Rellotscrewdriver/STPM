@@ -1,36 +1,25 @@
 #include "../tui.h"
 
-bool TUIFrontEnd::validateEmail(const std::string& email) {
+bool TUIFrontEnd::validateInputs(const std::string& email, const std::string& site) {
     if (email.empty()) {
-        emailErrorMsg = "Email cannot be empty!";
-        isEmailValid = false;
+        validationMsg = "Email cannot be empty!";
+        isValidCredentials = false;
         return false;
     }
     // Example basic checks (or use std::regex)
     if (email.find('@') == std::string::npos || email.find('.') == std::string::npos) {
-        emailErrorMsg = "Invalid email format (missing '@' or '.')";
-        isEmailValid = false;
+        validationMsg = "Invalid email format (missing '@' or '.')";
+        isValidCredentials = false;
+        return false;
+    }
+
+    if (site.empty()) {
+        validationMsg = "Site cannot be empty!";
+        isValidCredentials = false;
         return false;
     }
     
-    isEmailValid = true;
-    emailErrorMsg = ""; // Clear error when valid
-    return true;
-}
-
-bool TUIFrontEnd::validateSite(const std::string& site) {
-    if (site.empty()) {
-        siteErrorMsg = "Site cannot be empty!";
-        isSiteValid = false;
-        return false;
-    }
-    // Example basic checks (or use std::regex)
-    // if () {
-    //     emailErrorMsg = "Invalid email format (missing '@' or '.')";
-    //     return false;
-    // }
- 
-    isSiteValid = true;
-    siteErrorMsg = ""; // Clear error when valid
+    validationMsg = true;
+    validationMsg = ""; // Clear error when valid
     return true;
 }
