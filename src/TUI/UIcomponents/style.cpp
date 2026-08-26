@@ -39,9 +39,9 @@ Element TUIFrontEnd::cancelBtnStyle(const EntryState &state){
 Element TUIFrontEnd::inputStyle(InputState state){
     if (state.focused) {
         // Styled when selected via keyboard tab/arrows or mouse click
-        return state.element | color(Color::Blue) | bgcolor(Color::GrayDark) | bold | underlined;
+        return state.element | color(Color::Blue) | bgcolor(Color::Grey27) | bold | underlined;
     } else {
         // Default idle state
-        return state.element | color(Color::White) | bgcolor(Color::GrayDark);
+        return state.element | color(Color::Grey62) | bgcolor(Color::Default) | underlined;
     }
 }

@@ -54,9 +54,6 @@ Component TUIFrontEnd::inputEvent(){
             emailCred = "";
             siteCred = "";
 
-            // validateEmail(emailCred);
-            // validateSite(siteCred);
-
             dContainer->TakeFocus();
             //activeLayer = addDialog;
             // dialog_container->TakeFocus();
@@ -127,7 +124,7 @@ Component TUIFrontEnd::dialogInputEvent(){
         }
     
         if (event == Event::ArrowUp) {
-            if (dialogSelector > 1) {
+            if (dialogSelector >= 1) {
                 dialogSelector--;
                 return true; // Consume the event
             }

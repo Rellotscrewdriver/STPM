@@ -35,9 +35,12 @@ Element TUIFrontEnd::editPopup(){
             separator(),
             hbox(paragraph(" Email:    "), emailInput->Render()),
             hbox(paragraph(" Site:     "), siteInput->Render()),
-            isValidCredentials ? 
-            paragraphAlignCenter("All good!") | color(Color::Green) 
-            : paragraphAlignCenter(" " + validationMsg) | color(Color::Red) | bold,
+            hbox(
+                paragraph("               "),
+                isValidCredentials ? 
+                paragraphAlignCenter("All good!") | color(Color::Green) 
+                : paragraphAlignCenter(validationMsg) | color(Color::Red) | bold
+            ),
             hbox(paragraph(" Password: "), genPassBtn->Render(), text(" " + db.data[selected_row].id)),
             separator(),
             hbox(saveBtn->Render(), text("   "), cancelBtn->Render()) | center
@@ -54,12 +57,15 @@ Element TUIFrontEnd::addPopup(){
         vbox({
             paragraphAlignCenter(" Navigation: [↑/↓] Switch Fields  [←/→] Select Options ") | center,
             separator(),
-            hbox(paragraph(" Email:   "), emailInput->Render()),
-            hbox(paragraph(" Site:    "), siteInput->Render()),
-            isValidCredentials ? 
-            paragraphAlignCenter("All good!") | color(Color::Green) 
-            : paragraphAlignCenter(validationMsg) | color(Color::Red) | bold,
-            hbox(paragraph(" Password:"), genPassBtn->Render(), text(" " + passCred)),
+            hbox(paragraph(" Email:    "), emailInput->Render()),
+            hbox(paragraph(" Site:     "), siteInput->Render()),
+            hbox(
+                paragraph("               "),
+                isValidCredentials ? 
+                paragraphAlignCenter("All good!") | color(Color::Green) 
+                : paragraphAlignCenter(validationMsg) | color(Color::Red) | bold
+            ),
+            hbox(paragraph(" Password: "), genPassBtn->Render(), text(" " + passCred)),
             separator(),
             hbox(addBtn->Render(), text("   "), cancelBtn->Render()) | center
         })
