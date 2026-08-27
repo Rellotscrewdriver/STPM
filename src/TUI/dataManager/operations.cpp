@@ -22,8 +22,17 @@ void dataManager::saveData(){
 
 void dataManager::updateMenuEnteries(){
     menu_entries.clear();
-    for (size_t i = 0; i < data.size(); i++) {
-        // Push empty strings; the text is handled by the transform function above
-        menu_entries.push_back(""); 
+    if (data.empty()) {
+        // Keep 1 dummy entry so ftxui::Menu stays focusable
+        menu_entries.push_back("Empty");
+    } else {
+        for (const auto& item : data) {
+            menu_entries.push_back(""); // Or whatever key you use
+        }
     }
+
+    // for (size_t i = 0; i < data.size(); i++) {
+    //     // Push empty strings; the text is handled by the transform function above
+    //     menu_entries.push_back(""); 
+    // }
 }

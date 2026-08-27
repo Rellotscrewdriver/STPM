@@ -1,6 +1,10 @@
 #include "../tui.h"
 
 Element TUIFrontEnd::menuRowEntry(const EntryState &state){
+    if (db.data.empty()) {
+        return text(" (No Entries) ") | dim | center;
+    }
+    
     if (state.index >= db.data.size()){
         return text("");
     }

@@ -20,6 +20,13 @@ Component TUIFrontEnd::saveButton(){
 Component TUIFrontEnd::confirmButton(){
     return Button("Yes", [&] {
         db.deleteRow(selected_row);
+
+        if (db.data.empty()) {
+            selected_row = 0;
+        } else if (selected_row >= static_cast<int>(db.data.size())) {
+            selected_row = static_cast<int>(db.data.size()) - 1;
+        }
+
         layerNo = 0;
         activeLayer = mainMenu;
         db.updateMenuEnteries();            

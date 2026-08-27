@@ -16,12 +16,29 @@ void TUIFrontEnd::inputMasterPass(){
 Component TUIFrontEnd::inputEvent(){
 
     return CatchEvent(menuComponent, [&](Event event) {
+        if (layerNo != 0) return false;
+
         if (event == Event::Character('q')) {
             screen.Exit();
             return true;
         }
 
-        //Scrolling effect
+        if (event == Event::Character('n') || db.data.empty()) {
+            activeLayer = addDialog;
+
+            switchDialog(addDialog);
+            GeneratePass ps;
+            passCred = ps.getgeneratedPass();
+            emailCred = "";
+            siteCred = "";
+
+            dContainer->TakeFocus();
+            //activeLayer = addDialog;
+            // dialog_container->TakeFocus();
+            return true;
+        }
+
+        //Scrolling effect(BROKEN BUT CAN'T BE FIXED)
         if (!db.data.empty()) {
             int max_index = static_cast<int>(db.data.size()) - 1;
 
@@ -35,29 +52,12 @@ Component TUIFrontEnd::inputEvent(){
                 selected_row = 0;
                 return true;
             }
-        }
+        } else {
+            selected_row = 0;
+        } 
 
-        if (event == Event::Character('j')) {
-            return menuComponent->OnEvent(Event::ArrowDown);
-        }
-
-        if (event == Event::Character('k')) {
-            return menuComponent->OnEvent(Event::ArrowUp);
-        }
-        
-        if (event == Event::Character('n')) {
-            activeLayer = addDialog;
-
-            switchDialog(addDialog);
-            GeneratePass ps;
-            passCred = ps.getgeneratedPass();
-            emailCred = "";
-            siteCred = "";
-
-            dContainer->TakeFocus();
-            //activeLayer = addDialog;
-            // dialog_container->TakeFocus();
-            return true;
+        if (db.data.empty()) {
+            return false;
         }
 
         if (event == Event::Character('d')) {
