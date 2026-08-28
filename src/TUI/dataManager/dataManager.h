@@ -1,7 +1,7 @@
 #pragma once
 
 #include "includes.h"
-
+#include "clip.h"
 struct Record {
     std::string id;
     std::string name;
@@ -29,4 +29,7 @@ public:
     void addRow(std::string &email, std::string &site, std::string &pass);
     void deleteRow(int selectedRow);
     void saveData();
+
+private:
+    void copyToClipBoard(const std::string &info);
 };
