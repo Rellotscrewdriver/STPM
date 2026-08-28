@@ -14,3 +14,6 @@
 [submodule "libs/FTXUI"]
 	path = libs/FTXUI
 	url = https://github.com/ArthurSonzogni/FTXUI.git
+[submodule "libs/clipboard"]
+	path = libs/clipboard
+	url = https://github.com/dacap/clip.git
