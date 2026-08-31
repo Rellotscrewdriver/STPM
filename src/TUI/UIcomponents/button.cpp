@@ -1,8 +1,6 @@
 #include "../tui.h"
-#include "../genPass/genPass.h"
 
 Component TUIFrontEnd::saveButton(){
-    //TODO: make some checks from regexValid class and prevent user from typing out blank string
     return Button("Save", [&] {
         if (!validateInputs(emailCred, siteCred)) {
             isValidCredentials = "Email or Site is invaild";
@@ -69,9 +67,9 @@ Component TUIFrontEnd::genPassButton(){
         //resetPassword()
         GeneratePass ps;
         if(activeLayer == addDialog){
-            passCred = ps.getgeneratedPass();
+            passCred = gp.getgeneratedPass();
         } else {
-            db.data[selected_row].id = ps.getgeneratedPass();
+            db.data[selected_row].id = gp.getgeneratedPass();
         }
     }, cancelOption);
 }

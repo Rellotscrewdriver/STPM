@@ -1,6 +1,6 @@
 #include "../tui.h"
-#include "../genPass/genPass.h" //TODO: make it include in tui.h
- 
+
+
 void TUIFrontEnd::inputEmail(){
     emailInput = Input(&emailCred, "Enter your Email...", input);
 }
@@ -54,8 +54,7 @@ Component TUIFrontEnd::inputEvent(){
             activeLayer = addDialog;
 
             switchDialog(addDialog);
-            GeneratePass ps;
-            passCred = ps.getgeneratedPass();
+            passCred = gp.getgeneratedPass();
             emailCred = "";
             siteCred = "";
 
@@ -80,9 +79,7 @@ Component TUIFrontEnd::inputEvent(){
                 return true;
             }
 
-        } else {
-            selected_row = 0;
-        } 
+        }
 
         if (db.data.empty()) {
             return false;

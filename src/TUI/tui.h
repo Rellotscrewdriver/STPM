@@ -3,6 +3,7 @@
 #include "includes.h"
 #include "siteObj.h"
 #include "dataManager/dataManager.h"
+#include "../genPass/genPass.h"
 #include <FTXUI/include/ftxui/ftxui.hpp>
 
 using namespace ftxui;
@@ -18,7 +19,8 @@ private:
     void applyStyle();
 
     dataManager db;
-    
+    GeneratePass gp;
+
     enum layers {
         mainMenu,
         editDialog,
