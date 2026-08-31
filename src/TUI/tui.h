@@ -24,7 +24,8 @@ private:
         editDialog,
         addDialog,
         remDialog,
-        masterPass
+        masterPassD,
+        newUserD
     };
     
     //terminal window size
@@ -44,6 +45,7 @@ private:
     std::string emailCred;
     std::string siteCred;
     std::string passCred;
+    std::string masterPassT;
 
     Component renderer;
     ScreenInteractive screen = ScreenInteractive::Fullscreen();
@@ -53,6 +55,7 @@ private:
 
     //String Validation
     bool isValidCredentials = true;
+    bool isValidPassword = true;
     std::string validationMsg;
     bool validateInputs(const std::string& email, const std::string& site);
 
@@ -70,15 +73,19 @@ private:
     Component saveButton();
     Component confirmButton();
     Component addButton();
+    Component checkButton();
+    Component exitButton();
     Component cancelButton();
     Component noButton();
     Component genPassButton();
     Component editBtnLayout();
     Component addBtnLayout();
     Component remBtnLayout();
+    Component passBtnLayout();
 
     //Style
     InputOption input;
+    InputOption mInput;
     ButtonOption confirmBtn;
     ButtonOption saveOption;
     ButtonOption cancelOption;
@@ -86,21 +93,25 @@ private:
     Element saveBtnStyle(const EntryState &state);
     Element cancelBtnStyle(const EntryState &state);
     Element inputStyle(InputState state);
+    Element inputMasterStyle(InputState state);
 
     //meow
     Component emailInput;
     Component siteInput;
-    Component masterPassword;
+    Component passInput;
     Component menuComponent;
     Component btnContainer;
     Component saveBtn;
     Component yesBtn;
-    Component noBtn;
     Component addBtn;
 
+    Component checkBtn;
+    Component exitBtn;
+    Component noBtn;
     Component cancelBtn;
     
     Component genPassBtn;
+    Component masterPassword;
     Component dContainer;
     Component mainInputEvent;
     Component dInputEvent;
@@ -118,6 +129,9 @@ private:
     Element addPopup();
     Element remPopup();
     Element passPopup();
+    Element newUser();
+    Element masterPass();
+
 
     Element menuRowEntry(const EntryState& state);
     

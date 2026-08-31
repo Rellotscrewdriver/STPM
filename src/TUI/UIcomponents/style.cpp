@@ -2,11 +2,15 @@
 
 void TUIFrontEnd::applyStyle(){
     input.multiline = false;
+    mInput.multiline = false;
 
     input.transform = [this](InputState state) {
         return inputStyle(state);
     };
 
+    mInput.transform = [this](InputState state) {
+        return inputMasterStyle(state);
+    };
     saveOption.transform = [this](const EntryState& state) {
         return saveBtnStyle(state);
     };
@@ -40,6 +44,16 @@ Element TUIFrontEnd::inputStyle(InputState state){
     if (state.focused) {
         // Styled when selected via keyboard tab/arrows or mouse click
         return state.element | color(Color::Blue) | bgcolor(Color::Grey27) | bold | underlined;
+    } else {
+        // Default idle state
+        return state.element | color(Color::Grey62) | bgcolor(Color::Default) | underlined;
+    }
+}
+
+Element TUIFrontEnd::inputMasterStyle(InputState state){
+    if (state.focused) {
+        // Styled when selected via keyboard tab/arrows or mouse click
+        return state.element | color(Color::Red) | bgcolor(Color::Grey30) | bold | underlined;
     } else {
         // Default idle state
         return state.element | color(Color::Grey62) | bgcolor(Color::Default) | underlined;

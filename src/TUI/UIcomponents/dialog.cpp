@@ -16,9 +16,9 @@ void TUIFrontEnd::switchDialog(layers dialogLayer){
         }
     } else if (dialogLayer == remDialog) {
         dContainer->Add(remBtnLayout());
-    } else if (dialogLayer == masterPass) {
-        dContainer->Add(masterPassword);
-        dContainer->Add(btnContainer);
+    } else if (dialogLayer == masterPassD || dialogLayer == newUserD) {
+        dContainer->Add(passInput);
+        dContainer->Add(passBtnLayout());
     }
 
     dContainer->TakeFocus();
@@ -85,6 +85,46 @@ Element TUIFrontEnd::remPopup(){
     ) | clear_under | center;
 }
 
-Element TUIFrontEnd::passPopup(){
+Element TUIFrontEnd::masterPass(){
+    maxDialogSelections = 2;
 
+    return window(
+        text(""), 
+        vbox({
+            paragraphAlignCenter(" Navigation: [↑/↓] Switch Fields  [←/→] Select Options ") | center,
+            separator(),
+            paragraphAlignCenter(" Enter your Master Password "),
+            passInput->Render(),
+            hbox(
+                paragraph("               "),
+                isValidPassword ? 
+                paragraphAlignCenter("Correct!") | color(Color::Green) 
+                : paragraphAlignCenter(validationMsg) | color(Color::Red) | bold
+            ),
+            separator(),
+            hbox(checkBtn->Render(), text("   "), exitBtn->Render()) | center
+        })
+    ) | clear_under | center;
+}
+
+Element TUIFrontEnd::newUser(){
+    maxDialogSelections = 2;
+
+    return window(text(""), 
+        vbox({
+            paragraphAlignCenter(" Navigation: [↑/↓] Switch Fields  [←/→] Select Options ") | center,
+            separator(),
+            paragraphAlignCenter("Make your new Master Password!"),
+            passInput->Render(),
+            hbox(
+                paragraph("               "),
+                isValidPassword ? 
+                paragraphAlignCenter("Correct!") | color(Color::Green) 
+                : paragraphAlignCenter(validationMsg) | color(Color::Red) | bold
+            ),
+            paragraphAlignCenter("Make sure to remember your password!\nelse it won't be recovered if you lost it!"),
+            separator(),
+            hbox(checkBtn->Render(), text("   "), exitBtn->Render()) | center
+        })
+    ) | clear_under | center;
 }

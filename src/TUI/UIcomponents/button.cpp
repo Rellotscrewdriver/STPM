@@ -96,3 +96,31 @@ Component TUIFrontEnd::remBtnLayout(){
         noBtn
     }, &dialogBtnsSelector);
 }
+
+Component TUIFrontEnd::passBtnLayout() {
+    return ftxui::Container::Horizontal({
+        checkBtn, 
+        exitBtn
+    }, &dialogBtnsSelector);    
+}
+
+Component TUIFrontEnd::checkButton() {
+    return Button("Check", [&] {
+        // if (!validateInputs(emailCred, siteCred)) {
+        //     isValidCredentials = "Email or Site is invaild";
+        //     return; // Prevent adding invalid data
+        // }
+
+        // db.addRow(emailCred, siteCred, passCred);
+        layerNo = 0;
+        activeLayer = mainMenu;
+        db.updateMenuEnteries();
+        return;
+    }, saveOption);
+}
+
+Component TUIFrontEnd::exitButton() {
+    return Button("EXIT", [&] { 
+        screen.Exit();
+    }, cancelOption);
+}

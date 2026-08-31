@@ -18,10 +18,37 @@ Component TUIFrontEnd::inputEvent(){
     return CatchEvent(menuComponent, [&](Event event) {
         if (layerNo != 0) return false;
 
-        if (event == Event::Character('q')) {
+        if (event == Event::Character('q') || event == Event::Escape) {
             screen.Exit();
             return true;
         }
+
+        if (event == Event::Character('d')) {
+            activeLayer = remDialog;
+            switchDialog(remDialog);
+            
+            dContainer->TakeFocus();
+            return true;
+        }
+
+        if (event == Event::Character('u')) {
+            activeLayer = masterPassD;
+            masterPassT = "";
+            switchDialog(masterPassD);
+            
+            dContainer->TakeFocus();
+            return true;
+        }
+
+        if (event == Event::Character('i')) {
+            activeLayer = newUserD;
+            masterPassT = "";
+            switchDialog(newUserD);
+            
+            dContainer->TakeFocus();
+            return true;
+        }
+
 
         if (event == Event::Character('n') || db.data.empty()) {
             activeLayer = addDialog;
@@ -42,16 +69,17 @@ Component TUIFrontEnd::inputEvent(){
         if (!db.data.empty()) {
             int max_index = static_cast<int>(db.data.size()) - 1;
 
-            if ((event == Event::Character('k') || event == Event::ArrowUp) && selected_row == 0) {
+            if ((event == Event::Character('k') || event == Event::ArrowUp) && selected_row <= 0) {
                 selected_row = max_index;
                 return true;
             }
 
             // Loop Down: If at the last row and pressing Down or 'j', jump to the first row
-            if ((event == Event::Character('j') || event == Event::ArrowDown) && selected_row == max_index) {
+            if ((event == Event::Character('j') || event == Event::ArrowDown) && selected_row >= max_index) {
                 selected_row = 0;
                 return true;
             }
+
         } else {
             selected_row = 0;
         } 
@@ -65,9 +93,6 @@ Component TUIFrontEnd::inputEvent(){
             switchDialog(remDialog);
             
             dContainer->TakeFocus();
-            //db.deleteRow(selected_row);
-            //activeLayer = remDialog;
-            // dialog_container->TakeFocus();
             return true;
         }
 

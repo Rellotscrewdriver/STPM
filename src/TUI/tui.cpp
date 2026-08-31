@@ -6,6 +6,7 @@ TUIFrontEnd::TUIFrontEnd(){
         {"002", "Bob Jones", "Designer"},
         {"003", "Charlie Brown", "Manager"}
     };
+    activeLayer = layers::newUserD;
     initComponents();
 
     renderLayout();
@@ -29,7 +30,6 @@ void TUIFrontEnd::initComponents() {
     });
 
     // Instantiate persistent inputs
-    // emailInput = Input(&emailCred, "Enter your Email...", input);
     auto rawSiteInput = Input(&siteCred, "Enter the Link...", input);
 
     siteInput = CatchEvent(rawSiteInput, [this](Event event) {
@@ -37,14 +37,21 @@ void TUIFrontEnd::initComponents() {
         return false; // Return false so the Input component still processes text entry
     });
 
-    // siteInput = Input(&siteCred, "Enter the Link...", input);
-    masterPassword = Input(&siteCred, "Enter Master Password...", input);
+    // passInput = Input(&masterPassword, "Enter Master Password...", input);
+    
+    auto rawPasswordInput = Input(&masterPassT, "Enter Master Password...", mInput);
+
+    passInput = CatchEvent(rawPasswordInput, [this](Event event) {
+        //validateInputs(emailCred, siteCred);
+        return false; // Return false so the Input component still processes text entry
+    });
 
     saveBtn = saveButton();
     yesBtn = confirmButton();
     noBtn = noButton();
     addBtn = addButton();
-
+    checkBtn = checkButton();
+    exitBtn = exitButton();
     cancelBtn = cancelButton();
     genPassBtn = genPassButton();
 
@@ -74,6 +81,17 @@ void TUIFrontEnd::renderLayout(){
         if (minSize.dimx <= minWidth || minSize.dimy <= minHeight) {
             return warningWindow(minSize);
         }
+
+        if (activeLayer == masterPassD) {
+            switchDialog(masterPassD);
+            return masterPass();
+        }
+
+        if (activeLayer == newUserD) {
+            switchDialog(newUserD);
+            return newUser();
+        }
+
 
         if (activeLayer == editDialog) {
             switchDialog(editDialog);
