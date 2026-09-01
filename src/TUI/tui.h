@@ -58,6 +58,7 @@ private:
     //String Validation
     bool isValidCredentials = true;
     bool isValidPassword = true;
+    bool isDataEmpty = false;
     std::string validationMsg;
     bool validateInputs(const std::string& email, const std::string& site);
 

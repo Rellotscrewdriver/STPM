@@ -1,19 +1,19 @@
 #include "../tui.h"
 
 Element TUIFrontEnd::menuRowEntry(const EntryState &state){
-    if (db.data.empty()) {
+    if (siteDataNew.empty()) {
         return text(" (No Entries) ") | dim | center;
     }
     
-    if (state.index >= db.data.size()){
+    if (state.index >= siteDataNew.size()){
         return text("");
     }
     
-    const auto& row = db.data[state.index];
+    auto& row = siteDataNew[state.index];
     Element rowElement = hbox({
-        paragraph(row.id) | size(WIDTH, EQUAL, 20),
-        paragraph(row.name) | flex, 
-        paragraph(row.role) | size(WIDTH, EQUAL, 20),
+        paragraph(row.getEmail()) | size(WIDTH, EQUAL, 20),
+        paragraph(row.getLink()) | flex, 
+        paragraph(row.getPass()) | size(WIDTH, EQUAL, 20),
     });
     
     if (state.focused){

@@ -1,7 +1,9 @@
 #pragma once
 
 #include "includes.h"
+#include "../Encryption/encryption.h"
 #include "clip.h"
+
 struct Record {
     std::string id;
     std::string name;
@@ -21,7 +23,6 @@ public:
     std::string status_message = "nothing was copied to clipboard";
     std::string copyIns = "Use Arrows to navigate | Press 'c' to copy Name | Press 'v' to copy Role";
 
-    std::vector<Record> data;
     std::vector<std::string> menu_entries;
     void updateMenuEnteries();
 
@@ -31,5 +32,6 @@ public:
     void saveData();
 
 private:
+    encryption enc;
     void copyToClipBoard(const std::string &info);
 };

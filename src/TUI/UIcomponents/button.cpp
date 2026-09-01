@@ -7,8 +7,8 @@ Component TUIFrontEnd::saveButton(){
             return; // Prevents adding invalid data
         }
 
-        db.data[selected_row].name = emailCred;
-        db.data[selected_row].role = siteCred;
+        siteDataNew[selected_row].getEmail() = emailCred;
+        siteDataNew[selected_row].getLink() = siteCred;
         db.updateMenuEnteries();
         layerNo = 0;
         activeLayer = mainMenu;
@@ -17,13 +17,15 @@ Component TUIFrontEnd::saveButton(){
 
 Component TUIFrontEnd::confirmButton(){
     return Button("Yes", [&] {
-        db.deleteRow(selected_row);
-
-        if (db.data.empty()) {
+        if (siteDataNew.empty()) {
+            isDataEmpty = true;
             selected_row = 0;
-        } else if (selected_row >= static_cast<int>(db.data.size())) {
-            selected_row = static_cast<int>(db.data.size()) - 1;
+            return;
+        } else if (selected_row >= static_cast<int>(siteDataNew.size())) {
+            selected_row = static_cast<int>(siteDataNew.size()) - 1;
         }
+
+        db.deleteRow(selected_row);
 
         layerNo = 0;
         activeLayer = mainMenu;
@@ -64,12 +66,10 @@ Component TUIFrontEnd::noButton(){
 
 Component TUIFrontEnd::genPassButton(){
     return Button("", [&] { 
-        //resetPassword()
-        GeneratePass ps;
         if(activeLayer == addDialog){
             passCred = gp.getgeneratedPass();
         } else {
-            db.data[selected_row].id = gp.getgeneratedPass();
+            siteDataNew[selected_row].getPass() = gp.getgeneratedPass();
         }
     }, cancelOption);
 }

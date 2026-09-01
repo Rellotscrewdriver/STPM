@@ -41,7 +41,7 @@ Element TUIFrontEnd::editPopup(){
                 paragraphAlignCenter("All good!") | color(Color::Green) 
                 : paragraphAlignCenter(validationMsg) | color(Color::Red) | bold
             ),
-            hbox(paragraph(" Password: "), genPassBtn->Render(), text(" " + db.data[selected_row].id)),
+            hbox(paragraph(" Password: "), genPassBtn->Render(), text(" " + siteDataNew[selected_row].getPass())),
             separator(),
             hbox(saveBtn->Render(), text("   "), cancelBtn->Render()) | center
         })
@@ -79,6 +79,8 @@ Element TUIFrontEnd::remPopup(){
             paragraphAlignCenter(" Navigation: [←/→] Select Options ") | center,
             separator(),
             paragraphAlignCenter(" Are you sure you wanna remove this? ") | center,
+            isDataEmpty ? paragraphAlignCenter("you can't delete a void entry!") | color(Color::Red) | bold 
+            : paragraphAlignCenter(" "),
             separator(),
             hbox(yesBtn->Render(), text("   "), noBtn->Render()) | center
         })

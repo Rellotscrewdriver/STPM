@@ -1,11 +1,11 @@
 #include "tui.h"
 
 TUIFrontEnd::TUIFrontEnd(){
-    db.data = {
-        {"001", "Alice Smith", "Engineer"},
-        {"002", "Bob Jones", "Designer"},
-        {"003", "Charlie Brown", "Manager"}
-    };
+    // db.data = {
+    //     {"001", "Alice Smith", "Engineer"},
+    //     {"002", "Bob Jones", "Designer"},
+    //     {"003", "Charlie Brown", "Manager"}
+    // };
     activeLayer = layers::newUserD;
     initComponents();
 

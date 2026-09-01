@@ -26,7 +26,8 @@ Component TUIFrontEnd::inputEvent(){
         if (event == Event::Character('d')) {
             activeLayer = remDialog;
             switchDialog(remDialog);
-            
+            isDataEmpty = false;
+                        
             dContainer->TakeFocus();
             return true;
         }
@@ -50,7 +51,7 @@ Component TUIFrontEnd::inputEvent(){
         }
 
 
-        if (event == Event::Character('n') || db.data.empty()) {
+        if (event == Event::Character('n')) {
             activeLayer = addDialog;
 
             switchDialog(addDialog);
@@ -65,8 +66,8 @@ Component TUIFrontEnd::inputEvent(){
         }
 
         //Scrolling effect(BROKEN BUT CAN'T BE FIXED)
-        if (!db.data.empty()) {
-            int max_index = static_cast<int>(db.data.size()) - 1;
+        if (!siteDataNew.empty()) {
+            int max_index = static_cast<int>(siteDataNew.size()) - 1;
 
             if ((event == Event::Character('k') || event == Event::ArrowUp) && selected_row <= 0) {
                 selected_row = max_index;
@@ -79,18 +80,6 @@ Component TUIFrontEnd::inputEvent(){
                 return true;
             }
 
-        }
-
-        if (db.data.empty()) {
-            return false;
-        }
-
-        if (event == Event::Character('d')) {
-            activeLayer = remDialog;
-            switchDialog(remDialog);
-            
-            dContainer->TakeFocus();
-            return true;
         }
 
         if (event == Event::CtrlS) {
@@ -117,9 +106,9 @@ Component TUIFrontEnd::inputEvent(){
         if (event == Event::Return) {
             activeLayer = editDialog;
             switchDialog(editDialog);
-            passCred = db.data[selected_row].id;
-            emailCred = db.data[selected_row].name;
-            siteCred = db.data[selected_row].role;
+            passCred = siteDataNew[selected_row].getPass();
+            emailCred = siteDataNew[selected_row].getEmail();
+            siteCred = siteDataNew[selected_row].getLink();
             dContainer->TakeFocus();
             return true;
         }
