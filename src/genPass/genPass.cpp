@@ -5,6 +5,8 @@ std::string GeneratePass::getgeneratedPass(){
 }
 
 std::string GeneratePass::genPass(){
+    passStr.clear();
+    
     std::mt19937 gen(rd());
     for(int i = 0; i < passLen; i++){
         std::uniform_int_distribution<> dis(0, passchars.length());
