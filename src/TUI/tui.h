@@ -48,6 +48,7 @@ private:
     std::string siteCred;
     std::string passCred;
     std::string masterPassT;
+    std::string masterPassTDup;
 
     Component renderer;
     ScreenInteractive screen = ScreenInteractive::Fullscreen();
@@ -61,7 +62,8 @@ private:
     bool isDataEmpty = false;
     std::string validationMsg;
     bool validateInputs(const std::string& email, const std::string& site);
-
+    void validateMasterPass();
+    
 
     //User Input
     void inputEmail();
@@ -102,6 +104,7 @@ private:
     Component emailInput;
     Component siteInput;
     Component passInput;
+    Component passInputDup;
     Component menuComponent;
     Component btnContainer;
     Component saveBtn;
@@ -131,7 +134,7 @@ private:
     Element editPopup();
     Element addPopup();
     Element remPopup();
-    Element passPopup();
+    Element savingPopup();
     Element newUser();
     Element masterPass();
 

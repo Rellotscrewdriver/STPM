@@ -46,6 +46,8 @@ void TUIFrontEnd::initComponents() {
         return false; // Return false so the Input component still processes text entry
     });
 
+    passInputDup = Input(&masterPassTDup, "Enter Master Password Again...", mInput);
+
     saveBtn = saveButton();
     yesBtn = confirmButton();
     noBtn = noButton();
@@ -116,7 +118,6 @@ void TUIFrontEnd::renderLayout(){
                 addPopup()
             });
         }
-
 
         return mainLayout;
     });

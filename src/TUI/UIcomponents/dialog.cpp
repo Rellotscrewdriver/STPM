@@ -18,6 +18,9 @@ void TUIFrontEnd::switchDialog(layers dialogLayer){
         dContainer->Add(remBtnLayout());
     } else if (dialogLayer == masterPassD || dialogLayer == newUserD) {
         dContainer->Add(passInput);
+        if(dialogLayer == newUserD){
+            dContainer->Add(passInputDup);
+        }
         dContainer->Add(passBtnLayout());
     }
 
@@ -118,6 +121,7 @@ Element TUIFrontEnd::newUser(){
             separator(),
             paragraphAlignCenter("Make your new Master Password!"),
             passInput->Render(),
+            passInputDup->Render(),
             hbox(
                 paragraph("               "),
                 isValidPassword ? 

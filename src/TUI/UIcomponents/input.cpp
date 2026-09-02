@@ -19,6 +19,8 @@ Component TUIFrontEnd::inputEvent(){
         if (layerNo != 0) return false;
 
         if (event == Event::Character('q') || event == Event::Escape) {
+            db.saveData();
+            db.status_message = "Saved this stupid Data!";
             screen.Exit();
             return true;
         }
@@ -84,6 +86,7 @@ Component TUIFrontEnd::inputEvent(){
 
         if (event == Event::CtrlS) {
             db.saveData();
+            db.status_message = "Saved this stupid Data!";
             return true;
         }
 

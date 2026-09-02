@@ -26,3 +26,7 @@ bool TUIFrontEnd::validateInputs(const std::string& email, const std::string& si
     validationMsg = ""; // Clear error when valid
     return true;
 }
+
+void TUIFrontEnd::validateMasterPass(){
+    
+}
