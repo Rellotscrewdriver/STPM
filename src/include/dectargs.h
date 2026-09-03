@@ -22,10 +22,7 @@ public:
    * dectargs({"add", "test@gmail.com", "website.io"});
    * ```
    */
-  dectargs(std::vector<std::string> &vects) : mArgVect(vects) {
-    mArgc = vects.size();
-    checkArgs();
-  }
+  dectargs(std::vector<std::string> &vects);
 
 private:
   int mArgc;
@@ -74,5 +71,5 @@ private:
    * @warning 
    * this function is only used for change arguement
    */
-  void ArgNumberDetectchangeFeat();
+  void argNoChangeFeat();
 };

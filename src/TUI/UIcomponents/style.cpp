@@ -11,6 +11,7 @@ void TUIFrontEnd::applyStyle(){
     mInput.transform = [this](InputState state) {
         return inputMasterStyle(state);
     };
+    
     saveOption.transform = [this](const EntryState& state) {
         return saveBtnStyle(state);
     };

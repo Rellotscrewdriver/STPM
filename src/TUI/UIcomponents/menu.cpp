@@ -11,7 +11,7 @@ Element TUIFrontEnd::menuRowEntry(const EntryState &state){
     
     auto& row = siteDataNew[state.index];
     Element rowElement = hbox({
-        paragraph(row.getEmail()) | size(WIDTH, EQUAL, 20),
+        paragraph(row.getEmail()) | size(WIDTH, EQUAL, 30),
         paragraph(row.getLink()) | flex, 
         paragraph(row.getPass()) | size(WIDTH, EQUAL, 20),
     });

@@ -1,6 +1,11 @@
 #include "dectargs.h"
 #include "TUI/tui.h"
 
+dectargs::dectargs(std::vector<std::string> &vects) : mArgVect(vects) {
+    mArgc = vects.size();
+    checkArgs();
+}
+
 void dectargs::checkArgs() {
   // std::cout << mArgc << std::endl;
   // for(auto &i : mArgVect){
@@ -27,12 +32,12 @@ void dectargs::dectTypeArgs() {
   } else if ((funcNameCmp("list") || funcNameCmp("List")) && mArgc == 1) {
     siteOps site;
   } else if ((funcNameCmp("change") || funcNameCmp("Change")) && mArgc > noOfArgsDetect) {
-    ArgNumberDetectchangeFeat();
+    argNoChangeFeat();
   } else if ((funcNameCmp("remove") || funcNameCmp("Remove")) && mArgc > noOfArgsDetect) {
     siteOps site(mArgVect[1], mArgVect[2]);
     site.removeSite();
   } else {
-    std::cout << "Not FOUND\n";
+    std::cout << "Arguement not found\n";
   }
 }
 
@@ -44,7 +49,7 @@ void dectargs::helpMessage(){
   std::cout << "Help Section Here \nThis software is in early development :)\n";
 }
 
-void dectargs::ArgNumberDetectchangeFeat(){
+void dectargs::argNoChangeFeat(){
     if(mArgc == 4){
       siteOps site(mArgVect[1], mArgVect[2], mArgVect[3]);
       site.changeSite();
