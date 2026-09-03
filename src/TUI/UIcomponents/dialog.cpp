@@ -99,12 +99,12 @@ Element TUIFrontEnd::masterPass(){
             paragraphAlignCenter(" Navigation: [↑/↓] Switch Fields  [←/→] Select Options ") | center,
             separator(),
             paragraphAlignCenter(" Enter your Master Password "),
-            passInput->Render(),
+            passInput->Render() | flex | size(WIDTH, LESS_THAN, 30) | center,
             hbox(
                 paragraph("               "),
                 isValidPassword ? 
                 paragraphAlignCenter("Correct!") | color(Color::Green) 
-                : paragraphAlignCenter(validationMsg) | color(Color::Red) | bold
+                : paragraphAlignCenter(passMsg) | color(Color::Red) | bold
             ),
             separator(),
             hbox(checkBtn->Render(), text("   "), exitBtn->Render()) | center
@@ -113,7 +113,7 @@ Element TUIFrontEnd::masterPass(){
 }
 
 Element TUIFrontEnd::newUser(){
-    maxDialogSelections = 2;
+    maxDialogSelections = 3;
 
     return window(text(""), 
         vbox({
@@ -126,7 +126,7 @@ Element TUIFrontEnd::newUser(){
                 paragraph("               "),
                 isValidPassword ? 
                 paragraphAlignCenter("Correct!") | color(Color::Green) 
-                : paragraphAlignCenter(validationMsg) | color(Color::Red) | bold
+                : paragraphAlignCenter(passMsg) | color(Color::Red) | bold
             ),
             paragraphAlignCenter("Make sure to remember your password!\nelse it won't be recovered if you lost it!"),
             separator(),

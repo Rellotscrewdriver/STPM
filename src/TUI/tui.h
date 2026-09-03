@@ -58,13 +58,15 @@ private:
 
     //String Validation
     bool isValidCredentials = true;
-    bool isValidPassword = true;
+    bool isValidPassword = false;
     bool isDataEmpty = false;
     std::string validationMsg;
+    std::string passMsg;
     bool validateInputs(const std::string& email, const std::string& site);
-    void validateMasterPass();
+    bool validateNewMasterPass();
+    bool validateMasterPass();
+    void firstTime();
     
-
     //User Input
     void inputEmail();
     void inputSite();

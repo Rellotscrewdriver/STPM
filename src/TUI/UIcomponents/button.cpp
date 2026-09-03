@@ -104,12 +104,18 @@ Component TUIFrontEnd::passBtnLayout() {
 
 Component TUIFrontEnd::checkButton() {
     return Button("Check", [&] {
-        // if (!validateInputs(emailCred, siteCred)) {
-        //     isValidCredentials = "Email or Site is invaild";
-        //     return; // Prevent adding invalid data
-        // }
-
-        // db.addRow(emailCred, siteCred, passCred);
+        if(activeLayer == masterPassD){
+            if (!validateMasterPass()) {
+                isValidPassword = false;
+                return; // Prevent adding invalid data
+            }
+        } else if(activeLayer == newUserD){
+            if(!validateNewMasterPass()){
+                isValidPassword = false;
+                return; // Prevent adding invalid data
+            }
+        }
+        db.loadData();
         layerNo = 0;
         activeLayer = mainMenu;
         db.updateMenuEnteries();

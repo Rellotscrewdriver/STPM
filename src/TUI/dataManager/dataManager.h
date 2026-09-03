@@ -30,6 +30,10 @@ public:
     void addRow(std::string &email, std::string &site, std::string &pass);
     void deleteRow(int selectedRow);
     void saveData();
+    void loadData();
+
+    void saveHash(std::string materPass);
+    bool verify(std::string oldPass);
 
 private:
     encryption enc;

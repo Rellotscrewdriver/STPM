@@ -7,8 +7,8 @@ TUIFrontEnd::TUIFrontEnd(){
     //     {"003", "Charlie Brown", "Manager"}
     // };
     activeLayer = layers::newUserD;
+    firstTime();
     initComponents();
-
     renderLayout();
 }
 

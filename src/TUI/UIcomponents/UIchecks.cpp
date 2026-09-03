@@ -27,6 +27,32 @@ bool TUIFrontEnd::validateInputs(const std::string& email, const std::string& si
     return true;
 }
 
-void TUIFrontEnd::validateMasterPass(){
+bool TUIFrontEnd::validateNewMasterPass(){
+    if(masterPassT == masterPassTDup){
+        isValidPassword = true;
+        db.saveHash(masterPassT);
+        return true;
+    }
     
+    isValidPassword = false;
+    passMsg = "Passwords don't match!";
+    return false;
+}
+
+bool TUIFrontEnd::validateMasterPass(){
+    if(db.verify(masterPassT)){
+        return true;
+    }
+    passMsg = "invalid Password!";
+    return false;
+}
+
+
+void TUIFrontEnd::firstTime(){
+    namespace fs = std::filesystem;
+    if (!fs::exists(path) || fs::is_empty(path)){
+        activeLayer = layers::newUserD;
+    } else {
+        activeLayer = layers::masterPassD;
+    }
 }

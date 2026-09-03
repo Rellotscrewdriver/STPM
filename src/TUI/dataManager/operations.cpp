@@ -11,12 +11,24 @@ void dataManager::deleteRow(int selectedRow){
     
     // Ensure selection stays within bounds
     if (selectedRow >= siteDataNew.size()) {
-        selectedRow = siteDataNew.size() - 1;
+        selectedRow = siteDataNew.size();
     }
 }
 
 void dataManager::saveData(){
     enc.encrypt();
+}
+
+void dataManager::loadData(){
+    enc.decrypt();
+}
+
+bool dataManager::verify(std::string oldPass){
+    return enc.isPasswordCorrect(oldPass, enc.fetchHash());
+}
+
+void dataManager::saveHash(std::string materPass){
+    enc.genHashtoFile(materPass);
 }
 
 void dataManager::updateMenuEnteries(){
