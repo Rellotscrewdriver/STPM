@@ -34,25 +34,6 @@ Component TUIFrontEnd::inputEvent(){
             return true;
         }
 
-        if (event == Event::Character('u')) {
-            activeLayer = masterPassD;
-            masterPassT = "";
-            switchDialog(masterPassD);
-            
-            dContainer->TakeFocus();
-            return true;
-        }
-
-        if (event == Event::Character('i')) {
-            activeLayer = newUserD;
-            masterPassT = "";
-            switchDialog(newUserD);
-            
-            dContainer->TakeFocus();
-            return true;
-        }
-
-
         if (event == Event::Character('n')) {
             activeLayer = addDialog;
 

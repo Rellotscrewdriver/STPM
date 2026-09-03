@@ -39,7 +39,7 @@ Element TUIFrontEnd::editPopup(){
             hbox(paragraph(" Email:    "), emailInput->Render()),
             hbox(paragraph(" Site:     "), siteInput->Render()),
             hbox(
-                paragraph("               "),
+                paragraph("           "),
                 isValidCredentials ? 
                 paragraphAlignCenter("All good!") | color(Color::Green) 
                 : paragraphAlignCenter(validationMsg) | color(Color::Red) | bold
@@ -63,7 +63,7 @@ Element TUIFrontEnd::addPopup(){
             hbox(paragraph(" Email:    "), emailInput->Render()),
             hbox(paragraph(" Site:     "), siteInput->Render()),
             hbox(
-                paragraph("               "),
+                paragraph("           "),
                 isValidCredentials ? 
                 paragraphAlignCenter("All good!") | color(Color::Green) 
                 : paragraphAlignCenter(validationMsg) | color(Color::Red) | bold
@@ -99,9 +99,8 @@ Element TUIFrontEnd::masterPass(){
             paragraphAlignCenter(" Navigation: [↑/↓] Switch Fields  [←/→] Select Options ") | center,
             separator(),
             paragraphAlignCenter(" Enter your Master Password "),
-            passInput->Render() | flex | size(WIDTH, LESS_THAN, 30) | center,
+            passInput->Render(),
             hbox(
-                paragraph("               "),
                 isValidPassword ? 
                 paragraphAlignCenter("Correct!") | color(Color::Green) 
                 : paragraphAlignCenter(passMsg) | color(Color::Red) | bold
@@ -123,7 +122,6 @@ Element TUIFrontEnd::newUser(){
             passInput->Render(),
             passInputDup->Render(),
             hbox(
-                paragraph("               "),
                 isValidPassword ? 
                 paragraphAlignCenter("Correct!") | color(Color::Green) 
                 : paragraphAlignCenter(passMsg) | color(Color::Red) | bold

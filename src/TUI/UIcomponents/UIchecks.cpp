@@ -29,6 +29,8 @@ bool TUIFrontEnd::validateInputs(const std::string& email, const std::string& si
 
 bool TUIFrontEnd::validateNewMasterPass(){
     if(masterPassT == masterPassTDup){
+        masterPassT.clear();
+        masterPassTDup.clear();
         isValidPassword = true;
         db.saveHash(masterPassT);
         return true;
@@ -41,8 +43,10 @@ bool TUIFrontEnd::validateNewMasterPass(){
 
 bool TUIFrontEnd::validateMasterPass(){
     if(db.verify(masterPassT)){
+        masterPassT.clear();
         return true;
     }
+    
     passMsg = "invalid Password!";
     return false;
 }
