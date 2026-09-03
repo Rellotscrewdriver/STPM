@@ -3,6 +3,7 @@
 void TUIFrontEnd::applyStyle(){
     input.multiline = false;
     mInput.multiline = false;
+    mInput.password = true;
 
     input.transform = [this](InputState state) {
         return inputStyle(state);

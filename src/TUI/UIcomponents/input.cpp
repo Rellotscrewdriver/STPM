@@ -123,6 +123,10 @@ Component TUIFrontEnd::inputEvent(){
 Component TUIFrontEnd::dialogInputEvent(){
     return CatchEvent(dContainer, [&](Event event) {
         if (event == Event::Escape) {
+            if(activeLayer == newUserD || activeLayer == masterPassD){
+                screen.Exit();
+                return true;
+            }
             activeLayer = mainMenu;
             dialogSelector = 0;
             layerNo = 0;
