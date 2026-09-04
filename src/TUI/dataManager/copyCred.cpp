@@ -6,15 +6,18 @@ void dataManager::copyCreds(copyData type, int selectedRow){
         if(type == copyEmail){
             std::string text_to_copy = siteDataNew[selectedRow].getEmail();
             copyToClipBoard(text_to_copy);
-            status_message = "✅ Copied Email: \"" + text_to_copy + "\" to clipboard!";
+            statusMessage = "✅ Copied Email: \"" + text_to_copy + "\" to clipboard!";
+            text_to_copy.clear();
         } else if(type == copySite){
-            std::string text_to_copy = siteDataNew[selectedRow].getLink(); // Copying the "Role" column
+            std::string text_to_copy = siteDataNew[selectedRow].getLink();
             copyToClipBoard(text_to_copy);
-            status_message = "✅ Copied Link: \"" + text_to_copy + "\" to clipboard!";
+            statusMessage = "✅ Copied Link: \"" + text_to_copy + "\" to clipboard!";
+            text_to_copy.clear();
         } else if(type == copyPass){
             std::string text_to_copy = siteDataNew[selectedRow].getPass();
             copyToClipBoard(text_to_copy);
-            status_message = "✅ Copied Password: *********** to clipboard!";
+            statusMessage = "✅ Copied Password: *********** to clipboard!";
+            text_to_copy.clear();
         }
     }    
 }

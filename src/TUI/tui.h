@@ -14,13 +14,6 @@ public:
     void exec();
 
 private:
-
-    void initComponents();
-    void applyStyle();
-
-    dataManager db;
-    GeneratePass gp;
-
     enum layers {
         mainMenu,
         editDialog,
@@ -29,66 +22,68 @@ private:
         masterPassD,
         newUserD
     };
+
     
+    //dependencies from other classes
+    dataManager db;
+    GeneratePass gp;
+
+
     //terminal window size
     const int minHeight = 11;
     const int minWidth = 55;
-    
-    //UI variables and states
-    int selected_row = 0;
-    std::string copyCred;
 
+
+    //initialization
+    void firstTimeSetup();
+    void initComponents();
+    void applyStyle();
+    void initOther();
+    void initButtons();
+    void initInputs();    
+        
+
+    //UI variables and states
     layers activeLayer = mainMenu;
     int layerNo = 0;
     int dialogSelector = 0;
-    int dialogBtnsSelector = 0;
-    int maxDialogSelections = 12;
+    int dialogBtnsNavi = 0;
+    int maxDialogSelect = 12;
+    int selectedRow = 0;
 
+
+    // Credential Strings
+    std::string copyCred;    
     std::string emailCred;
     std::string siteCred;
     std::string passCred;
     std::string masterPassT;
     std::string masterPassTDup;
 
-    Component renderer;
-    ScreenInteractive screen = ScreenInteractive::Fullscreen();
-    Component layoutManager();
-    Element buildMainLayout();
-    void renderLayout();
-
-    //String Validation
+    
+    // Validation States & Messages
     bool isValidCredentials = true;
     bool isValidPassword = false;
     bool isDataEmpty = false;
     std::string validationMsg;
     std::string passMsg;
+
+    //Validation Methods
     bool validateInputs(const std::string& email, const std::string& site);
     bool validateNewMasterPass();
     bool validateMasterPass();
-    void firstTime();
-    
-    //User Input
-    void inputEmail();
-    void inputSite();
-    void inputMasterPass();
 
-    //Input Events
-    Component inputEvent();
-    Component dialogInputEvent();
 
-    //Buttons
-    Component saveButton();
-    Component confirmButton();
-    Component addButton();
-    Component checkButton();
-    Component exitButton();
-    Component cancelButton();
-    Component noButton();
-    Component genPassButton();
-    Component editBtnLayout();
-    Component addBtnLayout();
-    Component remBtnLayout();
-    Component passBtnLayout();
+    // FTXUI Base Components & Interactive Screen
+    ScreenInteractive screen = ScreenInteractive::Fullscreen();
+    Component renderer;
+
+
+    //layout renderers
+    Component layoutManager();
+    Element buildMainLayout();
+    void renderLayout();
+
 
     //Style
     InputOption input;
@@ -97,53 +92,79 @@ private:
     ButtonOption saveOption;
     ButtonOption cancelOption;
     ButtonOption resetPass;
+    MenuOption menuOption;
+
+    //Element Style functions
     Element saveBtnStyle(const EntryState &state);
     Element cancelBtnStyle(const EntryState &state);
     Element inputStyle(InputState state);
     Element inputMasterStyle(InputState state);
 
-    //meow
+
+    // Input Element
     Component emailInput;
     Component siteInput;
     Component passInput;
     Component passInputDup;
+
+
+    //Window Containers
     Component menuComponent;
     Component btnContainer;
+    Component dContainer;    
+
+
+    // Buttons Components & functions
     Component saveBtn;
     Component yesBtn;
     Component addBtn;
-
     Component checkBtn;
     Component exitBtn;
     Component noBtn;
     Component cancelBtn;
-    
     Component genPassBtn;
-    Component masterPassword;
-    Component dContainer;
+
+    Component saveButton();
+    Component confirmButton();
+    Component addButton();
+    Component checkButton();
+    Component exitButton();
+    Component cancelButton();
+    Component noButton();
+    Component genPassButton();
+
+
+    // Button layouts
+    Component editBtnLayout();
+    Component addBtnLayout();
+    Component remBtnLayout();
+    Component passBtnLayout();
+
+
+    //Keyboard Input Events
     Component mainInputEvent;
     Component dInputEvent;
 
-    //title and header
+    //Input Catchers
+    Component inputEvent();
+    Component dialogInputEvent();
+
+
+    //title and headers
     Element title();
     Element tableHeader();
-
-    //instructions
     Element warningWindow(Dimensions size);
 
-    //actual dialogs
+
+    //dialog renderers
     void switchDialog(layers dialogLayer);
     Element editPopup();
     Element addPopup();
     Element remPopup();
-    Element savingPopup();
     Element newUser();
     Element masterPass();
 
 
+    //main menu
     Element menuRowEntry(const EntryState& state);
-    
-    void updateMenuEnteries();
-    
-    MenuOption menu_option;
 };

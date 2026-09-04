@@ -1,27 +1,5 @@
 #include "../tui.h"
 
-void TUIFrontEnd::applyStyle(){
-    input.multiline = false;
-    mInput.multiline = false;
-    mInput.password = true;
-
-    input.transform = [this](InputState state) {
-        return inputStyle(state);
-    };
-
-    mInput.transform = [this](InputState state) {
-        return inputMasterStyle(state);
-    };
-    
-    saveOption.transform = [this](const EntryState& state) {
-        return saveBtnStyle(state);
-    };
-
-    cancelOption.transform = [this](const EntryState& state) {
-        return cancelBtnStyle(state);
-    };
-}
-
 Element TUIFrontEnd::saveBtnStyle(const EntryState &state){
     auto element = text(" " + state.label + " ") | center;
     if (state.focused) {
@@ -39,12 +17,12 @@ Element TUIFrontEnd::cancelBtnStyle(const EntryState &state){
     } else if (state.active) {
         return element | bgcolor(Color::RedLight) | color(Color::Black);
     }
+    // Default idle state
     return element | bgcolor(Color::DarkRed) | color(Color::White);
 }
 
 Element TUIFrontEnd::inputStyle(InputState state){
     if (state.focused) {
-        // Styled when selected via keyboard tab/arrows or mouse click
         return state.element | color(Color::Blue) | bgcolor(Color::Grey27) | bold | underlined;
     } else {
         // Default idle state
@@ -54,7 +32,6 @@ Element TUIFrontEnd::inputStyle(InputState state){
 
 Element TUIFrontEnd::inputMasterStyle(InputState state){
     if (state.focused) {
-        // Styled when selected via keyboard tab/arrows or mouse click
         return state.element | color(Color::Red) | bgcolor(Color::Grey30) | bold | underlined;
     } else {
         // Default idle state

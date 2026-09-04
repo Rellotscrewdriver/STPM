@@ -51,8 +51,7 @@ bool TUIFrontEnd::validateMasterPass(){
     return false;
 }
 
-
-void TUIFrontEnd::firstTime(){
+void TUIFrontEnd::firstTimeSetup(){
     namespace fs = std::filesystem;
     if (!fs::exists(path) || fs::is_empty(path)){
         activeLayer = layers::newUserD;

@@ -9,9 +9,9 @@ Element TUIFrontEnd::title(){
 
 Element TUIFrontEnd::tableHeader(){
     return hbox({
-        text("Email ID")   | size(WIDTH, EQUAL, 30) | color(Color::Green) | bold | center,
-        text("Site Name") | flex | color(Color::Green) | bold,
-        text("Password") | size(WIDTH, EQUAL, 20) | color(Color::Green) | bold | center
+        text("Emails")   | size(WIDTH, EQUAL, 30) | color(Color::Green) | bold | center,
+        text("Site Names") | flex | color(Color::Green) | bold,
+        text("Passwords") | size(WIDTH, EQUAL, 20) | color(Color::Green) | bold | center
     }) | bold;
 }
 

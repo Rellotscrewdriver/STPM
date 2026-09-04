@@ -1,7 +1,7 @@
 #include "../tui.h"
 
 void TUIFrontEnd::switchDialog(layers dialogLayer){
-    layerNo = 1; // Route tab focus to dInputEvent
+    layerNo = 1;
 
     dContainer->DetachAllChildren();
 
@@ -28,13 +28,13 @@ void TUIFrontEnd::switchDialog(layers dialogLayer){
 }
 
 Element TUIFrontEnd::editPopup(){
-    maxDialogSelections = 3;
+    maxDialogSelect = 3;
 
     validateInputs(emailCred, siteCred);
     
     return window(text(" Edit Credential "), 
         vbox({
-            paragraphAlignCenter(" Navigation: [↑/↓] Switch Fields  [←/→] Select Options ") | center,
+            paragraphAlignCenter(db.dialogNavText1) | center,
             separator(),
             hbox(paragraph(" Email:    "), emailInput->Render()),
             hbox(paragraph(" Site:     "), siteInput->Render()),
@@ -44,7 +44,7 @@ Element TUIFrontEnd::editPopup(){
                 paragraphAlignCenter("All good!") | color(Color::Green) 
                 : paragraphAlignCenter(validationMsg) | color(Color::Red) | bold
             ),
-            hbox(paragraph(" Password: "), genPassBtn->Render(), text(" " + siteDataNew[selected_row].getPass())),
+            hbox(paragraph(" Password: "), genPassBtn->Render(), text(" " + siteDataNew[selectedRow].getPass())),
             separator(),
             hbox(saveBtn->Render(), text("   "), cancelBtn->Render()) | center
         })
@@ -52,13 +52,13 @@ Element TUIFrontEnd::editPopup(){
 }
 
 Element TUIFrontEnd::addPopup(){
-    maxDialogSelections = 3;
+    maxDialogSelect = 3;
 
     validateInputs(emailCred, siteCred);
 
     return window(text(" Add Credential "), 
         vbox({
-            paragraphAlignCenter(" Navigation: [↑/↓] Switch Fields  [←/→] Select Options ") | center,
+            paragraphAlignCenter(db.dialogNavText1) | center,
             separator(),
             hbox(paragraph(" Email:    "), emailInput->Render()),
             hbox(paragraph(" Site:     "), siteInput->Render()),
@@ -76,12 +76,13 @@ Element TUIFrontEnd::addPopup(){
 }
 
 Element TUIFrontEnd::remPopup(){
-    maxDialogSelections = 1;
+    maxDialogSelect = 1;
     return window(text(" Remove Credential "), 
         vbox({
-            paragraphAlignCenter(" Navigation: [←/→] Select Options ") | center,
+            paragraphAlignCenter(db.dialogNavText2) | center,
             separator(),
             paragraphAlignCenter(" Are you sure you wanna remove this? ") | center,
+            paragraphAlignCenter(siteDataNew[selectedRow].getLink()) | center | color(Color::Red),
             isDataEmpty ? paragraphAlignCenter("you can't delete a void entry!") | color(Color::Red) | bold 
             : paragraphAlignCenter(" "),
             separator(),
@@ -91,12 +92,12 @@ Element TUIFrontEnd::remPopup(){
 }
 
 Element TUIFrontEnd::masterPass(){
-    maxDialogSelections = 2;
+    maxDialogSelect = 2;
 
     return window(
         text(""), 
         vbox({
-            paragraphAlignCenter(" Navigation: [↑/↓] Switch Fields  [←/→] Select Options ") | center,
+            paragraphAlignCenter(db.dialogNavText1) | center,
             separator(),
             paragraphAlignCenter(" Enter your Master Password "),
             passInput->Render(),
@@ -112,11 +113,11 @@ Element TUIFrontEnd::masterPass(){
 }
 
 Element TUIFrontEnd::newUser(){
-    maxDialogSelections = 3;
+    maxDialogSelect = 3;
 
     return window(text(""), 
         vbox({
-            paragraphAlignCenter(" Navigation: [↑/↓] Switch Fields  [←/→] Select Options ") | center,
+            paragraphAlignCenter(db.dialogNavText1) | center,
             separator(),
             paragraphAlignCenter("Make your new Master Password!"),
             passInput->Render(),
@@ -126,7 +127,7 @@ Element TUIFrontEnd::newUser(){
                 paragraphAlignCenter("Correct!") | color(Color::Green) 
                 : paragraphAlignCenter(passMsg) | color(Color::Red) | bold
             ),
-            paragraphAlignCenter("Make sure to remember your password!\nelse it won't be recovered if you lost it!"),
+            paragraphAlignCenter("Make sure to remember your password!\nit won't be recovered if you lost it!"),
             separator(),
             hbox(checkBtn->Render(), text("   "), exitBtn->Render()) | center
         })

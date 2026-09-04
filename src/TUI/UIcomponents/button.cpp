@@ -4,11 +4,11 @@ Component TUIFrontEnd::saveButton(){
     return Button("Save", [&] {
         if (!validateInputs(emailCred, siteCred)) {
             isValidCredentials = "Email or Site is invaild";
-            return; // Prevents adding invalid data
+            return;
         }
 
-        siteDataNew[selected_row].getEmail() = emailCred;
-        siteDataNew[selected_row].getLink() = siteCred;
+        siteDataNew[selectedRow].getEmail() = emailCred;
+        siteDataNew[selectedRow].getLink() = siteCred;
         db.updateMenuEnteries();
         layerNo = 0;
         activeLayer = mainMenu;
@@ -19,13 +19,11 @@ Component TUIFrontEnd::confirmButton(){
     return Button("Yes", [&] {
         if (siteDataNew.empty()) {
             isDataEmpty = true;
-            selected_row = 0;
+            selectedRow = 0;
             return;
-        } else if (selected_row >= static_cast<int>(siteDataNew.size())) {
-            selected_row = static_cast<int>(siteDataNew.size()) - 1;
         }
 
-        db.deleteRow(selected_row);
+        db.deleteRow(selectedRow);
 
         layerNo = 0;
         activeLayer = mainMenu;
@@ -37,7 +35,7 @@ Component TUIFrontEnd::addButton(){
     return Button("Add", [&] {
         if (!validateInputs(emailCred, siteCred)) {
             isValidCredentials = "Email or Site is invaild";
-            return; // Prevent adding invalid data
+            return;
         }
 
         db.addRow(emailCred, siteCred, passCred);
@@ -69,7 +67,7 @@ Component TUIFrontEnd::genPassButton(){
         if(activeLayer == addDialog){
             passCred = gp.getgeneratedPass();
         } else {
-            siteDataNew[selected_row].getPass() = gp.getgeneratedPass();
+            siteDataNew[selectedRow].getPass() = gp.getgeneratedPass();
         }
     }, cancelOption);
 }
@@ -78,32 +76,32 @@ Component TUIFrontEnd::editBtnLayout(){
     return ftxui::Container::Horizontal({
         saveBtn, 
         cancelBtn
-    }, &dialogBtnsSelector);
+    }, &dialogBtnsNavi);
 }
 
 Component TUIFrontEnd::addBtnLayout(){
     return ftxui::Container::Horizontal({
         addBtn, 
         cancelBtn
-    }, &dialogBtnsSelector);
+    }, &dialogBtnsNavi);
 }
 
 Component TUIFrontEnd::remBtnLayout(){
     return ftxui::Container::Horizontal({
         yesBtn, 
         noBtn
-    }, &dialogBtnsSelector);
+    }, &dialogBtnsNavi);
 }
 
 Component TUIFrontEnd::passBtnLayout() {
     return ftxui::Container::Horizontal({
         checkBtn, 
         exitBtn
-    }, &dialogBtnsSelector);    
+    }, &dialogBtnsNavi);    
 }
 
 Component TUIFrontEnd::checkButton() {
-    return Button("Check", [&] {
+    return Button("Verify", [&] {
         if(activeLayer == masterPassD){
             if (!validateMasterPass()) {
                 isValidPassword = false;
@@ -124,7 +122,7 @@ Component TUIFrontEnd::checkButton() {
 }
 
 Component TUIFrontEnd::exitButton() {
-    return Button("EXIT", [&] { 
+    return Button("Quit", [&] { 
         screen.Exit();
     }, cancelOption);
 }
