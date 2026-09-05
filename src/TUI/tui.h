@@ -31,7 +31,7 @@ private:
 
     //terminal window size
     const int minHeight = 11;
-    const int minWidth = 55;
+    const int minWidth = 72;
 
 
     //initialization
@@ -91,12 +91,29 @@ private:
     ButtonOption confirmBtn;
     ButtonOption saveOption;
     ButtonOption cancelOption;
+    ButtonOption genPassOption;  
+    ButtonOption verifyOption;
     ButtonOption resetPass;
     MenuOption menuOption;
 
     //Element Style functions
+    Element inputEleStyle(
+        InputState state, 
+        Color focusBg, Color focusFg, 
+        Color idleBg, Color idleFg
+    );
+
+    Element buttonEleStyle(
+        const EntryState &state, 
+        Color focusBg, Color focusFg, 
+        Color activeBg, Color activeFg,
+        Color idleBg, Color idleFg
+    );
+
     Element saveBtnStyle(const EntryState &state);
     Element cancelBtnStyle(const EntryState &state);
+    Element genPassBtnStyle(const EntryState &state);
+    Element verifyBtnStyle(const EntryState &state);    
     Element inputStyle(InputState state);
     Element inputMasterStyle(InputState state);
 
