@@ -37,7 +37,6 @@ void encryption::decrypt(){
     // }
 }
 
-
 bool encryption::isPasswordCorrect(const std::string& password, const std::string& storedHash) {
     if (crypto_pwhash_str_verify(storedHash.c_str(), password.c_str(), password.length()) == 0) {
         return true; // Password matches

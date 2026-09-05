@@ -1,6 +1,7 @@
 #pragma once
 
 #include "includes.h" 
+#include "../genPass/genPass.h"
 
 class siteObj {
 public:
@@ -8,11 +9,13 @@ public:
 
     std::string &getEmail(){return email;}
     std::string &getLink(){return link;}
-    std::string getPass(){return password;}
+    std::string &getPass(){return password;}
     std::string getRawString(){
         return email + "," + link + "," + password;
     }
+    // void setPass(){ password = gp.getgeneratedPass(); }
 private:
+
     std::string email;
     std::string link;
     std::string password;
