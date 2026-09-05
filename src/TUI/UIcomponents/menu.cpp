@@ -11,9 +11,9 @@ Element TUIFrontEnd::menuRowEntry(const EntryState &state){
     
     auto& row = siteDataNew[state.index];
     Element rowElement = hbox({
-        paragraph(row.getEmail()) | size(WIDTH, EQUAL, 30),
-        paragraph(row.getLink()) | flex, 
-        paragraph(row.getPass()) | size(WIDTH, EQUAL, 20),
+        paragraphAlignLeft(row.getEmail()) | size(WIDTH, EQUAL, 30),
+        paragraphAlignCenter(row.getLink()) | flex, 
+        paragraphAlignCenter(row.getPass()) | size(WIDTH, EQUAL, 30),
     });
     
     if (state.focused){

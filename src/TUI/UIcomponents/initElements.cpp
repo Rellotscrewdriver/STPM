@@ -27,6 +27,14 @@ void TUIFrontEnd::applyStyle(){
     cancelOption.transform = [this](const EntryState& state) {
         return cancelBtnStyle(state);
     };
+
+    genPassOption.transform = [this](const EntryState& state) {
+        return genPassBtnStyle(state);
+    };
+
+    verifyOption.transform = [this](const EntryState& state) {
+        return verifyBtnStyle(state);
+    };
 }
 
 void TUIFrontEnd::initOther(){
@@ -72,6 +80,11 @@ void TUIFrontEnd::initInputs(){
         return false;
     });
 
-    passInput = Input(&masterPassT, "Enter Master Password...", mInput);
+    auto RawpassInput = Input(&masterPassT, "Enter Master Password...", mInput);
+    passInput = CatchEvent(RawpassInput, [this](Event event) {
+        passMsg = "";
+        return false;
+    });
+
     passInputDup = Input(&masterPassTDup, "Enter Master Password Again...", mInput);
 }

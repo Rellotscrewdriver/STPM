@@ -2,6 +2,7 @@
 
 Element TUIFrontEnd::title(){
     return hbox({
+        //TODO: make a version
         paragraph("STPM - Simple Terminal Password Manager ") | bold,
         text("v1.0.0") | bold,
     }) | color(Color::Blue) | center;
@@ -9,9 +10,9 @@ Element TUIFrontEnd::title(){
 
 Element TUIFrontEnd::tableHeader(){
     return hbox({
-        text("Emails")   | size(WIDTH, EQUAL, 30) | color(Color::Green) | bold | center,
-        text("Site Names") | flex | color(Color::Green) | bold,
-        text("Passwords") | size(WIDTH, EQUAL, 20) | color(Color::Green) | bold | center
+        paragraphAlignLeft("Emails")   | size(WIDTH, EQUAL, 30) | color(Color::Green) | bold | center,
+        paragraphAlignCenter("Site Names") | flex | color(Color::Green) | bold,
+        paragraphAlignCenter("Passwords") | size(WIDTH, EQUAL, 30) | color(Color::Green) | bold | center
     }) | bold;
 }
 

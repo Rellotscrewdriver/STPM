@@ -69,7 +69,7 @@ Component TUIFrontEnd::genPassButton(){
         } else {
             siteDataNew[selectedRow].getPass() = gp.getgeneratedPass();
         }
-    }, cancelOption);
+    }, genPassOption);
 }
 
 Component TUIFrontEnd::editBtnLayout(){
@@ -118,7 +118,7 @@ Component TUIFrontEnd::checkButton() {
         activeLayer = mainMenu;
         db.updateMenuEnteries();
         return;
-    }, saveOption);
+    }, verifyOption);
 }
 
 Component TUIFrontEnd::exitButton() {
