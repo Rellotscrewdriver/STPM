@@ -66,8 +66,10 @@ void TUIFrontEnd::initButtons(){
 }
 
 void TUIFrontEnd::initInputs(){
-    auto rawEmailInput = Input(&emailCred, "Enter your Email...", input);
-    auto rawSiteInput = Input(&siteCred, "Enter the Link...", input);
+    Component rawEmailInput = Input(&emailCred, "Enter your Email...", input);
+    Component rawSiteInput = Input(&siteCred, "Enter the Link...", input);
+    Component RawpassInput = Input(&masterPassT, "Enter Master Password...", mInput);
+    Component RawpassInputDup = Input(&masterPassTDup, "Enter Master Password Again...", mInput);
     
     // Catch keystrokes on input elements to re-evaluate validation on every keypress
     emailInput = CatchEvent(rawEmailInput, [this](Event event) {
@@ -80,11 +82,14 @@ void TUIFrontEnd::initInputs(){
         return false;
     });
 
-    auto RawpassInput = Input(&masterPassT, "Enter Master Password...", mInput);
     passInput = CatchEvent(RawpassInput, [this](Event event) {
         passMsg = "";
         return false;
     });
 
-    passInputDup = Input(&masterPassTDup, "Enter Master Password Again...", mInput);
+    passInputDup = CatchEvent(RawpassInputDup, [this](Event event) {
+        passMsg = "";
+        return false;
+    });
+
 }

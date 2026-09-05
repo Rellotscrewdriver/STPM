@@ -30,7 +30,7 @@ Element TUIFrontEnd::saveBtnStyle(const EntryState &state){
 Element TUIFrontEnd::cancelBtnStyle(const EntryState &state){
     return buttonEleStyle(state, 
         Color::RedLight, Color::White,
-        Color::DarkRedBis, Color::White, 
+        Color::DarkRedBis, Color::Black, 
         Color::Red, Color::White
     );    
 }
@@ -44,7 +44,6 @@ Element TUIFrontEnd::genPassBtnStyle(const EntryState &state){
 }
 
 
-
 Element TUIFrontEnd::verifyBtnStyle(const EntryState &state){
     return buttonEleStyle(state, 
         Color::DodgerBlue1, Color::White, 
@@ -52,8 +51,6 @@ Element TUIFrontEnd::verifyBtnStyle(const EntryState &state){
         Color::DeepSkyBlue3, Color::White
     );
 }
-
-// focus 33 idle 23 active 31 
 
 Element TUIFrontEnd::inputStyle(InputState state){
     return inputEleStyle(state, 

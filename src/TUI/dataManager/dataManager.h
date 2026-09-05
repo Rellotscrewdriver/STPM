@@ -16,7 +16,7 @@ public:
 
     std::string statusMessage = "nothing was copied to clipboard";
     std::string copyIns = "Press 'c' to copy Email | Press 'v' to copy Site | Press 'b' to copy Password";
-    const std::string mainNavText = "Shortcuts: [↑/↓] Navigate  [Enter] Edit  [n] Add  [d] Delete  [q] Quit";
+    const std::string mainNavText = "Shortcuts: [↑/↓] Navigate  [Enter] Edit  [n] Add  [d] Delete  [Ctrl+s] Save [q] Quit";
     const std::string dialogNavText1 = "Navigation: [↑/↓] Switch Fields  [←/→] Select Options";
     const std::string dialogNavText2 = "Navigation: [←/→] Select Options";    
 
