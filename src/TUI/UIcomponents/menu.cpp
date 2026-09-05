@@ -2,7 +2,7 @@
 
 Element TUIFrontEnd::menuRowEntry(const EntryState &state){
     if (siteDataNew.empty()) {
-        return text(" (No Entries) ") | dim | center;
+        return paragraphAlignCenter(" (No Entries Found) ") | dim | center;
     }
     
     if (state.index >= siteDataNew.size()){

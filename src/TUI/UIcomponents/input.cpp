@@ -12,7 +12,7 @@ Component TUIFrontEnd::inputEvent(){
             return true;
         }
 
-        if (event == Event::Character('d')) {
+        if (event == Event::Character('d') && !siteDataNew.empty()) {
             activeLayer = remDialog;
             switchDialog(remDialog);
             isDataEmpty = false;
