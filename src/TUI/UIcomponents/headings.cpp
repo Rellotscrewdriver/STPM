@@ -1,10 +1,10 @@
 #include "../tui.h"
+#include "version.h"
 
 Element TUIFrontEnd::title(){
     return hbox({
-        //TODO: make a version
         paragraph("STPM - Simple Terminal Password Manager ") | bold,
-        text("v1.0.0") | bold,
+        text(Version::STRING) | bold,
     }) | color(Color::Blue) | center;
 }
 

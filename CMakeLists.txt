@@ -7,7 +7,13 @@ set(ABSL_ENABLE_INSTALL ON CACHE BOOL "" FORCE)
 set(RE2_BUILD_TESTING OFF CACHE BOOL "" FORCE)
 
 # set the project template
-project(stpm)
+project(stpm VERSION 0.1.0 LANGUAGES CXX)
+
+
+configure_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/version.h.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/generated/version.h"
+)
 
 # add internal dependencies
 add_subdirectory(libs/googletest)
@@ -29,6 +35,7 @@ add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
 target_sources(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCES})
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/include)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/libs)
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/generated)
 target_link_libraries(${PROJECT_NAME} PRIVATE sodium re2 absl::base ftxui::ftxui clip)
 target_compile_options(${PROJECT_NAME} PRIVATE 
     $<$<CONFIG:Release>:-Ofast>

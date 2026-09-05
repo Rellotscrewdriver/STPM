@@ -35,7 +35,7 @@ public:
      * 
      * @param hashPass hash master password
      */
-    void genHashtoFile(std::string hashpass); //TODO: make a new method in this class that performs the operations here instead of TUIFrontEnd class 
+    void genHashtoFile(std::string hashpass); 
 
     std::string fetchHash();
 

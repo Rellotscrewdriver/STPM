@@ -1,0 +1,13 @@
+#pragma once
+#include <string>
+
+// Generated automatically by CMake. Do not edit directly!
+namespace Version {
+    constexpr int MAJOR = @PROJECT_VERSION_MAJOR@;
+    constexpr int MINOR = @PROJECT_VERSION_MINOR@;
+    constexpr int PATCH = @PROJECT_VERSION_PATCH@;
+    // constexpr int BUILD = @PROJECT_VERSION_TWEAK@;
+
+    constexpr std::string STRING = "v@PROJECT_VERSION@";
+    constexpr std::string FULL   = "@PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.@PROJECT_VERSION_PATCH@.@PROJECT_VERSION_TWEAK@";
+}
