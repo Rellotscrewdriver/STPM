@@ -23,15 +23,18 @@ void dataManager::copyCreds(copyData type, int selectedRow){
 }
 
 void dataManager::copyToClipBoard(const std::string &info){
-    const char* waylandEnv = std::getenv("WAYLAND_DISPLAY");
-    if(waylandEnv != nullptr){
-        FILE* pipe = popen("wl-copy", "w");
-        if (pipe) {
-            fwrite(info.c_str(), sizeof(char), info.length(), pipe);
-            pclose(pipe);
-            return;
+    #ifndef WIN32
+        const char* waylandEnv = std::getenv("WAYLAND_DISPLAY");
+
+        if(waylandEnv != nullptr){
+            FILE* pipe = popen("wl-copy", "w");
+            if (pipe) {
+                fwrite(info.c_str(), sizeof(char), info.length(), pipe);
+                pclose(pipe);
+                return;
+            }
         }
-    }
+    #endif
 
     clip::set_text(info);
 }

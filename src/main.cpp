@@ -15,7 +15,7 @@ int main(int argc, char* argv[]) {
 
   auto e = std::make_unique<encryption>();
   bool isTUI = (argc == 1);
-  bool isDecrypted;
+  bool isDecrypted = true;
   if(!isTUI){
     isDecrypted = e->firstTimeUser();
   }
