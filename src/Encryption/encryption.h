@@ -5,7 +5,7 @@
 #include <sodium.h>
 
 // Chunk size for file reading/writing (e.g., 4KB)
-#define CHUNK_SIZE 1048576
+#define CHUNK_SIZE 4096
 
 class encryption {
 public:
@@ -39,6 +39,7 @@ public:
 
     std::string fetchHash();
 
+    static void removeTrailingChars(std::string &text);
     /**
      * compares the password and hash using crypto_pwhash_str_verify()
      * 

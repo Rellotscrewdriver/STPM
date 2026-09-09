@@ -47,6 +47,7 @@ std::string encryption::fetchHash(){
     std::ifstream password(passFile, std::ios::binary);    
     std::string temp;
     if(std::getline(password, temp)){
+        removeTrailingChars(temp);
         password.close();
         return temp; //retrives the hash
     }
@@ -54,18 +55,27 @@ std::string encryption::fetchHash(){
 }
 
 bool encryption::verifyUser(){
-    std::string password;
-    
-    std::cout << "Welcome back! Please put your master password!" << std::endl;
-    std::cout << "Password: ";
-    std::getline(std::cin, password);
-    if (isPasswordCorrect(password, fetchHash())) {
-        //std::cout << "passwords match!\n";
-        return true; //passwords match
-    } else {
+    std::string hash = fetchHash();
+
+    while (true) {
+        std::string password;
+        std::cout << "Welcome back! Please put your master password!" << std::endl;
+        std::cout << "Password: ";
+        std::getline(std::cin, password);
+
+        removeTrailingChars(password);
+
+        if (isPasswordCorrect(password, hash)) {
+            return true; // Passwords match
+        }
+
         std::cout << "passwords dont match brother, try again\n";
-        //exit(EXIT_FAILURE); //this doesn't clean up objects
-        verifyUser();
-        return false;
+    }
+}
+
+void encryption::removeTrailingChars(std::string &text){
+    // Strip trailing carriage returns/newlines captured from Windows terminals
+    while (!text.empty() && (text.back() == '\r' || text.back() == '\n')) {
+        text.pop_back();
     }
 }
