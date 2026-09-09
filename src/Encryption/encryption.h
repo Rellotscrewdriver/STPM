@@ -52,6 +52,10 @@ public:
 
 
 private:
+
+    size_t customMemLimit = 128 * 1024 * 1024; //128MB    
+    unsigned long long customOpsLimit = 3; //3 iterations
+
     /**
      * it is the const char* version of path since libsodium library is written in C
      */

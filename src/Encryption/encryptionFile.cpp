@@ -7,34 +7,12 @@ encryption::encryption(){
 
 }
 
-void encryption::encrypt(){
-    // auto startTime = std::chrono::steady_clock::now();
-    
+void encryption::encrypt(){    
     encryptVectorToFile(pathS, convertToRawString(siteDataNew), fetchHash());
-    // auto endTime = std::chrono::steady_clock::now();
-    // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
-    // std::cout << "[BENCHMARK] Encryption took: " << duration << " ms (" 
-    //           << (duration / 1000.0) << " seconds)\n";
-
-    // std::cout << "EncryptionRAM\n";
-    // for(auto &i : siteDataNew){
-    //   std::cout << "Data: " << i.getEmail() << " " << i.getLink() << " " << i.getPass() << "\n";
-    // }
 }
 
 void encryption::decrypt(){
-    // auto startTime = std::chrono::steady_clock::now();
     decryptContentToRAM(pathS, rawStr, fetchHash());
-    // auto endTime = std::chrono::steady_clock::now();
-    // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
-    // std::cout << "[BENCHMARK] Decryption took: " << duration << " ms (" 
-    //           << (duration / 1000.0) << " seconds)\n";
-
-    convertToVectObj();
-    // std::cout << "DecryptionRAM\n";
-    // for(auto &i : siteDataNew){
-    //   std::cout << "Data: " << i.getEmail() << " " << i.getLink() << " " << i.getPass() << "\n";
-    // }
 }
 
 bool encryption::isPasswordCorrect(const std::string& password, const std::string& storedHash) {
@@ -49,8 +27,8 @@ std::string encryption::hashPassword(const std::string& password) {
 
     // crypto_pwhash_str handles salt generation automatically
     if (crypto_pwhash_str(hashed_password, password.c_str(), password.length(),
-            crypto_pwhash_OPSLIMIT_MODERATE, // Moderate CPU usage
-            crypto_pwhash_MEMLIMIT_MODERATE  // Moderate RAM usage
+            customOpsLimit, // Moderate CPU usage
+            customMemLimit  // Moderate RAM usage
         ) != 0) {
         return "\nOut of memory or system error during hashing\n";
     }
@@ -90,9 +68,9 @@ bool encryption::encryptVectorToFile(const filesystem::path& targetPath, const s
 
     // Using MODERATE limits
     if (crypto_pwhash(key, sizeof key, password.c_str(), password.length(), salt,
-                     crypto_pwhash_OPSLIMIT_MODERATE, 
-                     crypto_pwhash_MEMLIMIT_MODERATE,
-                     crypto_pwhash_ALG_DEFAULT) != 0) {
+                    customOpsLimit,
+                    customMemLimit,
+                    crypto_pwhash_ALG_ARGON2ID13) != 0) {
         std::cerr << "Error: Key derivation failed (Out of memory).\n";
         return false;
     }
@@ -215,9 +193,9 @@ bool encryption::decryptContentToRAM(const filesystem::path& sourcePath, std::ve
     // Derive the key using identical SENSITIVE boundaries used during encryption
     unsigned char key[crypto_secretstream_xchacha20poly1305_KEYBYTES];
     if (crypto_pwhash(key, sizeof key, password.c_str(), password.length(), salt,
-                     crypto_pwhash_OPSLIMIT_MODERATE, 
-                     crypto_pwhash_MEMLIMIT_MODERATE, 
-                     crypto_pwhash_ALG_DEFAULT) != 0) {
+                     customOpsLimit, 
+                     customMemLimit,
+                     crypto_pwhash_ALG_ARGON2ID13) != 0) {
         std::cerr << "Error: Key derivation failed (Out of memory).\n";
         return false;
     }
