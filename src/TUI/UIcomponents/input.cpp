@@ -7,7 +7,7 @@ Component TUIFrontEnd::inputEvent(){
 
         if (event == Event::Character('q') || event == Event::Escape) {
             db.saveData();
-            db.statusMessage = "Saved this stupid Data!";
+            db.statusMessage = "Saved the Data!";
             screen.Exit();
             return true;
         }
@@ -52,8 +52,9 @@ Component TUIFrontEnd::inputEvent(){
         
         if (event == Event::CtrlS) {
             db.saveData();
-            db.statusMessage = "Saved this stupid Data!";
+            db.statusMessage = "Saved the Data!";
             return true;
+            db.statusMessage = "nothing was copied to clipboard";            
         }
 
         if (event == Event::Character('c')) {

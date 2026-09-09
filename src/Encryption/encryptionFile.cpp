@@ -1,5 +1,4 @@
 #include "encryption.h"
-#include <chrono>
 
 std::vector<siteObj> siteDataNew;
 
@@ -13,6 +12,7 @@ void encryption::encrypt(){
 
 void encryption::decrypt(){
     decryptContentToRAM(pathS, rawStr, fetchHash());
+    convertToVectObj();
 }
 
 bool encryption::isPasswordCorrect(const std::string& password, const std::string& storedHash) {

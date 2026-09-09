@@ -47,7 +47,7 @@ std::string encryption::fetchHash(){
         password.close();
         return temp; //retrives the hash
     }
-    return "FUCK YOU!! Stupid piece of shit";
+    return " ";
 }
 
 bool encryption::verifyUser(){
