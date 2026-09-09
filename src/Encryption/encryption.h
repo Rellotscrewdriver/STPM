@@ -68,7 +68,7 @@ private:
     /**
      * a file to store the key
      */
-    std::string passFile = "untitled.txt";
+    const std::string passFile = "keylog";
 
     /**
      * fetches the hash from file defined in passFile string
