@@ -8,6 +8,7 @@ namespace Version {
     constexpr int PATCH = @PROJECT_VERSION_PATCH@;
     // constexpr int BUILD = @PROJECT_VERSION_TWEAK@;
 
-    constexpr std::string STRING = "v@PROJECT_VERSION@";
-    constexpr std::string FULL   = "@PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.@PROJECT_VERSION_PATCH@.@PROJECT_VERSION_TWEAK@";
+    constexpr inline const char STRING[] = "v@PROJECT_VERSION@";
+    constexpr inline const char FULL[] = "@PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.@PROJECT_VERSION_PATCH@.@PROJECT_VERSION_TWEAK@";    
+
 }

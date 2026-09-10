@@ -13,8 +13,8 @@
 #include <algorithm>
 #include "siteObj.h"
 
-constinit inline std::string path = "creden.mypass";
-constinit inline std::string tempfile = "temp.db";
+inline const std::string path = "creden.mypass";
+inline const std::string tempfile = "temp.db";
 
 extern std::vector<siteObj> siteDataNew;
 

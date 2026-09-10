@@ -27,7 +27,7 @@ add_subdirectory(libs) # for those libs which doesn't have CMakeLists.txt file
 file(GLOB_RECURSE PROJECT_SOURCES "src/*.cpp")
 
 if(MSVC)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++17")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++20")
 endif()   
 
 # Add and link executable with internal libraries

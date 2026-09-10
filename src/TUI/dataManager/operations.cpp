@@ -24,17 +24,19 @@ void dataManager::loadData(){
 }
 
 bool dataManager::verify(std::string oldPass){
+    enc.removeTrailingChars(oldPass);
     return enc.isPasswordCorrect(oldPass, enc.fetchHash());
 }
 
 void dataManager::saveHash(std::string materPass){
+    enc.removeTrailingChars(materPass);
     enc.genHashtoFile(materPass);
 }
 
 void dataManager::updateMenuEnteries(){
     menuEntries.clear();
     if (siteDataNew.empty()) {
-        // Keep 1 dummy entry so ftxui::Menu doesn't hang
+        // Keep 1 dummy entry so ftxui doesn't hang
         menuEntries.push_back("Empty");
     } else {
         for (const auto& item : siteDataNew) {

@@ -5,7 +5,7 @@
 #include <sodium.h>
 
 // Chunk size for file reading/writing (e.g., 4KB)
-#define CHUNK_SIZE 1048576
+#define CHUNK_SIZE 4096
 
 class encryption {
 public:
@@ -39,6 +39,7 @@ public:
 
     std::string fetchHash();
 
+    static void removeTrailingChars(std::string &text);
     /**
      * compares the password and hash using crypto_pwhash_str_verify()
      * 
@@ -51,6 +52,10 @@ public:
 
 
 private:
+
+    size_t customMemLimit = 128 * 1024 * 1024; //128MB    
+    unsigned long long customOpsLimit = 3; //3 iterations
+
     /**
      * it is the const char* version of path since libsodium library is written in C
      */
@@ -63,7 +68,7 @@ private:
     /**
      * a file to store the key
      */
-    std::string passFile = "untitled.txt";
+    const std::string passFile = "keylog";
 
     /**
      * fetches the hash from file defined in passFile string
