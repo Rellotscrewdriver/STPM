@@ -68,7 +68,28 @@ private:
     /**
      * a file to store the key
      */
-    const std::string passFile = "keylog";
+    const std::string passFileName = "keylog";
+
+    #if defined(_WIN32)
+        // Windows path
+        const std::string passFile = ((localAppDir && localAppDir[0] != '\0') ? std::filesystem::path(localAppDir) / "STPM" / passFileName
+        : std::filesystem::path("C:\\STPM\\keylog")).string();
+    #elif defined(__APPLE__)
+        // macOS path
+        const std::string passFile = ((homeConfig && homeConfig[0] != '\0')
+        ? std::filesystem::path(homeConfig) / "Library" / "Application Support" / "STPM" / passFileName
+        : std::filesystem::path(".") / "STPM" / passFileName).string();
+    #elif defined(__linux__)
+        // Linux path, search in XDG_CONFIG_HOME first, then use HOME as fallback
+        const std::string passFile = 
+        ((xdgEnv && xdgEnv[0] == '/')
+            ? std::filesystem::path(xdgEnv) / "STPM" / passFileName
+            : (homeEnv && homeEnv[0] != '\0')
+                ? std::filesystem::path(homeEnv) / ".config" / "STPM" / passFileName
+                : std::filesystem::path(".") / "STPM" / passFileName).string();
+    #else
+        #error "Unsupported platform! you tryna compile in BSD or mobile or embedded?"
+    #endif
 
     /**
      * fetches the hash from file defined in passFile string

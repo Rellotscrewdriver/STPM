@@ -80,7 +80,7 @@ bool encryption::encryptVectorToFile(const filesystem::path& targetPath, const s
 
     // Prepare Temporary File Path for Atomic Saving
     filesystem::path tmpPath = targetPath;
-    tmpPath.replace_extension(".tmp");
+    // tmpPath.replace_extension(".tmp");
 
     // Open file stream explicitly in BINARY mode (No text extensions like .txt)
     std::ofstream outFile(tmpPath, std::ios::binary);
