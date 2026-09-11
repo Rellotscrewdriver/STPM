@@ -150,6 +150,7 @@ private:
     Component noButton();
     Component genPassButton();
 
+    void masterPassCheck();
 
     // Button layouts
     Component editBtnLayout();

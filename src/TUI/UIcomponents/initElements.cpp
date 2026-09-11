@@ -12,6 +12,10 @@ void TUIFrontEnd::applyStyle(){
     mInput.multiline = false;
     mInput.password = true;
 
+    mInput.on_enter = [this]() {
+        masterPassCheck();
+    };
+
     input.transform = [this](InputState state) {
         return inputStyle(state);
     };

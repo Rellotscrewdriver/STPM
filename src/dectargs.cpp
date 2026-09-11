@@ -24,7 +24,6 @@ void dectargs::checkArgs() {
   }
 }
 
-// TODO: add an exception when mArgVect[n] are empty
 void dectargs::dectTypeArgs() {
   if((funcNameCmp("add") || funcNameCmp("Add")) && mArgc > noOfArgsDetect) {
     siteOps site(mArgVect[1], mArgVect[2]);
