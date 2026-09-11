@@ -63,7 +63,13 @@ Component TUIFrontEnd::noButton(){
 
 
 Component TUIFrontEnd::genPassButton(){
-    return Button("", [&] { 
+    #if defined(_WIN32) || defined(__APPLE__)
+        ftxui::ConstStringRef txtNameTemp = "ReP";
+    #else
+        ftxui::ConstStringRef txtNameTemp = "";
+    #endif
+    
+    return Button(txtNameTemp, [&] { 
         if(activeLayer == addDialog){
             passCred = gp.getgeneratedPass();
         } else {
@@ -72,7 +78,9 @@ Component TUIFrontEnd::genPassButton(){
     }, genPassOption);
 }
 
-Component TUIFrontEnd::editBtnLayout(){
+
+Component TUIFrontEnd::editBtnLayout()
+{
     return ftxui::Container::Horizontal({
         saveBtn, 
         cancelBtn
@@ -102,23 +110,27 @@ Component TUIFrontEnd::passBtnLayout() {
 
 Component TUIFrontEnd::checkButton() {
     return Button("Verify", [&] {
-        if(activeLayer == masterPassD){
-            if (!validateMasterPass()) {
-                isValidPassword = false;
-                return; // Prevent adding invalid data
-            }
-        } else if(activeLayer == newUserD){
-            if(!validateNewMasterPass()){
-                isValidPassword = false;
-                return; // Prevent adding invalid data
-            }
-        }
-        db.loadData();
-        layerNo = 0;
-        activeLayer = mainMenu;
-        db.updateMenuEnteries();
-        return;
+        masterPassCheck();
     }, verifyOption);
+}
+
+void TUIFrontEnd::masterPassCheck(){
+    if(activeLayer == masterPassD){
+        if (!validateMasterPass()) {
+            isValidPassword = false;
+            return; // Prevent adding invalid data
+        }
+    } else if(activeLayer == newUserD){
+        if(!validateNewMasterPass()){
+            isValidPassword = false;
+            return; // Prevent adding invalid data
+        }
+    }
+    db.loadData();
+    layerNo = 0;
+    activeLayer = mainMenu;
+    db.updateMenuEnteries();
+    return;
 }
 
 Component TUIFrontEnd::exitButton() {
