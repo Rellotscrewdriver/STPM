@@ -5,7 +5,7 @@
 
 class siteObj {
 public:
-    siteObj(std::string Email, std::string siteName, std::string passStr) : link(siteName), email(Email), password(passStr){};
+    siteObj(std::string Email, std::string siteName, std::string passStr) : link(siteName), email(Email), password(passStr){}
 
     std::string &getEmail(){return email;}
     std::string &getLink(){return link;}
