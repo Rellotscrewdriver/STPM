@@ -25,55 +25,26 @@ using namespace std;
 #endif
 
 
-//TODO: make it so to restrict any commandline arguements when   
-//TODO: create a new class to handle all these mess in main
-namespace fs = std::filesystem;
-
-bool createEmptyDirectory(const fs::path& dirPath) {
-    std::error_code ec;
-
-    // Creates the directory (and any missing parent paths)
-    // If the directory already exists, it safely does nothing and returns false
-    bool created = fs::create_directories(dirPath, ec);
-
-    return true;
-}
-
 int main(int argc, char* argv[]) {
-  // std::cout << "Inital: \n";
-  // for(auto &i : siteDataNew){
-  //   std::cout << "Data: " << i.getEmail() << " " << i.getLink() << " " << i.getPass() << "\n";
-  // }
-  fs::path myDir = makeDir;
-  createEmptyDirectory(myDir);
-  
+  std::filesystem::path myDir = makeDir;
+  std::filesystem::create_directories(myDir);
+
   std::vector<std::string> argList(argv + 1, argv + argc);
 
-  auto e = std::make_unique<encryption>();
+  encryption e;
   bool isTUI = (argc == 1);
-  bool isDecrypted = true;
+  bool isNewUser = true;
   if(!isTUI){
-    isDecrypted = e->firstTimeUser();
+    isNewUser = e.firstTimeUser();
   }
   
-
-  // std::cout << "After encrypt decrypt: \n";
-  // for(auto &i : siteDataNew){
-  //   std::cout << "Data: " << i.getEmail() << " " << i.getLink() << " " << i.getPass() << "\n";
-  // }
-
-  if(!isDecrypted || argList.empty()){
+  if(!isNewUser || argList.empty()){
     std::unique_ptr<dectargs> d = std::make_unique<dectargs>(argList);
   } else {
-    std::cerr << "can't accept arguements if you are the new user \n";
+    std::cerr << "can't accept Commandline-arguements if you are the new user\nrun the same command again if you're adding stuff";
   }
 
-  if(!isDecrypted && !isTUI){
-    e->encrypt();
+  if(!isNewUser && !isTUI){
+    e.encrypt();
   }
-
-  // std::cout << "Final: \n";
-  // for(auto &i : siteDataNew){
-  //   std::cout << "Data: " << i.getEmail() << " " << i.getLink() << " " << i.getPass() << "\n";
-  // }
 }
