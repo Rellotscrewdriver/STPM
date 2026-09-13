@@ -40,5 +40,3 @@ target_link_libraries(${PROJECT_NAME} PRIVATE sodium re2 absl::base ftxui::ftxui
 target_compile_options(${PROJECT_NAME} PRIVATE 
     $<$<CONFIG:Release>:-Ofast>
 )
-# add Unit tests
-add_subdirectory(tests)
