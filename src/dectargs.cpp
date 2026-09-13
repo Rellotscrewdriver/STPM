@@ -1,5 +1,6 @@
 #include "dectargs.h"
 #include "TUI/tui.h"
+#include "version.h"
 
 dectargs::dectargs(std::vector<std::string> &vects) : mArgVect(vects) {
     mArgc = vects.size();
@@ -7,25 +8,18 @@ dectargs::dectargs(std::vector<std::string> &vects) : mArgVect(vects) {
 }
 
 void dectargs::checkArgs() {
-  // std::cout << mArgc << std::endl;
-  // for(auto &i : mArgVect){
-  //     std::cout << i << std::endl;
-  // }
-  if(mArgc >= 1) {
+  if(mArgc >= 1 && mArgc <= 4) {
     dectTypeArgs();
   } else if(mArgc == 0){
     TUIFrontEnd ft;
     ft.exec();
-    //helpMessage();
-    //This type of arguement should start the TUI session
   } else {
-    std::cout << "not enough parameters or too many parameters"
-              << "\nparamter count: " << mArgc << std::endl;
+    std::cout << "too many parameters" << "\nparamter count: " << mArgc << std::endl;
   }
 }
 
 void dectargs::dectTypeArgs() {
-  if((funcNameCmp("add") || funcNameCmp("Add")) && mArgc > noOfArgsDetect) {
+  if((funcNameCmp("add") || funcNameCmp("Add")) && mArgc >= noOfArgsDetect) {
     siteOps site(mArgVect[1], mArgVect[2]);
     site.addSite();
   } else if ((funcNameCmp("list") || funcNameCmp("List")) && mArgc == 1) {
@@ -35,8 +29,12 @@ void dectargs::dectTypeArgs() {
   } else if ((funcNameCmp("remove") || funcNameCmp("Remove")) && mArgc > noOfArgsDetect) {
     siteOps site(mArgVect[1], mArgVect[2]);
     site.removeSite();
+  } else if ((funcNameCmp("-h")) && mArgc == 1) {
+    helpMessage();
+  } else if ((funcNameCmp("-v")) && mArgc == 1) {
+    versionString();
   } else {
-    std::cout << "Arguement not found\n";
+    std::cout << "Main Arguement not found\n";
   }
 }
 
@@ -45,7 +43,20 @@ bool dectargs::funcNameCmp(std::string funcName){
 }
 
 void dectargs::helpMessage(){
-  std::cout << "Help Section Here \nThis software is in early development :)\n";
+  std::cout << "Usage: stpm [mode] <arg1> <arg2>\n" 
+            << "\nShow this message: stpm -h\n"
+            << "\nShow version: stpm -v\n"
+            << "\nAdding Mode: stpm add <email> <link> \nadds the credential, the password will be automatically generated\nExample: stpm add RellotsHead@gmail.com github.com\n"
+            << "\nRemoving Mode: stpm remove <email> <link> \nremoves a credential, errors out if not found\n"
+            << "\nListing Mode: stpm list \nlists all credentials, prints everything in a nice table\n"
+            << "\nChanging Mode: stpm change <flag> <oldCredential> <newCredential>\nupdates the credential\n"
+            << "  Updating an email:     stpm change <link> <existingEmail> <newEmail>\n"
+            << "  Updating a link:       stpm change <Email> <existingLink> <newLink>\n"
+            << "  Regenerating Password: stpm change <Email> <Link>\n";
+}
+
+void dectargs::versionString(){
+  std::cout << "STPM " << Version::STRING << "\n";
 }
 
 void dectargs::argNoChangeFeat(){

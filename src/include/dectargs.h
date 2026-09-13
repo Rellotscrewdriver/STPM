@@ -70,6 +70,12 @@ private:
   void helpMessage();
   
   /**
+   * show the version string using "-v"
+   */
+  void versionString();  
+
+
+  /**
    * check the no of arguement to determine whether 
    * the user wants to regenerate the password or rename a site link or email
    * 
