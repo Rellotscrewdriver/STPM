@@ -12,7 +12,7 @@ siteOps::siteOps(std::string &flag, std::string &oldStr, std::string &newStr) : 
 }
 
 siteOps::siteOps(){
-    putEveryShitInRAM();
+    display(siteDataNew);
 }
 
 bool siteOps::checkEmailVaild(std::string flag){
@@ -61,7 +61,6 @@ void siteOps::hugeRegexCheck(){
 
 void siteOps::changeSite(){
     if(!mNewStr.empty()){
-        // std::cout << "Replacing Flag: " << mFlag << std::endl;
         if(replaceWhat == isLink){
             std::cout << "Replacing Link" << std::endl;
             replaceLink();
