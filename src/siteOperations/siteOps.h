@@ -56,8 +56,7 @@ public:
 private:
     std::string email, link, mFlag, mOldStr, mNewStr;
     bool isSiteFound = false;
-    enum idenStr replaceWhat;
-    char separator = ',';
+    idenStr replaceWhat;
     
     /**
      * this function adds the site to the last position
@@ -74,18 +73,16 @@ private:
      */
     bool checkEmailVaild(std::string flag);
     bool checkLinkVaild(std::string flag);
-    void hugeRegexCheck();
 
-    std::vector<std::string> addLines;
     /**
      * this function splits the thing into words by a separator
      */
-    void putEveryShitInRAM();
+    void hugeRegexCheck();
 
     /**
      * this function prints out everything in a nice table
      */
-    void displayInANiceTable(const std::vector<siteObj>& data);
+    void display(const std::vector<siteObj>& data);
 
     /**
      * this site re-generates the password by deleting and adding the site
