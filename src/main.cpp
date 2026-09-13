@@ -33,18 +33,21 @@ int main(int argc, char* argv[]) {
 
   encryption e;
   bool isTUI = (argc == 1);
+  int miscCmdLength = 2;
+  bool isMiscCmd = (argc == miscCmdLength) && (argList[0].length() == miscCmdLength);
   bool isNewUser = true;
-  if(!isTUI){
+  
+  if(!isTUI && !isMiscCmd){
     isNewUser = e.firstTimeUser();
   }
   
-  if(!isNewUser || argList.empty()){
+  if(!isNewUser || argList.empty() || isMiscCmd){
     std::unique_ptr<dectargs> d = std::make_unique<dectargs>(argList);
   } else {
     std::cerr << "can't accept Commandline-arguements if you are the new user\nrun the same command again if you're adding stuff";
   }
 
-  if(!isNewUser && !isTUI){
+  if(!isNewUser && !isTUI && !isMiscCmd){
     e.encrypt();
   }
 }
