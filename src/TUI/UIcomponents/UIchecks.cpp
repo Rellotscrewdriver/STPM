@@ -9,7 +9,6 @@ bool TUIFrontEnd::validateInputs(const std::string& email, const std::string& si
         return false;
     }
     
-    // Example basic checks (or use std::regex)
     if (!rv.checkemail(email)) {
         validationMsg = "Invalid email format";
         isValidCredentials = false;
