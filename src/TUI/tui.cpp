@@ -1,11 +1,6 @@
 #include "tui.h"
 
 TUIFrontEnd::TUIFrontEnd(){
-    // db.data = {
-    //     {"001", "Alice Smith", "Engineer"},
-    //     {"002", "Bob Jones", "Designer"},
-    //     {"003", "Charlie Brown", "Manager"}
-    // };
     activeLayer = layers::newUserD;
     firstTimeSetup();
     initComponents();
@@ -14,6 +9,7 @@ TUIFrontEnd::TUIFrontEnd(){
 
 void TUIFrontEnd::exec(){
     screen.Loop(renderer);
+
 }
 
 void TUIFrontEnd::renderLayout(){

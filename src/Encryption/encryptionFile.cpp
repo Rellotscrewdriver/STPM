@@ -2,10 +2,6 @@
 
 std::vector<siteObj> siteDataNew;
 
-encryption::encryption(){
-
-}
-
 void encryption::encrypt(){    
     encryptVectorToFile(pathS, convertToRawString(siteDataNew), fetchHash());
 }
@@ -27,8 +23,8 @@ std::string encryption::hashPassword(const std::string& password) {
 
     // crypto_pwhash_str handles salt generation automatically
     if (crypto_pwhash_str(hashed_password, password.c_str(), password.length(),
-            customOpsLimit, // Moderate CPU usage
-            customMemLimit  // Moderate RAM usage
+            customOpsLimit,
+            customMemLimit
         ) != 0) {
         return "\nOut of memory or system error during hashing\n";
     }
@@ -36,17 +32,17 @@ std::string encryption::hashPassword(const std::string& password) {
 }
 
 std::vector<uint8_t> encryption::serializeVector(const std::vector<std::string>& vec) {
-    // 1. Calculate total size upfront
+    // Calculate total size upfront
     size_t totalSize = 0;
     for (const auto& str : vec) {
         totalSize += sizeof(uint64_t) + str.size();
     }
 
-    // 2. Pre-allocate memory once
+    // Pre-allocate memory once
     std::vector<uint8_t> buffer;
     buffer.reserve(totalSize); 
 
-    // 3. Populate buffer
+    // Populate buffer
     for (const auto& str : vec) {
         uint64_t len = str.size();
         const uint8_t* lenBytes = reinterpret_cast<const uint8_t*>(&len);
@@ -169,12 +165,6 @@ std::vector<std::string> encryption::deserializeVector(const std::vector<uint8_t
 }
 
 bool encryption::decryptContentToRAM(const filesystem::path& sourcePath, std::vector<std::string>& outVector, const std::string& password) {
-    // Initialize libsodium
-    if (sodium_init() < 0) {
-        std::cerr << "Error: Libsodium initialization failed.\n";
-        return false;
-    }
-
     // Open file stream explicitly in BINARY mode
     std::ifstream inFile(sourcePath, std::ios::binary);
     if (!inFile) {
@@ -222,6 +212,7 @@ bool encryption::decryptContentToRAM(const filesystem::path& sourcePath, std::ve
 
     std::vector<uint8_t> decryptedBuffer;
     const size_t CHUNK_SIZE_DE = CHUNK_SIZE;
+    
     // Ciphertext blocks include the authentication tag overhead (ABYTES)
     const size_t CIPHER_CHUNK_SIZE = CHUNK_SIZE_DE + crypto_secretstream_xchacha20poly1305_ABYTES;
     
