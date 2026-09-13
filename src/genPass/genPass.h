@@ -3,7 +3,7 @@
 #include "includes.h"
 
 /**
- * generates a unique random number
+ * generates a unique random password
  */
 class GeneratePass {
 public:
@@ -18,7 +18,7 @@ public:
 private:
     /**
      * this generates a unique string using std::mt19937 using std::random_device
-     * which is the modern C++ alternative
+     * which is the modern C++ alternative, it now clears passStr before generating a new one
      * 
      * @return string of random characters
      */

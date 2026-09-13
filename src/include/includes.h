@@ -38,9 +38,7 @@
     #error "Unsupported platform! you tryna compile in BSD or mobile or embedded?"
 #endif
 
-
-inline const std::string tempfile = "temp.db";
-
+//global variable containing data
 extern std::vector<siteObj> siteDataNew;
 
 using namespace std;

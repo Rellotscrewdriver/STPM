@@ -29,7 +29,7 @@ public:
      * @param new_string
      * 
      * @info
-     * this function doesn't do anything
+     * this function checks the validatity of credentials before doing anything
      */
     siteOps(std::string &flag, std::string &oldStr, std::string &newStr);
     
@@ -54,8 +54,19 @@ public:
     void changeSite();
     
 private:
+    /**
+     * these variables are extracted from constructors
+     */
     std::string email, link, mFlag, mOldStr, mNewStr;
+
+    /**
+     * this variable used for regenerating passwords and telling the user that a row has been deleted
+     */
     bool isSiteFound = false;
+
+    /**
+     * this variable takes only enum from hugeRegexCheck() function
+     */
     idenStr replaceWhat;
     
     /**
@@ -72,10 +83,15 @@ private:
      * this function checks whether email is vaild or not.
      */
     bool checkEmailVaild(std::string flag);
+
+    /**
+     * this function checks whether email is vaild or not.
+     */
     bool checkLinkVaild(std::string flag);
 
     /**
-     * this function splits the thing into words by a separator
+     * this function checks the type of arguement given by user and then assign replaceWhat variable
+     * accordingly
      */
     void hugeRegexCheck();
 

@@ -31,7 +31,12 @@ private:
    */
   int noOfArgsDetect = 2;
 
+  /**
+   * this vector contains the arguement data from commandline
+   * if this is empty then a TUI frontend will be launched
+   */
   std::vector<std::string> mArgVect;
+
   /**
    * compares the first commandline arguement to given parameter
    * 
@@ -44,14 +49,6 @@ private:
   bool funcNameCmp(std::string funcName);
 
   /**
-   * select the type which the arguement is given
-   * 
-   * @danger 
-   * this function can crash the entire program if no commandline arguements are given 
-   */
-  void dectTypeArgs();
-  
-  /**
    * shields the dectTypeArgs() function if too many or too low arguements are given
    * 
    * @info 
@@ -60,7 +57,15 @@ private:
   void checkArgs();
 
   /**
-   * simply prints the help message when putting "help"
+   * select the type which the arguement is given
+   * 
+   * @danger 
+   * this function can crash the entire program if no commandline arguements are given 
+   */
+  void dectTypeArgs();
+  
+  /**
+   * show the help message using "-h"
    */
   void helpMessage();
   
@@ -69,7 +74,7 @@ private:
    * the user wants to regenerate the password or rename a site link or email
    * 
    * @warning 
-   * this function is only used for change arguement
+   * this function can only used for change mode
    */
   void argNoChangeFeat();
 };
