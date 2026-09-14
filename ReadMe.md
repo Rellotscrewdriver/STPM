@@ -1,4 +1,4 @@
-# Simple Terminal Password Manager
+# Simple TUI Password Manager
 
 STPM is a secure, lightweight terminal-based password manager built in Modern C++. It provides a full-featured TUI mode to easily store and manage credentials locally across multiple platforms.
 Users also got the option to directly manage credentials through commandline arguements.
