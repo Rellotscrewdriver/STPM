@@ -1,4 +1,5 @@
 title: STPM
 description: A TUI based password manager 
 files:
-  - "src/include/*.h"
+  - "src/**/*.h"
+  - "src/**/**/*.h"

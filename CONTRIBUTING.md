@@ -121,8 +121,8 @@ switch (a){
 ```c++
 switch (var){
 	case 1:{
-			// declare local variables
-			// code
+		// declare local variables
+		// code
 	} break;
 	
 	case 2:{
@@ -152,8 +152,7 @@ if (condition){
 Most single statement if blocks should look like this:
 
 ```c++
-if (condition)
-    a = a + b;
+if (condition) {a = a + b;}
 ```
 
 One acceptable exception to this can be `return`, `break` or `continue` statements,
@@ -161,11 +160,11 @@ provided that the test condition isn't very long and its body statement occupies
 However you can still choose to use the first rule.
 
 ```c++
-if (a > 0) return;
+if (a > 0) {return;}
 
 while (p){
     // ...
-    if (!b) continue;
+    if (!b) {continue;}
 }
 ```
 
