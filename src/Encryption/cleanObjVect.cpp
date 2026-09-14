@@ -11,7 +11,7 @@ std::vector<std::string> encryption::convertToRawString(std::vector<siteObj> &si
 }
 
 void encryption::convertToVectObj(){
-    //siteDataNew.reserve(rawStr.size()); // Optimization: Prevent multiple reallocations 
+    siteDataNew.reserve(rawStr.size()); // Optimization: Prevent multiple reallocations 
 
     for (const auto& item : rawStr) {
         std::stringstream ss(item);
@@ -27,9 +27,4 @@ void encryption::convertToVectObj(){
         // Using emplace_back to construct in-place and avoid copies 
         siteDataNew.push_back(siteObj(parts[0], parts[1], parts[2]));
     }
-
-    // std::cout << "Converted shit to objects\n";
-    // for(auto &i : siteDataNew){
-    //     std::cout << i.getEmail() << " " << i.getLink() << " " << i.getPass() << "\n";
-    // }
 }
