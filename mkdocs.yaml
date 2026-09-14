@@ -1,5 +1,5 @@
 site_name: STPM
-site_description: A simple terminal password manager  
+site_description: A Simple TUI Password Manager  
 theme:
   name: material
   custom_dir: docs/overrides

@@ -3,7 +3,7 @@
 
 Element TUIFrontEnd::title(){
     return hbox({
-        paragraph("STPM - Simple Terminal Password Manager ") | bold,
+        paragraph("STPM - Simple TUI Password Manager ") | bold,
         text(Version::STRING) | bold,
     }) | color(Color::Blue) | center;
 }
