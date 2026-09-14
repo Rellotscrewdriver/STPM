@@ -16,7 +16,6 @@ configure_file(
 )
 
 # add internal dependencies
-add_subdirectory(libs/googletest)
 add_subdirectory(libs/abseil-cpp)
 add_subdirectory(libs/re2)
 add_subdirectory(libs/FTXUI)
