@@ -7,7 +7,7 @@ set(ABSL_ENABLE_INSTALL ON CACHE BOOL "" FORCE)
 set(RE2_BUILD_TESTING OFF CACHE BOOL "" FORCE)
 
 # set the project template
-project(stpm VERSION 0.1.0 LANGUAGES CXX)
+project(stpm VERSION 1.0.0 LANGUAGES CXX)
 
 
 configure_file(
