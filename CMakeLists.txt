@@ -37,5 +37,6 @@ target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/l
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/generated)
 target_link_libraries(${PROJECT_NAME} PRIVATE sodium re2 absl::base ftxui::ftxui clip)
 target_compile_options(${PROJECT_NAME} PRIVATE 
-    $<$<CONFIG:Release>:-Ofast>
+    $<$<CONFIG:Release>:-O3>
+    $<$<CONFIG:Release>:-ffast-math>    
 )
