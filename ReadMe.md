@@ -26,32 +26,32 @@ People usually like to see how it looks or feels like before downloading the pro
 
 TUI
 
-![App Screenshot](assets/lins1.png)
-![App Screenshot](assets/lins2.png)
-![App Screenshot](assets/lins3.png)
-![App Screenshot](assets/lins4.png)
+<img width="597" height="450" alt="lins1" src="https://github.com/user-attachments/assets/7fe8d2e9-80f9-45d5-a7d3-e97de649f779" />
+<img width="668" height="367" alt="lins2" src="https://github.com/user-attachments/assets/ebc53309-4984-4f7f-92f8-2b628b0ce634" />
+<img width="684" height="316" alt="lins3" src="https://github.com/user-attachments/assets/53476815-61c3-4201-9ee1-7cfd7a5788d5" />
+<img width="693" height="382" alt="lins4" src="https://github.com/user-attachments/assets/5f9b5698-89d1-4cf5-83b3-a11bcd8f2c2c" />
 
 ---
 
 Commandline
 
-![App Screenshot](assets/lins5.png)
-![App Screenshot](assets/lins6.png)
+<img width="658" height="218" alt="lins5" src="https://github.com/user-attachments/assets/ae2136ae-bca9-41fd-b848-e78ed1e0b96c" />
+<img width="684" height="108" alt="lins6" src="https://github.com/user-attachments/assets/8621e519-78a4-4e0d-a9c2-befc63df9ac7" />
 
 ## Windows
 
 TUI
 
-![App Screenshot](assets/wins1.png)
-![App Screenshot](assets/wins2.png)
-![App Screenshot](assets/wins3.png)
+<img width="1454" height="684" alt="wins1" src="https://github.com/user-attachments/assets/96056751-3cda-47b1-9a83-180828fec35b" />
+<img width="733" height="282" alt="wins2" src="https://github.com/user-attachments/assets/234b942d-23a3-451c-b158-16fb3e076083" />
+<img width="1449" height="556" alt="wins3" src="https://github.com/user-attachments/assets/f0b7b579-e577-40d8-9e66-5eabf4167582" />
 
 ---
 
 Commandline
 
-![App Screenshot](assets/wins4.png)
-![App Screenshot](assets/wins5.png)
+<img width="713" height="194" alt="wins4" src="https://github.com/user-attachments/assets/9225d8d6-47e7-47d8-aff7-d1e0bfe1b6e3" />
+<img width="559" height="98" alt="wins5" src="https://github.com/user-attachments/assets/970185d5-d3f8-4950-bbb6-8dbd908fee13" />
 
 # Contributions
 
