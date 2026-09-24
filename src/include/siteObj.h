@@ -25,7 +25,13 @@ public:
     /**
      * this member fetches and sets the password, mainly used in TUI frontend
      */    
-    std::string &getPass(){return password;}
+    std::string &getPass(){
+        if(showPass){
+            return password;
+        } else {
+            return hideStr;
+        }
+    }
 
     /**
      * this member converts it to raw string, used in converting objects into raw string vector
@@ -34,8 +40,9 @@ public:
         return email + "," + link + "," + password;
     }
 
+    bool showPass = true;
 private:
-
+    std::string hideStr = "********************";
     std::string email;
     std::string link;
     std::string password;

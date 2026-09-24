@@ -13,11 +13,14 @@ Element TUIFrontEnd::menuRowEntry(const EntryState &state){
     Element rowElement = hbox({
         paragraphAlignLeft(row.getEmail()) | size(WIDTH, EQUAL, 30),
         paragraphAlignCenter(row.getLink()) | flex, 
-        paragraphAlignCenter(row.getPass()) | size(WIDTH, EQUAL, 30),
+        paragraphAlignCenter(" " + row.getPass()) | size(WIDTH, EQUAL, 30),
     });
     
     if (state.focused){
+        siteDataNew[state.index].showPass = true;
         rowElement = rowElement | bgcolor(Color::Blue) | color(Color::Black) | bold;
+    } else {
+        siteDataNew[state.index].showPass = false;        
     }
     
     return rowElement;

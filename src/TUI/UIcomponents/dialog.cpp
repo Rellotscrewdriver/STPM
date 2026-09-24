@@ -29,7 +29,8 @@ void TUIFrontEnd::switchDialog(layers dialogLayer){
 
 Element TUIFrontEnd::editPopup(){
     maxDialogSelect = 3;
-
+    siteDataNew[selectedRow].showPass = true;
+    
     validateInputs(emailCred, siteCred);
     
     return window(text(" Edit Credential "), 
