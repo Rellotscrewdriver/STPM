@@ -4,6 +4,7 @@ Component TUIFrontEnd::inputEvent(){
 
     return CatchEvent(menuComponent, [&](Event event) {
         if (layerNo != 0) return false;
+        db.statusMessage = "nothing was copied to clipboard";
 
         if (event == Event::Character('q') || event == Event::Escape) {
             db.saveData();
