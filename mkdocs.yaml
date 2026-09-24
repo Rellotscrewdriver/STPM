@@ -1,5 +1,7 @@
 site_name: STPM
-site_description: A Simple TUI Password Manager  
+site_description: A Simple TUI Password Manager
+repo_name: STPM
+repo_url: https://github.com/Rellotscrewdriver/STPM  
 theme:
   name: material
   custom_dir: docs/overrides
@@ -11,7 +13,7 @@ theme:
       primary: blue
       accent: red
       toggle:
-        icon: material/brightness-7 
+        icon: material/weather-night 
         name: Switch to dark mode
 
     # Palette toggle for dark mode
@@ -19,7 +21,7 @@ theme:
       primary: blue
       accent: red
       toggle:
-        icon: material/brightness-4
+        icon: material/weather-sunny
         name: Switch to light mode
 
 markdown_extensions:
@@ -45,3 +47,16 @@ extra_javascript:
   - https://cdn.jsdelivr.net/npm/tablesort@5.3.0/src/sorts/tablesort.number.js
   - javascripts/tablesort.js
 
+extra:
+ social:
+   - icon: fontawesome/brands/github 
+     link: https://github.com/Rellotscrewdriver
+     name: Follow Rellotscrewdriver on Github
+     generator: false
+
+   - icon: fontawesome/brands/discord 
+     link: https://discord.com/users/481829350749110293
+     name: Follow Rellotscrewdriver on Discord
+     generator: false
+
+copyright: Copyright &copy; 2026 Rellotscrewdriver
