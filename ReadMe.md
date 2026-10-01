@@ -42,9 +42,9 @@ Commandline
 
 TUI
 
-<img width="1454" height="684" alt="wins1" src="https://github.com/user-attachments/assets/96056751-3cda-47b1-9a83-180828fec35b" />
+<img width="1471" height="413" alt="winN1" src="https://github.com/user-attachments/assets/ec18642f-03d9-43e7-bfa9-fdccb38ab268" />
 <img width="733" height="282" alt="wins2" src="https://github.com/user-attachments/assets/234b942d-23a3-451c-b158-16fb3e076083" />
-<img width="1449" height="556" alt="wins3" src="https://github.com/user-attachments/assets/f0b7b579-e577-40d8-9e66-5eabf4167582" />
+<img width="1240" height="527" alt="winN2" src="https://github.com/user-attachments/assets/acc5e15c-d249-48a9-bfa2-c86efe2c9cc5" />
 
 ---
 
